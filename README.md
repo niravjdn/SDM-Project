@@ -2,6 +2,7 @@
 
 ## This repository contains code of SDM Project for Fall 2019.
 
+
 ## Team Member Details
 
 | Name | Student ID | Email ID |
@@ -12,3 +13,5 @@
 | Charles Jebalitherson Augustin Moses | 40084105  | charlesjebalitherson@gmail.com |
 | Vikramjit Sinh | 40075774 | vikramsandhu008@gmail.com |
 
+## Team Leader Iteration 1
+ Nirav Patel
