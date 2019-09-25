@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Login</title>
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/png">
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+	
+</head>
+
+<body class="text-center">
+	<!-- 	<form th:action="@{/registration}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Go
+			To Registration Page</button>
+	</form> -->
+
+	<div class="container">
+
+		<img class="mb-4" th:src="@{/images/vehicle.png}" alt="" width="72"
+			height="72">
+
+		<form th:action="@{/login}" method="POST" class="form-signin">
+			<h1 class="h3 mb-3 font-weight-normal">
+				Please Sign in
+				</h3>
+
+				<br /> <input type="email" id="email" name="email"
+					th:placeholder="Email" class="form-control" required /> <br /> <input
+					type="password" th:placeholder="Password" id="password"
+					name="password" class="form-control" required /> <br />
+
+				<div align="center" th:if="${param.error}">
+					<p style="font-size: 20; color: #FF1C19;">Email or Password
+						invalid, please verify</p>
+				</div>
+
+				<button class="btn btn-lg btn-primary btn-block" name="Submit"
+					value="Login" type="Submit" th:text="Login"></button>
+				<p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
+		</form>
+	</div>
+</body>
+</html>
