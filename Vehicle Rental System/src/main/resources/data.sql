@@ -9,7 +9,7 @@ create table IF NOT EXISTS user_role (user_id integer not null, role_id integer 
 
 insert into role select * from (
 select 1, 'ADMIN' union
-select 2, 'USER'
+select 2, 'CLERK'
 ) x where not exists(select * from role);
 
 

@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sdmproject.model.User;
@@ -60,5 +61,45 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/profile/changepassword", method = RequestMethod.GET)
+	public ModelAndView changePassword() {
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+
+		modelAndView.addObject("welcomeString",
+				"Welcome " + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+		modelAndView.setViewName("changepassword");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/profile/changepassword", method = RequestMethod.POST)
+	public ModelAndView changePasswordForUser(@RequestParam("password")String password, @RequestParam("confirmPassword")String confirmPassword) {
+		ModelAndView modelAndView = new ModelAndView();
+		logger.info("Got in Password Reset Action");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+
+		logger.info("Got in Password Reset Action -" + user.getPassword());
+		logger.info("Got in Password Reset Action -" + confirmPassword);
+		if (password.equals(confirmPassword)) {
+			// change password
+			user.setPassword(password);
+			userService.saveUser(user);
+			logger.info("Success - Password Change");
+			modelAndView.addObject("successMessage", "Password Changed Successfully.");
+		} else {
+			logger.info("Error - Password Change");
+			modelAndView.addObject("errorMessage", "Password Mismatch.");
+		}
+
+		modelAndView.addObject("welcomeString",
+				"Welcome " + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+		modelAndView.setViewName("changepassword");
+		return modelAndView;
+	}
+	
 
 }

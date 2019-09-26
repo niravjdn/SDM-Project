@@ -1,10 +1,14 @@
-@media (min-width: 980px) {
-    .container{
-        max-width: 870px;
-    }
+@media ( min-width : 980px) {
+	.container {
+		max-width: 870px;
+	}
 }
 
-.bodyMargin{
-	margin-left : 20px;
-	margin-right : 20px;
+.bodyMargin {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+body {
+	padding-top: 70px;
 }

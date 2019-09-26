@@ -50,9 +50,9 @@ public class VehicleRentingApplication implements CommandLineRunner {
 			user.setPassword("user");
 			user.setFirstName("user");
 			user.setLastName("user");
-			Role userRole = roleRepository.findByRole("USER");
+			Role userRole = roleRepository.findByRole("CLERK");
 			user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-
+			userService.saveUser(user);
 		}
 	}
 }

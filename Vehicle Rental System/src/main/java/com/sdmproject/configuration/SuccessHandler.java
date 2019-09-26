@@ -58,7 +58,7 @@ implements AuthenticationSuccessHandler {
        = authentication.getAuthorities();
       System.out.println(authorities.toString());
       for (GrantedAuthority grantedAuthority : authorities) {
-          if (grantedAuthority.getAuthority().equals("USER")) {
+          if (grantedAuthority.getAuthority().equals("CLERK")) {
               isUser = true;
               break;
           } else if (grantedAuthority.getAuthority().equals("ADMIN")) {
