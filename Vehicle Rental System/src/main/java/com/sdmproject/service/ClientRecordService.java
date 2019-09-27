@@ -55,6 +55,9 @@ public class ClientRecordService {
 		return clientRecordRepository.findAll();
 	}
 	
+	public List<ClientRecord> findAllWithSort(Optional<String> sort, Optional<String> order) {
+		return clientRecordRepository.findAllWithSort(sort, order);
+	}
 	
 	
 
@@ -62,4 +65,7 @@ public class ClientRecordService {
 		return clientRecordRepository.findAllIDsAndSortByID();
 	}
 
+	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
+		return clientRecordRepository.findIDWithSort(sortProperty, sortOrder);
+	}
 }

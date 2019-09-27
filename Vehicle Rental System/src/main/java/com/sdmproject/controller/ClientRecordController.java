@@ -53,6 +53,15 @@ public class ClientRecordController {
 		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
 	}
 
+	@RequestMapping(value = { "/clerk/clientRecord" }, method = RequestMethod.GET)
+	public ModelAndView viewClientRecord(Optional<String> sort, Optional<String> order) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("records", clientRecordService.findAllWithSort(sort,order));
+		modelAndView.setViewName("clerk/clientRecord");
+		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
+		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
+		return modelAndView;
+	}
 
 	@RequestMapping(value = { "/clerk/clientRecord/add" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordAdd() {

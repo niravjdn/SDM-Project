@@ -11,8 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
+import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.RoleRepository;
+import com.sdmproject.repository.VehicleTypeRepository;
 import com.sdmproject.service.UserService;
+import com.sdmproject.service.VehicleService;
 
 @SpringBootApplication
 public class VehicleRentingApplication implements CommandLineRunner {
@@ -23,6 +26,13 @@ public class VehicleRentingApplication implements CommandLineRunner {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Autowired
+	private VehicleService vehicleService;
+	
+	@Autowired
+	private VehicleTypeRepository carTypeRepository;
+
+	
 	public static void main(String[] args) {
 		SpringApplication.run(VehicleRentingApplication.class, args);
 	}
@@ -53,6 +63,19 @@ public class VehicleRentingApplication implements CommandLineRunner {
 			Role userRole = roleRepository.findByRole("CLERK");
 			user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 			userService.saveUser(user);
+		}
+		
+		boolean isCarExist = vehicleService.isVehicleExist("GJ 02 BQ 4273");
+		if (!isCarExist) {
+			Vehicle vehicle = new Vehicle();
+			vehicle.setColor("Black");
+			vehicle.setModel("Xylo");
+			VehicleType type = carTypeRepository.findByType("SUV");
+			vehicle.setType(type);
+			vehicle.setPlateNo("GJ 02 BQ 4273");
+			vehicle.setMaker("Mahindra");
+			vehicle.setYear(2019);
+			vehicleService.saveVehicle(vehicle);
 		}
 	}
 }
