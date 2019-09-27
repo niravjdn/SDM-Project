@@ -1,18 +1,10 @@
 package com.sdmproject.service;
 
-import com.sdmproject.model.Vehicle;
-import com.sdmproject.model.Role;
-import com.sdmproject.model.User;
-import com.sdmproject.repository.VehicleRepository;
-import com.sdmproject.repository.RoleRepository;
-import com.sdmproject.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import com.sdmproject.model.Vehicle;
+import com.sdmproject.repository.VehicleRepository;
 
 @Service("vehicleService")
 public class VehicleService {

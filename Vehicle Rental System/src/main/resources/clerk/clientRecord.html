@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Client Records</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/filter.css}" />
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet">
+
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/png">
+
+</head>
+<style>
+table th { user-select: none; background: #eee;}
+</style>
+
+
+<body>
+
+	<div th:replace="clerk/header :: navbar"></div>
+	<span class="glyphicon glyphicon-envelope"></span>
+	<main role="main" class="container">
+	
+	<h2> Client Catalog </h3>
+	
+	<br>
+	
+	
+	 <input class="form-control"
+		id="searchInput" type="text" placeholder="Search.."> <br />
+<br>
+
+<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
+		</div>
+		
+	<table class="table table-bordered" id="filterableTable">
+		<thead>
+			<tr>
+				<th data-sort-prop="id">Id</th>
+				<th data-sort-prop="firstName">First Name</th>
+				<th data-sort-prop="lastName">Last Name</th>
+				<th data-sort-prop="driverLicienceNo">Licience No</th>
+				<th data-sort-prop="expiryDate">Expiry Date</th>
+				<th data-sort-prop="phoneNo">Phone No</th>
+				<th >Operations</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="record : ${records}">
+				<td th:text="${record.id}"></td>
+				<td th:text="${record.firstName}"></td>
+				<td th:text="${record.lastName}"></td>
+				<td th:text="${record.driverLicienceNo}"></td>
+				<td th:text="${record.expiryDate}"></td>
+				<td th:text="${record.phoneNo}"></td>
+				<td>
+				<a
+					th:href="@{'/clerk/clientRecord/update/' + ${record.id}}"> <i
+						class="fa fa-pencil fa-lg"></i>
+				</a>
+				<a
+					th:href="@{'/clerk/clientRecord/view/' + ${record.id} (sort=${sortProperty},order=${order}) }"> <i
+						class="fa fa-eye fa-lg"></i>
+				</a>
+				
+				<a
+					th:href="@{'/clerk/clientRecord/delete/' + ${record.id} }"> <i
+						class="fa fa-trash fa-lg"></i>
+				</a>
+				
+				</td>
+				
+				
+			</tr>
+		</tbody>
+	</table>
+
+
+
+	</main>
+	<!-- /.container -->
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		crossorigin="anonymous"></script>
+
+	<script th:src="@{/js/filter.js}"> </script>
+	<script th:src="@{/js/main.js}" > </script>
+<script th:inline="javascript">
+    //thymeleaf to javascript variables
+    /*<![CDATA[*/
+    var sortProperty = /*[[${sortProperty}]]*/ null;
+    var sortDesc = /*[[${order}]]*/ null;
+  
+    /*]]>*/
+
+    $(document).ready(function(){
+     //show up/down arrows
+     $("table thead th").each(function(){
+        var head = $(this);
+        if(head.attr('data-sort-prop')==sortProperty){
+            head.append(sortDesc == "desc" ? ' <i class="fa fa-sort-desc"></i>' : ' <i class="fa fa-sort-asc"></i>');
+        }
+        });
+
+     //set click action, reload page on clicking with all query params
+     $("table thead th").click(function() {
+      var headerSortPropName = $(this).attr("data-sort-prop");
+      if(headerSortPropName==undefined){
+    	  return;
+      }
+      if(headerSortPropName==sortProperty){
+          window.location.href = window.location.pathname+
+          '?sort='+ headerSortPropName+'&order='+
+          (sortDesc == "desc" ?'asc':'desc');
+          console.log("a");
+      }else{
+           window.location.href = window.location.pathname+
+          '?sort='+ headerSortPropName+'&order=asc';
+      }
+      });
+    });
+  </script>
+</body>
+</html>
