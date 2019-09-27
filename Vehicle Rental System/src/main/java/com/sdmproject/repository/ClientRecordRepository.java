@@ -1,11 +1,9 @@
 package com.sdmproject.repository;
 
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -21,12 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sdmproject.Config.CustomSQLErrorCodeTranslator;
 import com.sdmproject.exceptions.DuplicateEntryException;
-import com.sdmproject.helper.QueryBuilder;
-import com.sdmproject.model.Vehicle;
 import com.sdmproject.model.ClientRecord;
-import com.sdmproject.model.Role;
-import com.sdmproject.model.User;
-import com.sdmproject.rowmapper.VehicleRowMapper;
 import com.sdmproject.rowmapper.ClientRecordRowMapper;
 
 @Repository
@@ -149,22 +142,5 @@ public class ClientRecordRepository {
 		return record;
 	}
 
-	public List<ClientRecord> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
-		QueryBuilder builder = new QueryBuilder();
-		builder.setTableName("client_record");
-		if (sortProperty.isPresent())
-			builder.setOrderBy(sortProperty.get(), sortOrder.get());
-		List<ClientRecord> record = jdbcTemplate.query(builder.getSQLQuery(), new Object[] { }, new ClientRecordRowMapper());
-		return record;
-	}
-
-	public List<Integer> findIDWithSort(String sortProperty,String sortOrder) {
-		QueryBuilder builder = new QueryBuilder();
-		builder.setTableName("client_record");
-		builder.setFields("id");
-		builder.setOrderBy(sortProperty, sortOrder);
-		List<Integer> record = jdbcTemplate.queryForList(builder.getSQLQuery(), new Object[] {}, Integer.class);
-		return record;
-	}
 
 }
