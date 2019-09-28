@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
 import com.sdmproject.model.Vehicle;
+import com.sdmproject.model.VehicleType;
 import com.sdmproject.repository.RoleRepository;
 import com.sdmproject.repository.VehicleTypeRepository;
 import com.sdmproject.service.UserService;

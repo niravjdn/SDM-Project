@@ -1,9 +1,9 @@
-package com.gpch.login.test;
+package com.sdmproject.login.test;
 
-import com.sdmproject.model.User;
-import com.sdmproject.repository.RoleRepository;
-import com.sdmproject.repository.UserRepository;
-import com.sdmproject.service.UserService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +11,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.MockitoAnnotations.initMocks;
+import com.sdmproject.model.User;
+import com.sdmproject.repository.RoleRepository;
+import com.sdmproject.repository.UserRepository;
+import com.sdmproject.service.UserService;
 
 public class UserServiceTest {
 

@@ -117,7 +117,31 @@ public class ClientRecordController {
 		}
 	}
 
-	//view
+	@RequestMapping(value = { "/clerk/clientRecord/view/{id}" }, method = RequestMethod.GET)
+	public ModelAndView clientRecordView(@PathVariable(value = "id") final int id, String sort, String order) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("clerk/clientRecordDetailView");
+		ClientRecord record = clientRecordService.findByID(id);
+
+		// get all ids of clerk - find position of current
+		List<Integer> clientRecordIds = clientRecordService.findIDWithSort(sort, order);
+		int indexOfTarget = clientRecordIds.indexOf(id);
+		logger.info("" + indexOfTarget);
+		logger.info("" + clientRecordIds);
+		int indexOfPrevious = indexOfTarget != 0 ? clientRecordIds.get(indexOfTarget - 1) : -1;
+		int indexofNext = indexOfTarget != clientRecordIds.size() - 1 ? clientRecordIds.get(indexOfTarget + 1) : -1;
+
+		modelAndView.addObject("sortProperty", sort);
+		modelAndView.addObject("order",  order);
+		
+		
+		modelAndView.addObject("previousItem", indexOfPrevious);
+
+		modelAndView.addObject("nextItem", indexofNext);
+
+		modelAndView.addObject("record", record);
+		return modelAndView;
+	}
 
 	@RequestMapping(value = { "/clerk/clientRecord/delete/{id}" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id) {
