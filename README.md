@@ -19,6 +19,12 @@
  ## Trello Public URL For Task Division
  https://trello.com/b/gLlDT1V7/sdm-project
 
+## How to set up project
+
+- Install Spring Tool SUite 4 (https://spring.io/tools)
+- Install XAMPP and set up DB (https://www.apachefriends.org/download.html)
+- Install lombok - Follow Step 2,3 and 4 (https://howtodoinjava.com/automation/lombok-eclipse-installation-examples/)
+
  ## Credentials for login (Clerk and Admin)
 
  | Username | Password ID | 
