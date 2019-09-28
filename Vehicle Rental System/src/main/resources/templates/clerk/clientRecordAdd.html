@@ -47,24 +47,24 @@
 			<br />
 			
 			 <input type="text"  name="firstName"
-				placeholder="First Name" class="form-control" th:value="${record?.firstName}" required /> <br />
+				placeholder="First Name" autocomplete="off" class="form-control" th:value="${record?.firstName}" required /> <br />
 
 			<input type="text" placeholder="Last Name"
-				 name="lastName" class="form-control" th:value="${record?.lastName}"
+				 name="lastName" class="form-control" autocomplete="off" th:value="${record?.lastName}"
 				required />
 			 <br />
 			 
 			 <input type="text" placeholder="Licience No"
-				 name="driverLicienceNo" class="form-control" th:value="${record?.driverLicienceNo}"
+				 name="driverLicienceNo" autocomplete="off" class="form-control" th:value="${record?.driverLicienceNo}"
 				required />
 			 <br />
 			 
-			 <input type="text" placeholder="Expiry Date" id="expiryDate" th:value="${#dates.format(record?.expiryDate, 'MM/dd/yyyy')}"
+			 <input type="text" placeholder="Expiry Date" autocomplete="off" id="expiryDate" th:value="${#dates.format(record?.expiryDate, 'MM/dd/yyyy')}"
 				 name="expiryDate"  class="form-control"
 				required />
 			 <br />
 			 
-			 <input type="text" placeholder="Phone No" id="expiryDate" th:value="${record?.phoneNo}"
+			 <input type="text" placeholder="Phone No" autocomplete="off" id="expiryDate" th:value="${record?.phoneNo}"
 				 name="phoneNo"  class="form-control"
 				required />
 			 <br />

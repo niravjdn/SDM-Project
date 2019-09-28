@@ -19,7 +19,7 @@ public class VehicleRowMapper implements RowMapper<Vehicle> {
 			vehicle.setId(rs.getInt("id"));
 			vehicle.setColor(rs.getString("color"));
 			vehicle.setPlateNo(rs.getString("plateNo"));
-			vehicle.setMaker(rs.getString("maker"));
+			vehicle.setMaker(rs.getString("make"));
 			vehicle.setModel(rs.getString("model"));
 			vehicle.setType(new VehicleType());
 			vehicle.setYear(rs.getInt("year"));

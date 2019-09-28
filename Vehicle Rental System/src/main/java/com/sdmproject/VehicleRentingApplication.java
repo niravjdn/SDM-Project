@@ -69,12 +69,12 @@ public class VehicleRentingApplication implements CommandLineRunner {
 		boolean isCarExist = vehicleService.isVehicleExist("GJ 02 BQ 4273");
 		if (!isCarExist) {
 			Vehicle vehicle = new Vehicle();
-			vehicle.setColor("Black");
-			vehicle.setModel("Xylo");
-			VehicleType type = carTypeRepository.findByType("SUV");
+			vehicle.setColor("Blue");
+			vehicle.setModel("S");
+			VehicleType type = carTypeRepository.findByType("SEADEN");
 			vehicle.setType(type);
-			vehicle.setPlateNo("GJ 02 BQ 4273");
-			vehicle.setMaker("Mahindra");
+			vehicle.setPlateNo("XY BHS");
+			vehicle.setMaker("Tesla");
 			vehicle.setYear(2019);
 			vehicleService.saveVehicle(vehicle);
 		}

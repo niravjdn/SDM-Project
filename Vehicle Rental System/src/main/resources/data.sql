@@ -13,8 +13,8 @@ select 2, 'CLERK'
 ) x where not exists(select * from role);
 
 
-create table IF NOT EXISTS vehicle (id integer not null auto_increment, color varchar(255), plate_no varchar(255), maker varchar(255), model varchar(255), year integer, primary key (id), 
-	CONSTRAINT plate_no_unique UNIQUE(plate_no)) engine=InnoDB;
+create table IF NOT EXISTS vehicle (id integer not null auto_increment, color varchar(255), plateNo varchar(255), make varchar(255), model varchar(255), year integer, primary key (id), 
+	CONSTRAINT plate_no_unique UNIQUE(plateNo)) engine=InnoDB;
 
 
 create table IF NOT EXISTS vehicletype (vehicletype_id integer not null, type varchar(255), primary key (vehicletype_id)) ;
@@ -34,7 +34,7 @@ create table IF NOT EXISTS vehicle_vehicletype (id integer not null, vehicletype
 
 
 
-create table IF NOT EXISTS client_record (id integer not null auto_increment, firstName varchar(255), lastName varchar(255), driverLicienceNo varchar(255), expiryDate DATE, primary key(id), phoneNo varchar(25) not null,
+create table IF NOT EXISTS client_record (id integer not null auto_increment, firstName varchar(255) not null, lastName varchar(255) not null, driverLicienceNo varchar(255) not null, expiryDate DATE not null, primary key(id), phoneNo varchar(25) not null,
 CONSTRAINT driverLicienceNo UNIQUE(driverLicienceNo)) ;
 
 
@@ -58,3 +58,29 @@ select 9, 'Dax', 'Bezos', 'abc342', '2023-04-11', '9924067548' union
 select 10, 'John', 'Beleya', 'dbcd675', '2025-04-11', '5146665476'
 
 ) x where not exists(select * from client_record);
+
+
+
+insert into vehicle select * from (
+select 1, 'Black', 'GJ 02 BQ 4273', 'Mahindra', 'Xylo', 2019 union
+select 2, 'White', 'RJY 16G', 'Audi', 'Q3', 2015
+) x where not exists(select * from vehicle);
+
+
+
+/* Reservation */
+
+create table IF NOT EXISTS reservation (id integer not null auto_increment, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME, toDateTime DATETIME, primary key(id), 
+	createdBy varchar(255),
+                                        foreign key (vehicleID) references vehicle(id) on DELETE CASCADE,
+                                        foreign key (clientID) references client_record(id) on DELETE CASCADE
+
+ );
+
+
+/* Mock Data for Reservation */
+
+insert into reservation select * from (
+select 1, 3, 2, '2019-10-20 13:00:00', '2019-10-25 17:00:00', 'user'
+) x where not exists(select * from reservation);
+

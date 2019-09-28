@@ -55,7 +55,7 @@ public class VehicleRepository {
 	}
 
 	public boolean isVehicleExist(String plateNo) {
-		String query = "SELECT count(*) FROM vehicle WHERE plate_no = ?";
+		String query = "SELECT count(*) FROM vehicle WHERE plateNo = ?";
 		int count = jdbcTemplate.queryForObject(query, new Object[] { plateNo }, Integer.class);
 		if (count > 0) {
 			return true;
@@ -66,13 +66,13 @@ public class VehicleRepository {
 
 	public Vehicle findByPlateNo(String email) {
 		//String query = "SELECT * FROM user WHERE email = ?";
-		String query = "SELECT * FROM vehicle WHERE plate_no = ?";
+		String query = "SELECT * FROM vehicle WHERE plateNo = ?";
 		Vehicle vehicle = jdbcTemplate.queryForObject(query, new Object[] { email }, new VehicleRowMapper());
 		return vehicle;
 	}
 
 	public Vehicle save(Vehicle vehicle) {
-		String updateQuery = "UPDATE `vehicle` SET color=?, plate_no = ?,maker=?,model=?,year=? WHERE id=?";
+		String updateQuery = "UPDATE `vehicle` SET color=?, plateNo = ?,maker=?,model=?,year=? WHERE id=?";
 		String updateVehicleTypeQuery = "UPDATE `vehicle_vehicletype` `vehicletype_id`=? WHERE id=?";
 		
 		String insertVehicleTypeQuery = "INSERT INTO `vehicle_vehicletype` VALUES (?,?)";
@@ -96,7 +96,7 @@ public class VehicleRepository {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 		    
 		    parameters.put("color", vehicle.getColor());
-		    parameters.put("plate_no", vehicle.getPlateNo());
+		    parameters.put("plateNo", vehicle.getPlateNo());
 		    parameters.put("maker", vehicle.getMaker());
 		    parameters.put("model", vehicle.getModel());
 		    parameters.put("type", vehicle.getType());

@@ -145,12 +145,11 @@ public class ClientRecordController {
 
 	@RequestMapping(value = { "/clerk/clientRecord/delete/{id}" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id) {
-		ModelAndView modelAndView = new ModelAndView();
+		ModelMap map = new ModelMap();
 		clientRecordService.deleteClientByID(id);
-		modelAndView.addObject("successMessage", "Deleted Client Successfully");
-		modelAndView.addObject("records", clientRecordService.findAll());
-		modelAndView.setViewName("clerk/clientRecord");
-		return modelAndView;
+		map.addAttribute("successMessage", "Deleted Client Successfully");
+		map.addAttribute("records", clientRecordService.findAll());
+		return new ModelAndView("redirect:/clerk/clientRecord/", map);
 	}
 
 }
