@@ -28,7 +28,7 @@
  ## Credentials for login (Clerk and Admin)
 
  | Username | Password ID | 
-| --- | --- | --- |
+ | --- | --- | 
  | user@niravjdn.xyz  | user |
  |admin@niravjdn.xyz | admin|
 
@@ -55,8 +55,7 @@ spring.datasource.url=jdbc:h2:mem:testdb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect 
 ```
 
-** don't push change in application.properties to github unless it is really necessary. **
-
+**don't push change in application.properties to github unless it is really necessary.**
