@@ -60,6 +60,19 @@ public class LoginController {
 		modelAndView.setViewName("clerk/home");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/admin/dashboard", method = RequestMethod.GET)
+	public ModelAndView dashboard() {
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+
+		modelAndView.addObject("welcomeString",
+				"Welcome " + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+		modelAndView.setViewName("admin/dashboard");
+		return modelAndView;
+	}
 
 	@RequestMapping(value = "/profile/changepassword", method = RequestMethod.GET)
 	public ModelAndView changePassword() {
