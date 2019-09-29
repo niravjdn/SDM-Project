@@ -35,9 +35,8 @@ table th { user-select: none; background: #eee;}
 	<h2> Vehicle Catalog </h3>
 	
 	<br>
-	
-	
-	<br />
+	<input class="form-control"
+		id="searchInput" type="text" placeholder="Search.."> <br />
 <br>
 
 <div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
