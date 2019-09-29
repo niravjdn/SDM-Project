@@ -25,6 +25,9 @@
 - Install XAMPP and set up DB (https://www.apachefriends.org/download.html)
 - Install lombok - Follow Step 2,3 and 4 (https://howtodoinjava.com/automation/lombok-eclipse-installation-examples/)
 
+- **Import** is a maven project in IDE
+- Run as spring application
+
  ## Credentials for login (Clerk and Admin)
 
  | Username | Password ID | 

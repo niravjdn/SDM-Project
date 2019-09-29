@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
@@ -19,7 +21,7 @@ import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
 
 @SpringBootApplication
-public class VehicleRentingApplication implements CommandLineRunner {
+public class VehicleRentingApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
 	@Autowired
 	private UserService userService;
@@ -37,6 +39,11 @@ public class VehicleRentingApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(VehicleRentingApplication.class, args);
 	}
+	
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(VehicleRentingApplication.class);
+    }
 
 	@Override
 	public void run(String... args) throws ParseException {
