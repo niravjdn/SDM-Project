@@ -1,6 +1,6 @@
 create table IF NOT EXISTS role (role_id integer not null, role varchar(255), primary key (role_id)) ;
-create table IF NOT EXISTS user (user_id integer not null auto_increment, active integer, email varchar(255), firstName varchar(255), lastName varchar(255), 
-	password varchar(255), primary key (user_id), CONSTRAINT email_unique UNIQUE(email));
+create table IF NOT EXISTS user (user_id integer not null auto_increment, active integer, email varchar(255) not null, firstName varchar(255) not null, lastName varchar(255) not null, 
+	password varchar(255) not null, primary key (user_id), CONSTRAINT email_unique UNIQUE(email));
 create table IF NOT EXISTS user_role (user_id integer not null, role_id integer not null,
 	foreign key (role_id) references role(role_id), 
 	foreign key (user_id) references user(user_id) on DELETE CASCADE);
@@ -13,7 +13,7 @@ select 2, 'CLERK'
 ) x where not exists(select * from role);
 
 
-create table IF NOT EXISTS vehicle (id integer not null auto_increment, color varchar(255), plateNo varchar(255), make varchar(255), model varchar(255), year integer, primary key (id), 
+create table IF NOT EXISTS vehicle (id integer not null auto_increment, color varchar(255) not null, plateNo varchar(255) not null, make varchar(255) not null, model varchar(255) not null, year integer not null, primary key (id), 
 	CONSTRAINT plate_no_unique UNIQUE(plateNo)) engine=InnoDB;
 
 
@@ -70,7 +70,7 @@ select 2, 'White', 'RJY 16G', 'Audi', 'Q3', 2015
 
 /* Reservation */
 
-create table IF NOT EXISTS reservation (id integer not null auto_increment, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME, toDateTime DATETIME, primary key(id), 
+create table IF NOT EXISTS reservation (id integer not null auto_increment, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME not null, toDateTime DATETIME not null, primary key(id), 
 	createdBy varchar(255),
                                         foreign key (vehicleID) references vehicle(id) on DELETE CASCADE,
                                         foreign key (clientID) references client_record(id) on DELETE CASCADE
@@ -83,4 +83,14 @@ create table IF NOT EXISTS reservation (id integer not null auto_increment, clie
 insert into reservation select * from (
 select 1, 3, 2, '2019-10-20 13:00:00', '2019-10-25 17:00:00', 'user'
 ) x where not exists(select * from reservation);
+
+
+create table IF NOT EXISTS reservation_history (id integer not null auto_increment, 
+	firstName varchar(255) not null, lastName varchar(255) not null, driverLicienceNo varchar(255) not null, 
+	expiryDate DATE not null, primary key(id), phoneNo varchar(25) not null,
+	color varchar(255) not null, plateNo varchar(255) not null, make varchar(255) not null, model varchar(255) not null, year integer not null,
+	fromDateTIme DATETIME not null, toDateTime DATETIME not null,
+	updatedOn DateTIME not null,
+	createdBy varchar(255)
+ );
 
