@@ -63,7 +63,15 @@ select 10, 'John', 'Beleya', 'dbcd675', '2025-04-11', '5146665476'
 
 insert into vehicle select * from (
 select 1, 'Black', 'GJ 02 BQ 4273', 'Mahindra', 'Xylo', 2019 union
-select 2, 'White', 'RJY 16G', 'Audi', 'Q3', 2015
+select 2, 'White', 'RJY 16G', 'Audi', 'Q3', 2015 union
+select 3, 'Khaki', '5UXZV4C51CL379499', 'Dodge', 'Ram 1500', 2005 union
+select 4, 'Green', 'WBAWC7C55AP455059', 'Aston Martin', 'DBS', 2012 union
+select 5, 'Turquoise', 'KNADM4A32C6031125', 'Lexus', 'LX', 1999 union
+select 6, 'Crimson', 'JTDKN3DU6A0876971', 'Mazda', 'RX-8', 2008  union
+select 7, 'Pink', 'WAUWFAFH0EN615344', 'BMW', 'X5', 2009  union
+select 8, 'Crimson', '1G6AA5RX5F0530359', 'Subaru', 'Legacy', 2008 union
+select 9, 'Pink', 'WAUEH98E77A700599', 'Lincoln', 'Mark VII', 1992 union
+select 10, 'Pink', 'WBABD334X4P945075', 'Hyundai', 'Tiburon', 1998 
 ) x where not exists(select * from vehicle);
 
 
