@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class Reservation {
 	private int id;
 	
-	private int carId;
+	private Vehicle vehicle;
 	
-	private int clientId;
+	private ClientRecord client;
 	
 	private Date fromDateTime;
 	
