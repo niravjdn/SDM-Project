@@ -49,7 +49,7 @@ public class VehicleService {
 		return carRepository.findIDWithSort(sortProperty, sortOrder);
 	}
 	
-	public List<Vehicle> filter(Optional<String> filter) {
+	public List<Vehicle> filter(String filter) {
 		return carRepository.filter(filter);
 	}
 }

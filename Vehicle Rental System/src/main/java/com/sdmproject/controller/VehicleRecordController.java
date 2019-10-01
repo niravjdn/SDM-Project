@@ -49,9 +49,16 @@ public class VehicleRecordController {
 	}
 	
 	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.GET)
-	public ModelAndView viewClientRecord(Optional<String> sort, Optional<String> order) {
+	public ModelAndView viewClientRecord(Optional<String> sort, Optional<String> order, Optional<String> model) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
+		
+		if(model.isPresent()) {
+			modelAndView.addObject("model", model.get());
+			modelAndView.addObject("records",vehicleRecordService.filter(model.get()));
+		}
+		
+		
 		modelAndView.setViewName("vehicleRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
 		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
@@ -84,16 +91,6 @@ public class VehicleRecordController {
 		modelAndView.addObject("record", record);
 		
 		
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.POST)
-	public ModelAndView vehicleFilter(
-			@RequestParam Optional<String> model) {
-		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("vehicleRecord");
-		modelAndView.addObject("records",vehicleRecordService.filter(model));
 		return modelAndView;
 	}
 }
