@@ -114,5 +114,62 @@ public class VehicleRepository {
 				.collect(Collectors.toList());
 		return result.get(0);
 	}
+	
+	
+	public List<Integer> findAllIDsAndSortByID() {
+		List<Integer> result = records.stream().sorted(Comparator.comparing(Vehicle::getId))
+				.map(Vehicle::getId).collect(Collectors.toList());
+		return result;
+	}
+	
+	
+	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
+
+		List<Vehicle> result = records.stream().collect(Collectors.toList());
+
+		Collections.sort(result, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				try {
+					Method m = o1.getClass().getMethod("get" + WordUtils.capitalize(sortProperty));
+					if (sortProperty.contains("Date")) {
+						Date s1 = (Date) m.invoke(o1);
+						Date s2 = (Date) m.invoke(o2);
+						return s1.compareTo(s2);
+					} else if (sortProperty.contains("id")) {
+						Integer s1 = (Integer) m.invoke(o1);
+						Integer s2 = (Integer) m.invoke(o2);
+						return s1.compareTo(s2);
+					} else {
+						String s1 = (String) m.invoke(o1);
+						String s2 = (String) m.invoke(o2);
+						return s1.compareTo(s2);
+					}
+				} catch (SecurityException e) {
+					throw new RuntimeException(e);
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return 0;
+			}
+		});
+
+		if (sortOrder.equals("desc")) {
+			Collections.reverse(result);
+		}
+
+		List<Integer> listOfIDs = result.stream().map(Vehicle::getId).collect(Collectors.toList());
+
+		return listOfIDs;
+	}
 
 }
