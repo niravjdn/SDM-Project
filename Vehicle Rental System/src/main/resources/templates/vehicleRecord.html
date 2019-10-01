@@ -51,7 +51,9 @@ table th { user-select: none; background: #eee;}
             <label class="control-label" for="textinput">Model</label>
              <input class="form-control content" th:value="${model}" type="text">
              <!--<label class="control-label" for="textinput">Color</label>
+             <input type="checkobx" >Year</input>
              <input class="form-control content" th:value="color" type="text">-->
+                 
             <button type="submit" class="btn btn-primary" th:text="filter" value="Go"></button>
         </div>
     </div>
@@ -70,7 +72,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="color">Color</th>
 				<th data-sort-prop="plateNo">License plate number</th>
-				<th data-sort-prop="operations">Operation</th>
+				<th>Operation</th>
 			</tr>
 		</thead>
 		<tbody>
