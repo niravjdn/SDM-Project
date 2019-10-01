@@ -24,5 +24,10 @@ public class ClientRecord {
 	private String phoneNo;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiryDate;
-	
+
+	@Override
+    public boolean equals(Object obj) 
+    {
+		return this.driverLicienceNo.equals(((ClientRecord)obj).getDriverLicienceNo());
+    }
 }

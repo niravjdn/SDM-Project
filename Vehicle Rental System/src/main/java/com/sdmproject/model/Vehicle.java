@@ -13,7 +13,7 @@ public class Vehicle {
 
 	private int id;
 
-	private VehicleType type;
+	private String type;
 
 	private String maker;
 
@@ -25,4 +25,9 @@ public class Vehicle {
 
 	private String plateNo;
 
+	@Override
+    public boolean equals(Object obj) 
+    {
+		return this.plateNo.equals(((Vehicle)obj).getPlateNo());
+    }
 }

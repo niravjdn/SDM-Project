@@ -1,72 +1,40 @@
 package com.sdmproject.repository;
 
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.HashMap;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import javax.sql.DataSource;
-
+import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import com.sdmproject.Config.CustomSQLErrorCodeTranslator;
 import com.sdmproject.exceptions.DuplicateEntryException;
-import com.sdmproject.helper.QueryBuilder;
-import com.sdmproject.model.Vehicle;
 import com.sdmproject.model.ClientRecord;
-import com.sdmproject.model.Role;
-import com.sdmproject.model.User;
-import com.sdmproject.rowmapper.VehicleRowMapper;
-import com.sdmproject.rowmapper.ClientRecordRowMapper;
 
 @Repository
 public class ClientRecordRepository {
-
-	private JdbcTemplate jdbcTemplate;
-
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private SimpleJdbcInsert simpleJdbcInsert;
-
-	private SimpleJdbcCall simpleJdbcCall;
-
 	Logger logger = LoggerFactory.getLogger(ClientRecordRepository.class);
 
-	@Autowired
-	public void setDataSource(final DataSource dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
-		final CustomSQLErrorCodeTranslator customSQLErrorCodeTranslator = new CustomSQLErrorCodeTranslator();
-		jdbcTemplate.setExceptionTranslator(customSQLErrorCodeTranslator);
-
-		namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("client_record")
-				.usingGeneratedKeyColumns("id");
-		;
-
-		// Commented as the database is H2, change the database and create procedure
-		// READ_EMPLOYEE before calling getEmployeeUsingSimpleJdbcCall
-		// simpleJdbcCall = new
-		// SimpleJdbcCall(dataSource).withProcedureName("READ_EMPLOYEE");
-	}
+	private List<ClientRecord> records = new ArrayList<ClientRecord>();
+	private static int id = 1;
 
 	public int getCountOfVehicles() {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM client_record", Integer.class);
+		return records.size();
 	}
 
 	public boolean isClientExist(String driverLicienceNo) {
-		String query = "SELECT count(*) FROM client_record WHERE driverLicienceNo = ?";
-		int count = jdbcTemplate.queryForObject(query, new Object[] { driverLicienceNo }, Integer.class);
-		if (count > 0) {
+		ClientRecord result = records.stream().filter(record -> record.getDriverLicienceNo().equals(driverLicienceNo))
+				.findAny().orElse(null);
+
+		if (result != null) {
 			return true;
 		} else {
 			return false;
@@ -74,97 +42,147 @@ public class ClientRecordRepository {
 	}
 
 	public ClientRecord findByLicienceNo(String driverLicienceNo) {
-		// String query = "SELECT * FROM user WHERE email = ?";
-		String query = "SELECT * FROM client_record WHERE driverLicienceNo = ?";
-		ClientRecord record = jdbcTemplate.queryForObject(query, new Object[] { driverLicienceNo },
-				new ClientRecordRowMapper());
-		return record;
+		List<ClientRecord> result = records.stream()
+				.filter(record -> (record.getDriverLicienceNo().equals(driverLicienceNo))).collect(Collectors.toList());
+		return result.get(0);
 	}
 
 	public ClientRecord save(ClientRecord record) throws DuplicateEntryException {
-		String updateQuery = "UPDATE `client_record` SET `firstName`=?,`lastName`=?,`driverLicienceNo`=?,`expiryDate`=? WHERE id=?";
-
-		int updated = 0;
+		System.out.println(record.getDriverLicienceNo());
 		if (isClientExist(record.getDriverLicienceNo())) {
 			throw new DuplicateEntryException("The Client with same licience number already exist.", null);
 		}
-
-		logger.trace("Updated rows for saving user " + updated);
-		Map<String, Object> parameters = new HashMap<String, Object>();
-
-		parameters.put("firstName", record.getFirstName());
-		parameters.put("lastName", record.getLastName());
-		parameters.put("driverLicienceNo", record.getDriverLicienceNo());
-		parameters.put("expiryDate", record.getExpiryDate());
-		parameters.put("phoneNo", record.getPhoneNo());
-
-		Number key = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-		// convert Number to Int using ((Number) key).intValue()
-
-		record.setId(key.intValue());
-
-		logger.trace("Updated rows for saving user " + updated);
+		record.setId(id++);
+		records.add(record);
 		return record;
-
 	}
 
 	public ClientRecord update(ClientRecord record) throws DuplicateEntryException {
-		String updateQuery = "UPDATE `client_record` SET `firstName`=?,`lastName`=?,phoneNo = ?,`expiryDate`=? WHERE id=?";
-
+		int location = records.indexOf(record);
+		records.set(location, record);
 		logger.trace("Updated rows for saving user -----");
-		int updated = 0;
-		try {
-			jdbcTemplate.update(updateQuery,
-					new Object[] { record.getFirstName(), record.getLastName(), record.getPhoneNo(),
-							record.getExpiryDate(), record.getId() },
-					new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.INTEGER });
-
-		} catch (Exception e) {
-			throw new DuplicateEntryException("The Client with same licience number already exist.", null);
-		}
-
-		logger.trace("Updated rows for saving user " + updated);
 		return record;
 	}
 
 	public void deleteClientRecordByID(int id) {
-		jdbcTemplate.update("Delete from client_record where id = ?", new Object[] { id }, new int[] { Types.INTEGER });
+		for (Iterator<ClientRecord> iterator = records.iterator(); iterator.hasNext();) {
+			if (iterator.next().getId() == id)
+				iterator.remove();
+		}
 	}
 
 	public ClientRecord findById(int id) {
-		String query = "SELECT * FROM client_record WHERE id = ?";
-		ClientRecord record = jdbcTemplate.queryForObject(query, new Object[] { id }, new ClientRecordRowMapper());
-		return record;
+
+		List<ClientRecord> result = records.stream().filter(record -> (record.getId() == id))
+				.collect(Collectors.toList());
+		return result.get(0);
 	}
 
 	public List<ClientRecord> findAll() {
-		String query = "SELECT * FROM client_record";
-		List<ClientRecord> record = jdbcTemplate.query(query, new Object[] {}, new ClientRecordRowMapper());
-		return record;
+		return records;
 	}
 
 	public List<Integer> findAllIDsAndSortByID() {
-		String query = "SELECT id FROM client_record order by id";
-		List<Integer> record = jdbcTemplate.queryForList(query, new Object[] {}, Integer.class);
-		return record;
+		List<Integer> result = records.stream().sorted(Comparator.comparing(ClientRecord::getId))
+				.map(ClientRecord::getId).collect(Collectors.toList());
+		return result;
 	}
 
 	public List<ClientRecord> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
-		QueryBuilder builder = new QueryBuilder();
-		builder.setTableName("client_record");
-		if (sortProperty.isPresent())
-			builder.setOrderBy(sortProperty.get(), sortOrder.get());
-		List<ClientRecord> record = jdbcTemplate.query(builder.getSQLQuery(), new Object[] { }, new ClientRecordRowMapper());
-		return record;
+		List<ClientRecord> result = records.stream().collect(Collectors.toList());
+		if (sortProperty.isPresent()) {
+
+			Collections.sort(result, new Comparator<Object>() {
+				public int compare(Object o1, Object o2) {
+					try {
+						Method m = o1.getClass().getMethod("get" + WordUtils.capitalize(sortProperty.get()));
+						if (sortProperty.get().contains("Date")) {
+							Date s1 = (Date) m.invoke(o1);
+							Date s2 = (Date) m.invoke(o2);
+							return s1.compareTo(s2);
+						} else if (sortProperty.get().contains("id")) {
+							Integer s1 = (Integer) m.invoke(o1);
+							Integer s2 = (Integer) m.invoke(o2);
+							return s1.compareTo(s2);
+						} else {
+							String s1 = (String) m.invoke(o1);
+							String s2 = (String) m.invoke(o2);
+							return s1.compareTo(s2);
+						}
+					} catch (SecurityException e) {
+						throw new RuntimeException(e);
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return 0;
+				}
+			});
+
+			if (sortOrder.get().equals("desc")) {
+				Collections.reverse(result);
+			}
+		}
+
+		return result;
 	}
 
-	public List<Integer> findIDWithSort(String sortProperty,String sortOrder) {
-		QueryBuilder builder = new QueryBuilder();
-		builder.setTableName("client_record");
-		builder.setFields("id");
-		builder.setOrderBy(sortProperty, sortOrder);
-		List<Integer> record = jdbcTemplate.queryForList(builder.getSQLQuery(), new Object[] {}, Integer.class);
-		return record;
+	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
+
+		List<ClientRecord> result = records.stream().collect(Collectors.toList());
+
+		Collections.sort(result, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				try {
+					Method m = o1.getClass().getMethod("get" + WordUtils.capitalize(sortProperty));
+					if (sortProperty.contains("Date")) {
+						Date s1 = (Date) m.invoke(o1);
+						Date s2 = (Date) m.invoke(o2);
+						return s1.compareTo(s2);
+					} else if (sortProperty.contains("id")) {
+						Integer s1 = (Integer) m.invoke(o1);
+						Integer s2 = (Integer) m.invoke(o2);
+						return s1.compareTo(s2);
+					} else {
+						String s1 = (String) m.invoke(o1);
+						String s2 = (String) m.invoke(o2);
+						return s1.compareTo(s2);
+					}
+				} catch (SecurityException e) {
+					throw new RuntimeException(e);
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return 0;
+			}
+		});
+
+		if (sortOrder.equals("desc")) {
+			Collections.reverse(result);
+		}
+
+		List<Integer> listOfIDs = result.stream().map(ClientRecord::getId).collect(Collectors.toList());
+
+		return listOfIDs;
 	}
 
 }

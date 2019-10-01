@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.VehicleRepository;
 
@@ -24,7 +24,7 @@ public class VehicleService {
         return carRepository.isVehicleExist(plateNo);
     }
 
-    public Vehicle saveVehicle(Vehicle vehicle) {
+    public Vehicle saveVehicle(Vehicle vehicle) throws DuplicateEntryException {
         return carRepository.save(vehicle);
     }
     
