@@ -131,11 +131,7 @@ public class VehicleRepository {
 			public int compare(Object o1, Object o2) {
 				try {
 					Method m = o1.getClass().getMethod("get" + WordUtils.capitalize(sortProperty));
-					if (sortProperty.contains("Date")) {
-						Date s1 = (Date) m.invoke(o1);
-						Date s2 = (Date) m.invoke(o2);
-						return s1.compareTo(s2);
-					} else if (sortProperty.contains("id")) {
+					if (sortProperty.contains("year") || sortProperty.contains("id")) {
 						Integer s1 = (Integer) m.invoke(o1);
 						Integer s2 = (Integer) m.invoke(o2);
 						return s1.compareTo(s2);
