@@ -26,8 +26,7 @@ public class Vehicle {
 	private String plateNo;
 
 	@Override
-    public boolean equals(Object obj) 
-    {
-		return this.plateNo.equals(((Vehicle)obj).getPlateNo());
-    }
+	public boolean equals(Object obj) {
+		return this.plateNo.equals(((Vehicle) obj).getPlateNo());
+	}
 }
