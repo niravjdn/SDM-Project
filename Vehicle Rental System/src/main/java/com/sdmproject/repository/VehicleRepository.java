@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Vehicle;
 
 @Repository
@@ -105,6 +106,13 @@ public class VehicleRepository {
 		}
 
 		return result;
+	}
+	
+	public Vehicle findById(int id) {
+
+		List<Vehicle> result = records.stream().filter(record -> (record.getId() == id))
+				.collect(Collectors.toList());
+		return result.get(0);
 	}
 
 }

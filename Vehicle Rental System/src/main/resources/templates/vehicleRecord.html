@@ -52,7 +52,8 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="model">Model</th>
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="color">Color</th>
-				<th data-sort-prop="plateNo">License plate</th>
+				<th data-sort-prop="plateNo">License plate number</th>
+				<th data-sort-prop="operations">Operation</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,6 +65,11 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.year}"></td>
 				<td th:text="${record.color}"></td>
 				<td th:text="${record.plateNo}"></td>
+				<td>
+					<a th:href="@{'/vehicleRecord/view/' + ${record.id} (sort=${sortProperty},order=${order}) }"> 
+					<i class="fa fa-eye fa-lg"></i>
+					</a>
+				</td>
 				<!--<td>
 				<a
 					th:href="@{'/vehicleRecord/update/' + ${record.id}}"> <i

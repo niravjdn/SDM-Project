@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.VehicleRepository;
 
@@ -35,4 +36,8 @@ public class VehicleService {
     public void deleteVehicleByID(int id) {
     	carRepository.deleteVehicleByID(id);
     }
+    
+    public Vehicle findByID(int id) {
+		return carRepository.findById(id);
+	}
 }
