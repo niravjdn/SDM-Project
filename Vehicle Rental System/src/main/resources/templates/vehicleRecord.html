@@ -37,6 +37,11 @@ table th { user-select: none; background: #eee;}
 	<br>
 	<input class="form-control"
 		id="searchInput" type="text" placeholder="Search.."> <br />
+		
+	<form>
+		
+	<input type="checkobx" >Year</input>
+	</form>
 <br>
 
 <div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
@@ -52,7 +57,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="color">Color</th>
 				<th data-sort-prop="plateNo">License plate number</th>
-				<th data-sort-prop="operations">Operation</th>
+				<th >Operation</th>
 			</tr>
 		</thead>
 		<tbody>
