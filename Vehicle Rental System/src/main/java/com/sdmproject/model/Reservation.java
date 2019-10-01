@@ -24,6 +24,6 @@ public class Reservation {
 	
 	private Date toDateTime;
 	
-	private String createdBy;
+	private Date createdOn;
 	
 }
