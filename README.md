@@ -35,7 +35,7 @@
  | user@niravjdn.xyz  | user |
  |admin@niravjdn.xyz | admin|
 
- ## Database Set up
+ ## Database Set up (Not Required for Iteration 1 and 2)
  - DB Name : zadmin_sdm
  - DB Username : root
  - DB Password : (No Password)
