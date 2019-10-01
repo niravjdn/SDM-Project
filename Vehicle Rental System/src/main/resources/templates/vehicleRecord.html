@@ -23,6 +23,12 @@
 </head>
 <style>
 table th { user-select: none; background: #eee;}
+
+.content {
+    margin-right: 20px;
+    margin-left: 20px;
+    width: 120px;
+}
 </style>
 
 
@@ -37,13 +43,20 @@ table th { user-select: none; background: #eee;}
 	<br>
 	<input class="form-control"
 		id="searchInput" type="text" placeholder="Search.."> <br />
-		
-	<form>
-		
-	<input type="checkobx" >Year</input>
-	</form>
-<br>
 
+<form method="post" th:action="@{/vehicleRecord}">
+<div class="container">
+        
+        <div class="row">
+            <label class="control-label" for="textinput">Model</label>
+             <input class="form-control content" th:value="${model}" type="text">
+             <!--<label class="control-label" for="textinput">Color</label>
+             <input class="form-control content" th:value="color" type="text">-->
+            <button type="submit" class="btn btn-primary" th:text="filter" value="Go"></button>
+        </div>
+    </div>
+ </form>   
+<br/>
 <div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
 		
@@ -57,7 +70,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="color">Color</th>
 				<th data-sort-prop="plateNo">License plate number</th>
-				<th >Operation</th>
+				<th data-sort-prop="operations">Operation</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -167,5 +167,11 @@ public class VehicleRepository {
 
 		return listOfIDs;
 	}
+	
+	public List<Vehicle> filter(Optional<String> filter) {
+		List<Vehicle> result = records.stream().filter(record -> (record.getModel() == filter.get()))
+				.collect(Collectors.toList());
+		return result;
+	}
 
 }

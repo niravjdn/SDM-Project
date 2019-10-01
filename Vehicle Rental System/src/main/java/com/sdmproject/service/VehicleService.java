@@ -48,4 +48,8 @@ public class VehicleService {
 	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
 		return carRepository.findIDWithSort(sortProperty, sortOrder);
 	}
+	
+	public List<Vehicle> filter(Optional<String> filter) {
+		return carRepository.filter(filter);
+	}
 }

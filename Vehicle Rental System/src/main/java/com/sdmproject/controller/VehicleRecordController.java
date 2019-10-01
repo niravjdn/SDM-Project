@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -83,6 +84,16 @@ public class VehicleRecordController {
 		modelAndView.addObject("record", record);
 		
 		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.POST)
+	public ModelAndView vehicleFilter(
+			@RequestParam Optional<String> model) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("vehicleRecord");
+		modelAndView.addObject("records",vehicleRecordService.filter(model));
 		return modelAndView;
 	}
 }
