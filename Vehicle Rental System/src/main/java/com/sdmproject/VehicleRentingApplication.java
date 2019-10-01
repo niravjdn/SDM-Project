@@ -14,10 +14,12 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
+import com.sdmproject.model.RentalRecord;
 import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.ClientRecordRepository;
+import com.sdmproject.repository.RentalRecordRepository;
 import com.sdmproject.repository.RoleRepository;
 import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
@@ -33,7 +35,10 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 	@Autowired
 	private ClientRecordRepository clientRecordRepository;
-
+	
+	@Autowired
+	private RentalRecordRepository rentalRecordRepository;
+	
 	@Autowired
 	private VehicleService vehicleService;
 
@@ -82,6 +87,7 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 		addVehicleRecords();
 		addClientRecords();
+		addRentalRecords();
 	}
 
 	private void addVehicleRecords() throws DuplicateEntryException {
@@ -113,5 +119,17 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 		clientRecordRepository.save(record);
 		record = new ClientRecord(1, "Jemish", "Paghdar", "8123", "4534412344", sdf.parse("30-05-2022"));
 		clientRecordRepository.save(record);
+	}
+	
+	private void addRentalRecords() throws ParseException, DuplicateEntryException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+		RentalRecord record = new RentalRecord(1, "Nirav Patel", "123","Tesla Model S","ABC YHZ", sdf.parse("31-08-2019"),sdf.parse("31-09-2019"));
+		rentalRecordRepository.save(record);
+		record = new RentalRecord(1, "Avinash Damodaran", "5123","Audi Q3","EBC KGZ", sdf.parse("11-07-2019"),sdf.parse("01-09-2019"));
+		rentalRecordRepository.save(record);
+		record = new RentalRecord(1, "Jemish Paghdar", "8123","Dodge Tiburon","TSC JSZ", sdf.parse("15-08-2019"),sdf.parse("31-09-2019"));
+		rentalRecordRepository.save(record);
+		
 	}
 }
