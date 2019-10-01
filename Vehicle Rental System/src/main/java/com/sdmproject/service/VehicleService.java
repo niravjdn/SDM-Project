@@ -40,4 +40,12 @@ public class VehicleService {
     public Vehicle findByID(int id) {
 		return carRepository.findById(id);
 	}
+    
+    public List<Integer> findAllID() {
+		return carRepository.findAllIDsAndSortByID();
+	}
+
+	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
+		return carRepository.findIDWithSort(sortProperty, sortOrder);
+	}
 }
