@@ -1,5 +1,6 @@
 package com.sdmproject.service;
 
+import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
 import com.sdmproject.repository.RoleRepository;

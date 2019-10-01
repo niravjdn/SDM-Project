@@ -48,6 +48,12 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 	@Override
 	public void run(String... args) throws ParseException, DuplicateEntryException {
+		
+		Role roleClerk = new Role(1, "CLERK");
+		roleRepository.save(roleClerk);
+		Role roleAdmin = new Role(2, "ADMIN");
+		roleRepository.save(roleAdmin);
+		
 		boolean isAdminExist = userService.isUserExist("admin@niravjdn.xyz");
 		if (!isAdminExist) {
 			User admin = new User();

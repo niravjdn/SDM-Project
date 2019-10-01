@@ -48,7 +48,6 @@ public class ClientRecordRepository {
 	}
 
 	public ClientRecord save(ClientRecord record) throws DuplicateEntryException {
-		System.out.println(record.getDriverLicienceNo());
 		if (isClientExist(record.getDriverLicienceNo())) {
 			throw new DuplicateEntryException("The Client with same licience number already exist.", null);
 		}
