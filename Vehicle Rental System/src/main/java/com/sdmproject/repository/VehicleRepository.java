@@ -165,7 +165,13 @@ public class VehicleRepository {
 
 		return listOfIDs;
 	}
-
+	
+	public List<Vehicle> filterType(String type) {
+		List<Vehicle> result = records.stream().filter(data -> (data.getType().equalsIgnoreCase(type)))
+				.collect(Collectors.toList());
+		return result;
+	}
+	
 	public List<Vehicle> filterModel(String model) {
 		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model)))
 				.collect(Collectors.toList());

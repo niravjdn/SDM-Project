@@ -50,6 +50,10 @@ public class VehicleService {
 		return carRepository.findIDWithSort(sortProperty, sortOrder);
 	}
 	
+	public List<Vehicle> filterType(String filter) {
+		return carRepository.filterType(filter);
+	}
+	
 	public List<Vehicle> filterModel(String filter) {
 		return carRepository.filterModel(filter);
 	}

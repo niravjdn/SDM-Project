@@ -52,11 +52,16 @@ public class VehicleRecordController {
 	}
 	
 	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.GET)
-	public ModelAndView viewVehicleRecord(Optional<String> sort, Optional<String> order, Optional<String> model,
-			Optional<String> color) {
+	public ModelAndView viewVehicleRecord(Optional<String> sort, Optional<String> order, Optional<String> type,
+			Optional<String> model, Optional<String> color) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
 		filterBean.getMap().clear();
+		if(type.isPresent()) {
+			modelAndView.addObject("type", type.get());
+			filterBean.getMap().put("type", type.get());
+		}
+		
 		if(model.isPresent()) {
 			modelAndView.addObject("model", model.get());
 			filterBean.getMap().put("model", model.get());
