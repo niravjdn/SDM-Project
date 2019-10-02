@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
@@ -110,15 +111,13 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = { "/clerk/reservation/return/{id}" }, method = RequestMethod.GET)
-	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id) {
-		ModelMap map = new ModelMap();
+	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		Reservation r = reservationService.findByID(id);
 		ReservationHistory history = new ReservationHistory(r.getId(),r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), "user", r.getFromDateTime(), r.getToDateTime(), new Date());
 		reservationHistoryService.save(history);
 		reservationService.returnReservationByID(id);
-		map.addAttribute("successMessage", "Deleted Reservation Successfully");
-		return new ModelAndView("redirect:/clerk/reservation/returnView", map);
-		
+		atts.addFlashAttribute("successMessage", "Deleted Reservation Successfully");
+		return new ModelAndView("redirect:/clerk/reservation/returnView");
 	}
 	
 
