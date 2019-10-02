@@ -16,7 +16,7 @@ public class ReservationHistoryService {
 	@Autowired
 	private ReservationHistoryRepository reservationHistoryRepository;
 
-	public ReservationHistory save(ReservationHistory reservationRecord) throws DuplicateEntryException {
+	public ReservationHistory save(ReservationHistory reservationRecord)  {
 		return reservationHistoryRepository.save(reservationRecord);
 	}
 

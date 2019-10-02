@@ -63,4 +63,8 @@ public class ReservationService {
 	public List<Reservation> findAll() {
 		return reservationRepository.findAll();
 	}
+
+	public Reservation findByID(int id) {
+		return reservationRepository.findByID(id);
+	}
 }

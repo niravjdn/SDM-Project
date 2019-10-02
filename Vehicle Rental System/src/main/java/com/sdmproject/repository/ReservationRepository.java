@@ -184,6 +184,13 @@ public class ReservationRepository {
 		}
 	}
 
+	public Reservation findByID(int id) {
+		System.out.println(records);
+		List<Reservation> result = records.stream().filter(record -> (record.getId() == id))
+				.collect(Collectors.toList());
+		return result.get(0);
+	}
+
 
 }
 

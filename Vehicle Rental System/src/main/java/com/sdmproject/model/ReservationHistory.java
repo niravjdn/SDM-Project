@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReservationHistory {
 
+	private int id;
+	
 	private String firstName;
 
 	private String lastName;

@@ -22,7 +22,7 @@ public class ReservationHistoryRepository {
 
 	private List<ReservationHistory> records = new ArrayList<ReservationHistory>();
 	
-	public ReservationHistory save(ReservationHistory record) throws DuplicateEntryException {
+	public ReservationHistory save(ReservationHistory record) {
 		records.add(record);
 		return record;
 	}

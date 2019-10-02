@@ -15,7 +15,7 @@ public class Vehicle {
 
 	private String type;
 
-	private String maker;
+	private String make;
 
 	private String model;
 

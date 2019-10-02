@@ -27,7 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
+import com.sdmproject.model.ReservationHistory;
 import com.sdmproject.service.ClientRecordService;
+import com.sdmproject.service.ReservationHistoryService;
 import com.sdmproject.service.ReservationService;
 import com.sdmproject.service.UserService;
 
@@ -38,6 +40,9 @@ public class ReservationController {
 
 	@Autowired
 	private ReservationService reservationService;
+	
+	@Autowired
+	private ReservationHistoryService reservationHistoryService;
 
 	@Autowired
 	private UserService userService;
@@ -99,7 +104,6 @@ public class ReservationController {
 	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordReturnView(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("successMessage", "Deleted Reservation Successfully");
 		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
 		modelAndView.setViewName("clerk/returnVehicle");
 		return modelAndView;
@@ -108,6 +112,9 @@ public class ReservationController {
 	@RequestMapping(value = { "/clerk/reservation/return/{id}" }, method = RequestMethod.GET)
 	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id) {
 		ModelMap map = new ModelMap();
+		Reservation r = reservationService.findByID(id);
+		ReservationHistory history = new ReservationHistory(r.getId(),r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), "user", r.getFromDateTime(), r.getToDateTime(), new Date());
+		reservationHistoryService.save(history);
 		reservationService.returnReservationByID(id);
 		map.addAttribute("successMessage", "Deleted Reservation Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/returnView", map);
