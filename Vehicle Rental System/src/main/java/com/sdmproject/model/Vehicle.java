@@ -25,8 +25,6 @@ public class Vehicle {
 
 	private String plateNo;
 	
-	private String vehicleAvailability;
-
 	@Override
     public boolean equals(Object obj) 
     {

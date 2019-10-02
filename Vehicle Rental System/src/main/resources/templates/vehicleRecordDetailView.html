@@ -70,8 +70,9 @@
 			</tr>
 			
 			<tr>
-				<th>Vehicle Available?</th>
-				<td th:text="${record?.vehicleAvailability}"></td>
+				<th>Availability</th>
+				<td th:if="${vehicleAvailability} == true" class="text-success"> Yes </td>
+				<td th:if="${vehicleAvailability} == false" class="text-danger"> NO </td>
 			</tr>
 		</tbody>
 	</table>

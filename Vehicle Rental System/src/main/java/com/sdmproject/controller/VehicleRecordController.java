@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sdmproject.beans.FilterBean;
+import com.sdmproject.model.Reservation;
 import com.sdmproject.model.Vehicle;
+import com.sdmproject.service.ReservationService;
 import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
 
@@ -33,6 +35,9 @@ public class VehicleRecordController {
 	
 	@Autowired
 	private VehicleService vehicleRecordService;
+	
+	@Autowired
+	private ReservationService reservationService;
 
 	@Autowired
 	private UserService userService;
@@ -120,6 +125,11 @@ public class VehicleRecordController {
 				modelAndView.addObject("order",  order);
 				
 				
+				
+				List<Reservation> reservations = reservationService.findAllOutReservationSort(Optional.empty(), Optional.empty());
+				boolean isAvailable = reservations.stream().filter(reservation -> (reservation.getVehicle().getId() == id)).findAny().isPresent();
+				modelAndView.addObject("vehicleAvailability", !isAvailable);
+
 				modelAndView.addObject("previousItem", indexOfPrevious);
 
 				modelAndView.addObject("nextItem", indexofNext);
