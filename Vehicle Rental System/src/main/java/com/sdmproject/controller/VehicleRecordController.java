@@ -49,15 +49,20 @@ public class VehicleRecordController {
 	}
 	
 	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.GET)
-	public ModelAndView viewClientRecord(Optional<String> sort, Optional<String> order, Optional<String> model) {
+	public ModelAndView viewClientRecord(Optional<String> sort, Optional<String> order, Optional<String> model,
+			Optional<String> color) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
 		
 		if(model.isPresent()) {
 			modelAndView.addObject("model", model.get());
-			modelAndView.addObject("records",vehicleRecordService.filter(model.get()));
+			modelAndView.addObject("records",vehicleRecordService.filterModel(model.get()));
 		}
 		
+		if(color.isPresent()) {
+			modelAndView.addObject("color", color.get());
+			modelAndView.addObject("records", vehicleRecordService.filterColor(color.get()));
+		}
 		
 		modelAndView.setViewName("vehicleRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");

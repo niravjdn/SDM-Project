@@ -168,10 +168,16 @@ public class VehicleRepository {
 		return listOfIDs;
 	}
 	
-	public List<Vehicle> filter(String model) {
-		List<Vehicle> result = records.stream().filter(record -> (record.getModel().equalsIgnoreCase(model) ))
+	public List<Vehicle> filterModel(String model) {
+		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model) ))
 				.collect(Collectors.toList());
 		return result;
+	}
+	
+	public List<Vehicle> filterColor(String color) {
+		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getColor().equalsIgnoreCase(color) ))
+				.collect(Collectors.toList());
+		return filteredResult;
 	}
 
 }
