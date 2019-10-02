@@ -31,7 +31,39 @@ table th {
 .content {
 	margin-right: 20px;
 	margin-left: 20px;
-	width: 120px;
+	width: 100px;
+}
+.multiselect {
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 50%;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 2px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
 }
 </style>
 
@@ -54,14 +86,15 @@ table th {
 		<div class="container">
 			<form method="get" id="filterForm" th:action="@{/vehicleRecord}">
 				<div class="row">
-					<label class="control-label" for="textinput">Type</label> <input
-						class="form-control content" name="type" th:value="${type}"
-						type="text">
+					
 					<label class="control-label" for="textinput">Make</label> <input
 						class="form-control content" name="make" th:value="${make}"
 						type="text">
 					<label class="control-label" for="textinput">Model</label> <input
 						class="form-control content" name="model" th:value="${model}"
+						type="text">
+					<label class="control-label" for="textinput">Color</label><input 
+						class="form-control content" name="color" th:value="${color}" 
 						type="text">
 					<label class="control-label" for="textinput">Year</label><input 
 						class="form-control content" name="year" th:value="${year}" 
@@ -70,9 +103,28 @@ table th {
 						</div>
 						<br/>
 						<div class="row">
-					<label class="control-label" for="textinput">Color</label><input 
-						class="form-control content" name="color" th:value="${color}" 
-						type="text"></div>
+						<label class="control-label" for="textinput">Type</label> 
+						&nbsp;&nbsp;&nbsp;
+						
+			<!--		<input class="form-control content" name="type" th:value="${type}" type="text"> -->
+					<div class="multiselect">
+						<div class="selectBox" onclick="showCheckboxes()">
+						<select>
+					        <option>Select</option>
+					      </select>
+					      <div class="overSelect"></div>
+					    </div>
+					    <div id="checkboxes">
+					      <label for="seaden">
+					        <input type="checkbox" name="type" th:value="seaden" />Seaden</label>
+					      <label for="truck">
+					        <input type="checkbox" name="type" th:value="truck" />Truck</label>
+					      <label for="suv">
+					        <input type="checkbox" name="type" th:value="suv" />SUV</label>
+					    </div>
+					  </div>
+
+					</div>
 					<br />
 
 				</div>
@@ -217,5 +269,19 @@ table th {
 		  }, false);
 		};
 		</script>
+	<script>
+		var expanded = false;
+
+function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+</script>
 </body>
 </html>
