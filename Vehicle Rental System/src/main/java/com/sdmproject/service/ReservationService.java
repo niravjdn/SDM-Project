@@ -46,6 +46,11 @@ public class ReservationService {
 		reservationRepository.deleteReservationByID(id);
 	}
 	
+	public void returnReservationByID(int id) {
+		reservationRepository.returnReservationByID(id);
+	}
+	
+	
 	public List<Reservation> findAllWithSort(Optional<String> sort, Optional<String> order) {
 		return reservationRepository.findAllWithSort(sort, order);
 	}

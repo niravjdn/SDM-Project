@@ -177,6 +177,13 @@ public class ReservationRepository {
 		return result;
 	}
 
+	public void returnReservationByID(int id) {
+		for (Iterator<Reservation> iterator = records.iterator(); iterator.hasNext();) {
+			if (iterator.next().getId() == id)
+				iterator.remove();
+		}
+	}
+
 
 }
 

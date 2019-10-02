@@ -98,10 +98,21 @@ public class ReservationController {
 	
 	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordReturnView(Optional<String> sort, Optional<String> order) {
-		ModelMap map = new ModelMap();
-		map.addAttribute("successMessage", "Deleted Reservation Successfully");
-		map.addAttribute("records", reservationService.findAllOutReservationSort(sort, order));
-		return new ModelAndView("redirect:/clerk/reservation/Delete", map);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("successMessage", "Deleted Reservation Successfully");
+		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
+		modelAndView.setViewName("clerk/returnVehicle");
+		return modelAndView;
 	}
+	
+	@RequestMapping(value = { "/clerk/reservation/return/{id}" }, method = RequestMethod.GET)
+	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id) {
+		ModelMap map = new ModelMap();
+		reservationService.returnReservationByID(id);
+		map.addAttribute("successMessage", "Deleted Reservation Successfully");
+		return new ModelAndView("redirect:/clerk/reservation/returnView", map);
+		
+	}
+	
 
 }

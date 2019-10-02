@@ -125,9 +125,9 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 		Reservation r ;
-		r= new Reservation(1,vehicleService.findByID(1),clientRecordRepository.findById(1),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
+		r= new Reservation(1,vehicleService.findByID(1),clientRecordRepository.findById(1),sdf.parse("01-10-2019"),sdf.parse("30-11-2019"), sdf.parse("30-11-2020"));
 		reservationService.save(r);
-		r = new Reservation(2,vehicleService.findByID(2),clientRecordRepository.findById(2),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
+		r = new Reservation(2,vehicleService.findByID(2),clientRecordRepository.findById(2),sdf.parse("25-09-2019"),sdf.parse("10-10-2019"),sdf.parse("30-11-2020"));
 		reservationService.save(r);
 		r = new Reservation(3,vehicleService.findByID(3),clientRecordRepository.findById(3),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
 		reservationService.save(r);

@@ -43,9 +43,9 @@ table th { user-select: none; background: #eee;}
 	
 	<br>
 		
-			
 		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
+		
 		
 	<table class="table table-bordered" id="filterableTable">
 		<thead>
@@ -63,7 +63,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
 				<th data-sort-prop="createdOn">Reservation Created</th>
-				<th >Cancel Booking</th>
+				<th >Return Vehicle</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,9 +84,9 @@ table th { user-select: none; background: #eee;}
 				
 				<td>
 					<a					
-						th:href="@{'/clerk/reservation/delete/' + ${record.id} }"> 
+						th:href="@{'/clerk/reservation/return/' + ${record.id} }"> 
 						<button type="button" class="btn btn-labeled btn-danger">
-						<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Cancel</button>
+						<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Return</button>
 					</a>
 				</td>
 						
