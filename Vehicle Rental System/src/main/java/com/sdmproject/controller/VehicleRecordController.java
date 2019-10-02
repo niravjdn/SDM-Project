@@ -3,6 +3,7 @@ package com.sdmproject.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -56,7 +57,17 @@ public class VehicleRecordController {
 			Optional<String> make, Optional<String> model, Optional<String> color, Optional<String> year) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
-		filterBean.getMap().clear();
+		
+		if(sort.isPresent()) {
+			//if already landed on page, process map and add value to modelAndView
+			for (Map.Entry<String, String> entry : filterBean.getMap().entrySet()) {
+				modelAndView.addObject(entry.getKey(),  entry.getValue());
+			}
+		}else {
+			//if landing on page for first time, clear the map
+			filterBean.getMap().clear();
+		}
+		
 		if(type.isPresent()) {
 			modelAndView.addObject("type", type.get());
 			filterBean.getMap().put("type", type.get());
