@@ -60,25 +60,15 @@ public class ReservationController {
 		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
 	}
 
-	@RequestMapping(value = { "/clerk/reservation/Delete" }, method = RequestMethod.GET)
-	public ModelAndView viewRentalRecord(Optional<String> sort, Optional<String> order) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records",reservationService.findAllWithSort(sort,order));
-		modelAndView.setViewName("clerk/deleteReservation");
-		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
-		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
-		return modelAndView;
-	}
-
 	@RequestMapping(value = { "/clerk/reservation/add" }, method = RequestMethod.GET)
-	public ModelAndView clientRecordAdd() {
+	public ModelAndView createReservation() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("clerk/addReservation");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/add" }, method = RequestMethod.POST)
-	public ModelAndView clientRecordAddPost(Reservation record) {
+	public ModelAndView createReservationPost(Reservation record) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("clerk/rentalRecordAdd");
 
@@ -91,14 +81,23 @@ public class ReservationController {
 		}
 		return modelAndView;
 	}
-
-	@RequestMapping(value = { "/clerk/reservation/delete/{id}" }, method = RequestMethod.GET)
+	
+	@RequestMapping(value = { "/clerk/reservation/cancel" }, method = RequestMethod.GET)
+	public ModelAndView viewReservationRecord(Optional<String> sort, Optional<String> order) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("records",reservationService.findAllWithSort(sort,order));
+		modelAndView.setViewName("clerk/reservationRecord");
+		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
+		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/clerk/reservation/cancel/{id}" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		reservationService.deleteReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Deleted Reservation Successfully");
-		return new ModelAndView("redirect:/clerk/reservation/Delete");
+		return new ModelAndView("redirect:/clerk/reservation/cancel");
 	}
-	
 	
 	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordReturnView(Optional<String> sort, Optional<String> order) {
