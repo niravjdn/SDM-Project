@@ -50,6 +50,10 @@ public class ReservationService {
 		return reservationRepository.findAllWithSort(sort, order);
 	}
 	
+	public List<Reservation> findAllOutReservationSort(Optional<String> sort, Optional<String> order) {
+		return reservationRepository.findAllOutReservationSort(sort, order);
+	}
+	
 
 	public List<Reservation> findAll() {
 		return reservationRepository.findAll();

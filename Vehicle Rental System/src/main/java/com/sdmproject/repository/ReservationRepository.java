@@ -109,6 +109,55 @@ public class ReservationRepository {
 
 		return result;
 	}
+	
+	
+	public List<Reservation> findAllOutReservationSort(Optional<String> sortProperty, Optional<String> sortOrder) {
+		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().before(new Date()) )).collect(Collectors.toList());
+		if (sortProperty.isPresent()) {
+
+			Collections.sort(result, new Comparator<Object>() {
+				public int compare(Object o1, Object o2) {
+					try {
+						Method m = o1.getClass().getMethod("get" + WordUtils.capitalize(sortProperty.get()));
+						if (sortProperty.get().contains("Date")) {
+							Date s1 = (Date) m.invoke(o1);
+							Date s2 = (Date) m.invoke(o2);
+							return s1.compareTo(s2);
+						} else if (sortProperty.get().contains("id")) {
+							Integer s1 = (Integer) m.invoke(o1);
+							Integer s2 = (Integer) m.invoke(o2);
+							return s1.compareTo(s2);
+						} else {
+							String s1 = (String) m.invoke(o1);
+							String s2 = (String) m.invoke(o2);
+							return s1.compareTo(s2);
+						}
+					} catch (SecurityException e) {
+						throw new RuntimeException(e);
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return 0;
+				}
+			});
+
+			if (sortOrder.get().equals("desc")) {
+				Collections.reverse(result);
+			}
+		}
+
+		return result;
+	}
 
 
 	public void deleteReservationByID(int id) {
