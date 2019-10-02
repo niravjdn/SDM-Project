@@ -63,7 +63,7 @@ public class ReservationRepository {
 
 
 	public List<Reservation> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
-		List<Reservation> result = records.stream().collect(Collectors.toList());
+		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().after(new Date()) )).collect(Collectors.toList());
 		if (sortProperty.isPresent()) {
 
 			Collections.sort(result, new Comparator<Object>() {
