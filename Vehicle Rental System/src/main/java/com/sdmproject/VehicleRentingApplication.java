@@ -14,10 +14,12 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
+import com.sdmproject.model.Reservation;
 import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.ClientRecordRepository;
+import com.sdmproject.repository.ReservationRepository;
 import com.sdmproject.repository.RoleRepository;
 import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
@@ -36,7 +38,10 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 	@Autowired
 	private VehicleService vehicleService;
-
+	
+	@Autowired
+	private ReservationRepository reservationService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(VehicleRentingApplication.class, args);
 	}
@@ -82,6 +87,7 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 		addVehicleRecords();
 		addClientRecords();
+		addReservationRecords();
 	}
 
 	private void addVehicleRecords() throws DuplicateEntryException {
@@ -114,4 +120,18 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 		record = new ClientRecord(1, "Jemish", "Paghdar", "8123", "4534412344", sdf.parse("30-05-2022"));
 		clientRecordRepository.save(record);
 	}
+	
+	private void addReservationRecords() throws ParseException, DuplicateEntryException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+		Reservation r ;
+		r= new Reservation(1,vehicleService.findByID(1),clientRecordRepository.findById(1),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
+		reservationService.save(r);
+		r = new Reservation(2,vehicleService.findByID(2),clientRecordRepository.findById(2),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
+		reservationService.save(r);
+		r = new Reservation(3,vehicleService.findByID(3),clientRecordRepository.findById(3),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
+		reservationService.save(r);
+		r = new Reservation(4,vehicleService.findByID(4),clientRecordRepository.findById(4),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"),sdf.parse("30-11-2020"));
+		reservationService.save(r);
+}
 }
