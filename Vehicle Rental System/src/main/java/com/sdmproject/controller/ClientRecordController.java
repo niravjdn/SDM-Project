@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
@@ -144,12 +145,10 @@ public class ClientRecordController {
 	}
 
 	@RequestMapping(value = { "/clerk/clientRecord/delete/{id}" }, method = RequestMethod.GET)
-	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id) {
-		ModelMap map = new ModelMap();
+	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		clientRecordService.deleteClientByID(id);
-		map.addAttribute("successMessage", "Deleted Client Successfully");
-		map.addAttribute("records", clientRecordService.findAll());
-		return new ModelAndView("redirect:/clerk/clientRecord/", map);
+		atts.addFlashAttribute("successMessage", "Deleted Client Successfully");
+		return new ModelAndView("redirect:/clerk/clientRecord/");
 	}
 
 }

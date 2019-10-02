@@ -93,12 +93,10 @@ public class ReservationController {
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/delete/{id}" }, method = RequestMethod.GET)
-	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id) {
-		ModelMap map = new ModelMap();
+	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		reservationService.deleteReservationByID(id);
-		map.addAttribute("successMessage", "Deleted Reservation Successfully");
-		map.addAttribute("records", reservationService.findAll());
-		return new ModelAndView("redirect:/clerk/reservation/Delete", map);
+		atts.addFlashAttribute("successMessage", "Deleted Reservation Successfully");
+		return new ModelAndView("redirect:/clerk/reservation/Delete");
 	}
 	
 	
