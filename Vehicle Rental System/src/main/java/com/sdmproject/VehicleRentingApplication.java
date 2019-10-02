@@ -92,18 +92,19 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 	private void addVehicleRecords() throws DuplicateEntryException {
 
-		Vehicle vehicle = new Vehicle(1, "SUV", "Audi", "Q3", 2015, "Black", "ABC YHZ");
-		vehicle = new Vehicle(1, "SEADEN", "Tesla", "Model S", 2016, "White", "ABD ISZ");
+		Vehicle vehicle;
+		vehicle = new Vehicle(1, "SEADEN", "Tesla", "Model S", 2016, "White", "ABD ISZ", "Yes");
 		vehicleService.saveVehicle(vehicle);
-		vehicle = new Vehicle(2, "TRUCK", "BMW", "S400", 2015, "Pink", "ABE UEZ");
+		vehicle = new Vehicle(2, "TRUCK", "BMW", "S400", 2015, "Pink", "ABE UEZ", "Yes");
 		vehicleService.saveVehicle(vehicle);
-		vehicle = new Vehicle(3, "SUV", "Audi", "Q3", 2013, "White", "EBC KGZ");
+		vehicle = new Vehicle(3, "SUV", "Audi", "Q3", 2013, "White", "EBC KGZ", "No");
 		vehicleService.saveVehicle(vehicle);
-		vehicle = new Vehicle(4, "SUV", "Dodge", "Tiburon", 2012, "Black", "TSC JSZ");
+		vehicle = new Vehicle(4, "SUV", "Dodge", "Tiburon", 2012, "Black", "TSC JSZ", "Yes");
 		vehicleService.saveVehicle(vehicle);
-		vehicle = new Vehicle(5, "SEADEN", "Subaru", "Mazda", 2011, "Green", "JHS YHZ");
+		vehicle = new Vehicle(5, "SEADEN", "Subaru", "Mazda", 2011, "Green", "JHS YHZ", "No");
 		vehicleService.saveVehicle(vehicle);
-
+		vehicle = new Vehicle(6, "SUV", "Benz", "GLE", 2015, "Black", "ABC YHZ", "Yes");
+		vehicleService.saveVehicle(vehicle);
 	}
 
 	private void addClientRecords() throws ParseException, DuplicateEntryException {

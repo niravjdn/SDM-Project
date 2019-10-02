@@ -52,7 +52,7 @@ public class VehicleRecordController {
 	}
 	
 	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.GET)
-	public ModelAndView viewClientRecord(Optional<String> sort, Optional<String> order, Optional<String> model,
+	public ModelAndView viewVehicleRecord(Optional<String> sort, Optional<String> order, Optional<String> model,
 			Optional<String> color) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
