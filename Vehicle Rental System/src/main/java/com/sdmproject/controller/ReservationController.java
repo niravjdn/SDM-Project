@@ -94,5 +94,14 @@ public class ReservationController {
 		map.addAttribute("records", reservationService.findAll());
 		return new ModelAndView("redirect:/clerk/reservation/Delete", map);
 	}
+	
+	
+	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
+	public ModelAndView clientRecordReturnView() {
+		ModelMap map = new ModelMap();
+		map.addAttribute("successMessage", "Deleted Reservation Successfully");
+		map.addAttribute("records", reservationService.findAll());
+		return new ModelAndView("redirect:/clerk/reservation/Delete", map);
+	}
 
 }
