@@ -61,10 +61,7 @@ public class VehicleService {
 	public List<Vehicle> filterModel(String filter) {
 		return carRepository.filterModel(filter);
 	}
-	
-	public List<Vehicle> filterColor(String filter) {
-		return carRepository.filterColor(filter);
-	}
+
 	
 	public List<Vehicle> filterYear(String filter) {
 		return carRepository.filterYear(filter);

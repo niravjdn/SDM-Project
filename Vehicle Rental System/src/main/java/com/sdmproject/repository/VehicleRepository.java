@@ -184,11 +184,6 @@ public class VehicleRepository {
 		return result;
 	}
 
-	public List<Vehicle> filterColor(String color) {
-		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getColor().equalsIgnoreCase(color)))
-				.collect(Collectors.toList());
-		return filteredResult;
-	}
 	
 	public List<Vehicle> filterYear(String year) {
 		int yearint=Integer.parseInt(year);
