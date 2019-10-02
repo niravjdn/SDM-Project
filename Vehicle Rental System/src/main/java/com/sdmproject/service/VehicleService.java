@@ -1,6 +1,7 @@
 package com.sdmproject.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,4 +57,9 @@ public class VehicleService {
 	public List<Vehicle> filterColor(String filter) {
 		return carRepository.filterColor(filter);
 	}
+	
+	public List<Vehicle> filterMultipleAttribute(Map<String, String> filter) {
+		return carRepository.filterMultipleAttribute(filter);
+	}
+
 }

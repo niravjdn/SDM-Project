@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.sdmproject.beans.FilterBean;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
@@ -35,6 +35,9 @@ public class VehicleRecordController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private FilterBean filterBean;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -53,16 +56,19 @@ public class VehicleRecordController {
 			Optional<String> color) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
-		
+		filterBean.getMap().clear();
 		if(model.isPresent()) {
 			modelAndView.addObject("model", model.get());
-			modelAndView.addObject("records",vehicleRecordService.filterModel(model.get()));
+			filterBean.getMap().put("model", model.get());
 		}
 		
 		if(color.isPresent()) {
+			filterBean.getMap().put("color", color.get());
 			modelAndView.addObject("color", color.get());
-			modelAndView.addObject("records", vehicleRecordService.filterColor(color.get()));
 		}
+		
+		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap()));
+		
 		
 		modelAndView.setViewName("vehicleRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");

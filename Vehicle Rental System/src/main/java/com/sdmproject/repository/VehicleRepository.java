@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class VehicleRepository {
 	private List<Vehicle> records = new ArrayList<Vehicle>();
 
 	private static int id = 0;
-	
+
 	Logger logger = LoggerFactory.getLogger(VehicleRepository.class);
 
 	public int getCountOfVehicles() {
@@ -107,22 +108,19 @@ public class VehicleRepository {
 
 		return result;
 	}
-	
+
 	public Vehicle findById(int id) {
 
-		List<Vehicle> result = records.stream().filter(record -> (record.getId() == id))
-				.collect(Collectors.toList());
+		List<Vehicle> result = records.stream().filter(record -> (record.getId() == id)).collect(Collectors.toList());
 		return result.get(0);
 	}
-	
-	
+
 	public List<Integer> findAllIDsAndSortByID() {
-		List<Integer> result = records.stream().sorted(Comparator.comparing(Vehicle::getId))
-				.map(Vehicle::getId).collect(Collectors.toList());
+		List<Integer> result = records.stream().sorted(Comparator.comparing(Vehicle::getId)).map(Vehicle::getId)
+				.collect(Collectors.toList());
 		return result;
 	}
-	
-	
+
 	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
 
 		List<Vehicle> result = records.stream().collect(Collectors.toList());
@@ -167,17 +165,47 @@ public class VehicleRepository {
 
 		return listOfIDs;
 	}
-	
+
 	public List<Vehicle> filterModel(String model) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model) ))
+		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model)))
 				.collect(Collectors.toList());
 		return result;
 	}
-	
+
 	public List<Vehicle> filterColor(String color) {
-		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getColor().equalsIgnoreCase(color) ))
+		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getColor().equalsIgnoreCase(color)))
 				.collect(Collectors.toList());
 		return filteredResult;
+	}
+
+	public List<Vehicle> filterMultipleAttribute(Map<String, String> map) {
+		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
+		if(map.isEmpty()) {
+			return filteredResult;
+		}
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			filteredResult = filteredResult.stream().filter(item -> {
+				try {
+					return (predicateEvaluation(item, entry.getKey(), entry.getValue()));
+				} catch (IllegalAccessException | SecurityException | NoSuchMethodException | IllegalArgumentException
+						| InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return false;
+			}).collect(Collectors.toList());
+		}
+		return filteredResult;
+	}
+
+	public boolean predicateEvaluation(Vehicle item, String key, String val) throws NoSuchMethodException,
+			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
+		if (key.equals("year")) {
+			return item.getYear() == Integer.parseInt(val);
+		} else {
+			return ((String) m.invoke(item)).equalsIgnoreCase(val);
+		}
 	}
 
 }
