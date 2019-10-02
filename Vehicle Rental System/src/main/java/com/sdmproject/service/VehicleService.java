@@ -54,6 +54,10 @@ public class VehicleService {
 		return carRepository.filterType(filter);
 	}
 	
+	public List<Vehicle> filterMake(String filter) {
+		return carRepository.filterMake(filter);
+	}
+	
 	public List<Vehicle> filterModel(String filter) {
 		return carRepository.filterModel(filter);
 	}

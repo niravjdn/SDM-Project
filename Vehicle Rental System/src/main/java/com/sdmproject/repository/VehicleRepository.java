@@ -172,6 +172,12 @@ public class VehicleRepository {
 		return result;
 	}
 	
+	public List<Vehicle> filterMake(String make) {
+		List<Vehicle> result = records.stream().filter(data -> (data.getMake().equalsIgnoreCase(make)))
+				.collect(Collectors.toList());
+		return result;
+	}
+	
 	public List<Vehicle> filterModel(String model) {
 		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model)))
 				.collect(Collectors.toList());
