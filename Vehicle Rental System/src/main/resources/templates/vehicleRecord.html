@@ -63,15 +63,24 @@ table th {
 					<label class="control-label" for="textinput">Model</label> <input
 						class="form-control content" name="model" th:value="${model}"
 						type="text">
-					<label class="control-label" for="textinput">Color</label>
-             <input class="form-control content" name="color" th:value="${color}" type="text">
-					<br /><br /><br />
+					<label class="control-label" for="textinput">Year</label><input 
+						class="form-control content" name="year" th:value="${year}" 
+						type="text">
+						
+						</div>
+						<br/>
+						<div class="row">
+					<label class="control-label" for="textinput">Color</label><input 
+						class="form-control content" name="color" th:value="${color}" 
+						type="text"></div>
+					<br />
 
 				</div>
 				<button type="submit" class="btn btn-primary" th:text="filter"
 					value="Go"></button></div>
 		</form>
 		<br />
+		<br/>
 		<div align="center" th:if="${successMessage}"
 			class="alert alert-success alert-dismissible fade show" role="alert"
 			th:utext="${successMessage}"></div>

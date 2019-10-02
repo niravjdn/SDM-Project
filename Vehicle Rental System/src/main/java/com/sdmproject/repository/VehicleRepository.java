@@ -189,6 +189,13 @@ public class VehicleRepository {
 				.collect(Collectors.toList());
 		return filteredResult;
 	}
+	
+	public List<Vehicle> filterYear(String year) {
+		int yearint=Integer.parseInt(year);
+		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getYear()==yearint))
+				.collect(Collectors.toList());
+		return filteredResult;
+	}
 
 	public List<Vehicle> filterMultipleAttribute(Map<String, String> map) {
 		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
