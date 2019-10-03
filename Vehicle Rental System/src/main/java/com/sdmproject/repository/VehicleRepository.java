@@ -217,9 +217,12 @@ public class VehicleRepository {
 		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
 		if (key.equals("year")) {
 			return item.getYear() == Integer.parseInt(val);
-		} else {
+		} 
+		else {
+			if(key.equals("type") && val.equalsIgnoreCase("any"))
+				return true;
 			return ((String) m.invoke(item)).equalsIgnoreCase(val);
 		}
-	}
+		}
 
 }

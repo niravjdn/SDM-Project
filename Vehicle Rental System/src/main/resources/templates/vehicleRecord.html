@@ -33,38 +33,7 @@ table th {
 	margin-left: 20px;
 	width: 100px;
 }
-.multiselect {
-  width: 200px;
-}
 
-.selectBox {
-  position: relative;
-}
-
-.selectBox select {
-  width: 50%;
-}
-
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-#checkboxes {
-  display: none;
-  border: 2px #dadada solid;
-}
-
-#checkboxes label {
-  display: block;
-}
-
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
 </style>
 
 
@@ -105,9 +74,16 @@ table th {
 						<div class="row">
 						<label class="control-label" for="textinput">Type</label> 
 						&nbsp;&nbsp;&nbsp;
+						<select name = "type">
+							<option th:value="any">ANY</option>
+							<option th:value="seaden">Seaden</option>
+				            <option th:value="truck">Truck</option>
+				            <option th:value="suv">SUV</option>
+							
+						</select>
 						
 			<!--		<input class="form-control content" name="type" th:value="${type}" type="text"> -->
-					<div class="multiselect">
+			<!--		<div class="multiselect">
 						<div class="selectBox" onclick="showCheckboxes()">
 						<select>
 					        <option>Select</option>
@@ -123,7 +99,7 @@ table th {
 					        <input type="checkbox" name="type" th:value="suv" />SUV</label>
 					    </div>
 					  </div>
-
+-->
 					</div>
 					<br />
 
@@ -268,7 +244,7 @@ table th {
 		    });
 		  }, false);
 		};
-		</script>
+		</script><!--
 	<script>
 		var expanded = false;
 
@@ -282,6 +258,6 @@ function showCheckboxes() {
     expanded = false;
   }
 }
-</script>
+</script>-->
 </body>
 </html>
