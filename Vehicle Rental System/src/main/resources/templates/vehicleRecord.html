@@ -65,13 +65,13 @@ table th {
 				<div class="row">
 					
 					<label class="control-label" for="textinput">Make</label> <input
-						class="form-control content" name="make" th:value="${make}"
+						class="form-control content" id="make" name="make" th:value="${make}"
 						type="text">
 					<label class="control-label" for="textinput">Model</label> <input
-						class="form-control content" name="model" th:value="${model}"
+						class="form-control content" id="model" name="model" th:value="${model}"
 						type="text">
 					<label class="control-label" for="textinput">Color</label><input 
-						class="form-control content" name="color" th:value="${color}" 
+						class="form-control content" id="color" name="color" th:value="${color}" 
 						type="text">
 				
 							
@@ -79,7 +79,7 @@ table th {
 					&nbsp;&nbsp;&nbsp;
 					
 					
-						<select name = "year"  >
+						<select name = "year" id="year" >
 							<option disabled selected value>ANY</option>
 					
 							  <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" 
@@ -92,7 +92,7 @@ table th {
 						<div class="row">
 						<label class="control-label" for="textinput">Type</label> 
 						&nbsp;&nbsp;&nbsp;
-						<select name = "type">
+						<select name = "type" id="type">
 							<option disabled selected value>ANY</option>
 							<option th:value="seaden" th:selected="${type} == 'seaden' ">Seaden</option>
 				            <option th:value="truck" th:selected="${type} == 'truck'">Truck</option>
@@ -104,8 +104,12 @@ table th {
 					<br />
 
 				</div>
-				<button type="submit" class="btn btn-primary" th:text="filter"
-					value="Go"></button></div>
+				<button type="submit" class="btn btn-primary" th:text="Search"
+					value="Go"> <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> </button>
+					
+				<button type="button" class="btn btn-primary" th:text="Reset" onclick="customReset()"
+					> <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> </button>
+					</div>
 		</form>
 		<br />
 		<br/>
@@ -244,20 +248,18 @@ table th {
 		    });
 		  }, false);
 		};
-		</script><!--
-	<script>
-		var expanded = false;
-
-function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
-}
-</script>-->
+		
+		function customReset()
+		{
+			console.log('reset');
+		    document.getElementById("filterForm").reset();
+		    document.getElementById("type").selectedIndex = 0;
+		    document.getElementById("year").selectedIndex = 0;
+		    document.getElementById("model").value = "";
+		    document.getElementById("make").value = "";
+		    document.getElementById("color").value = "";
+		}
+			
+		</script>
 </body>
 </html>
