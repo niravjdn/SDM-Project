@@ -3,6 +3,7 @@ package com.sdmproject.repository;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -191,7 +192,12 @@ public class VehicleRepository {
 			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
 		if (key.equals("year")) {
-			return item.getYear() == Integer.parseInt(val);
+			int value = Integer.parseInt(val);
+			int currentyear = Calendar.getInstance().get(Calendar.YEAR);
+			if(item.getYear() > (currentyear-value))
+				return true;
+			else
+				return false;
 		} 
 		else {
 			if(key.equals("type") && val.equalsIgnoreCase("any"))
