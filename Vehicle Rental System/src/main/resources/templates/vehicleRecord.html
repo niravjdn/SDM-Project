@@ -104,11 +104,12 @@ table th {
 					<br />
 
 				</div>
-				<button type="submit" class="btn btn-primary" th:text="Search"
-					value="Go"> <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> </button>
+				<button type="submit" class="btn btn-primary" style="margin:right = 10px;"
+					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
 					
-				<button type="button" class="btn btn-primary" th:text="Reset" onclick="customReset()"
-					> <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> </button>
+
+				<button type="button" class="btn btn-primary"  onclick="customReset()"
+					> <i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
 					</div>
 		</form>
 		<br />
@@ -251,7 +252,6 @@ table th {
 		
 		function customReset()
 		{
-			console.log('reset');
 		    document.getElementById("filterForm").reset();
 		    document.getElementById("type").selectedIndex = 0;
 		    document.getElementById("year").selectedIndex = 0;
