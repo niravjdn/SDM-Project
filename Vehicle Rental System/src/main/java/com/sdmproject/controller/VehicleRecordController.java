@@ -115,28 +115,28 @@ public class VehicleRecordController {
 		Vehicle record = vehicleRecordService.findByID(id);
 		
 		// get all ids of vehicles - find position of current
-				List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), Optional.ofNullable(sort), Optional.ofNullable(order)).stream().map(Vehicle::getId)
-						.collect(Collectors.toList());
-				int indexOfTarget = vehicleRecordIds.indexOf(id);
-				log.info("" + indexOfTarget);
-				log.info("" + vehicleRecordIds);
-				int indexOfPrevious = indexOfTarget != 0 ? vehicleRecordIds.get(indexOfTarget - 1) : -1;
-				int indexofNext = indexOfTarget != vehicleRecordIds.size() - 1 ? vehicleRecordIds.get(indexOfTarget + 1) : -1;
+		List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), Optional.ofNullable(sort), Optional.ofNullable(order)).stream().map(Vehicle::getId)
+				.collect(Collectors.toList());
+		int indexOfTarget = vehicleRecordIds.indexOf(id);
+		log.info("" + indexOfTarget);
+		log.info("" + vehicleRecordIds);
+		int indexOfPrevious = indexOfTarget != 0 ? vehicleRecordIds.get(indexOfTarget - 1) : -1;
+		int indexofNext = indexOfTarget != vehicleRecordIds.size() - 1 ? vehicleRecordIds.get(indexOfTarget + 1) : -1;
 
-				modelAndView.addObject("sortProperty", sort);
-				modelAndView.addObject("order",  order);
-				
-				
-				
-				List<Reservation> reservations = reservationService.findAllOutReservationSort(Optional.empty(), Optional.empty());
-				boolean isAvailable = reservations.stream().filter(reservation -> (reservation.getVehicle().getId() == id)).findAny().isPresent();
-				modelAndView.addObject("vehicleAvailability", !isAvailable);
-
-				modelAndView.addObject("previousItem", indexOfPrevious);
-
-				modelAndView.addObject("nextItem", indexofNext);
-
+		modelAndView.addObject("sortProperty", sort);
+		modelAndView.addObject("order",  order);
 		
+		
+		
+		List<Reservation> reservations = reservationService.findAllOutReservationSort(Optional.empty(), Optional.empty());
+		boolean isAvailable = reservations.stream().filter(reservation -> (reservation.getVehicle().getId() == id)).findAny().isPresent();
+		modelAndView.addObject("vehicleAvailability", !isAvailable);
+
+		modelAndView.addObject("previousItem", indexOfPrevious);
+
+		modelAndView.addObject("nextItem", indexofNext);
+
+
 		modelAndView.addObject("record", record);
 		
 		
