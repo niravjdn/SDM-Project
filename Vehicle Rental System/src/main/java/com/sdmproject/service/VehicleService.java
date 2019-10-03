@@ -50,23 +50,6 @@ public class VehicleService {
 		return carRepository.findIDWithSort(sortProperty, sortOrder);
 	}
 	
-	public List<Vehicle> filterType(String filter) {
-		return carRepository.filterType(filter);
-	}
-	
-	public List<Vehicle> filterMake(String filter) {
-		return carRepository.filterMake(filter);
-	}
-	
-	public List<Vehicle> filterModel(String filter) {
-		return carRepository.filterModel(filter);
-	}
-
-	
-	public List<Vehicle> filterYear(String filter) {
-		return carRepository.filterYear(filter);
-	}
-	
 	public List<Vehicle> filterMultipleAttribute(Map<String, String> filter) {
 		return carRepository.filterMultipleAttribute(filter);
 	}

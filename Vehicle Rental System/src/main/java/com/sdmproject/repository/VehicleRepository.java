@@ -166,31 +166,6 @@ public class VehicleRepository {
 		return listOfIDs;
 	}
 	
-	public List<Vehicle> filterType(String type) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getType().equalsIgnoreCase(type)))
-				.collect(Collectors.toList());
-		return result;
-	}
-	
-	public List<Vehicle> filterMake(String make) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getMake().equalsIgnoreCase(make)))
-				.collect(Collectors.toList());
-		return result;
-	}
-	
-	public List<Vehicle> filterModel(String model) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model)))
-				.collect(Collectors.toList());
-		return result;
-	}
-
-	
-	public List<Vehicle> filterYear(String year) {
-		int yearint=Integer.parseInt(year);
-		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getYear()==yearint))
-				.collect(Collectors.toList());
-		return filteredResult;
-	}
 
 	public List<Vehicle> filterMultipleAttribute(Map<String, String> map) {
 		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
