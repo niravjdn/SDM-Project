@@ -126,6 +126,18 @@ public class VehicleRepository {
 
 		List<Vehicle> result = records.stream().collect(Collectors.toList());
 
+		sort(sortProperty, result);
+
+		if (sortOrder.equals("desc")) {
+			Collections.reverse(result);
+		}
+
+		List<Integer> listOfIDs = result.stream().map(Vehicle::getId).collect(Collectors.toList());
+
+		return listOfIDs;
+	}
+
+	private void sort(String sortProperty, List<Vehicle> result) {
 		Collections.sort(result, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
 				try {
@@ -157,17 +169,9 @@ public class VehicleRepository {
 				return 0;
 			}
 		});
-
-		if (sortOrder.equals("desc")) {
-			Collections.reverse(result);
-		}
-
-		List<Integer> listOfIDs = result.stream().map(Vehicle::getId).collect(Collectors.toList());
-
-		return listOfIDs;
 	}
 
-	public List<Vehicle> filterMultipleAttribute(Map<String, String> map) {
+	public List<Vehicle> filterMultipleAttribute(Map<String, String> map, Optional<String> sortProperty, Optional<String> order) {
 		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
 		if (map.isEmpty()) {
 			return filteredResult;
@@ -184,6 +188,10 @@ public class VehicleRepository {
 				return false;
 			}).collect(Collectors.toList());
 		}
+		
+		if(sortProperty.isPresent())
+			sort(sortProperty.get(), filteredResult);
+		
 		return filteredResult;
 	}
 

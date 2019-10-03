@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +99,7 @@ public class VehicleRecordController {
 			modelAndView.addObject("year", year.get());
 		}
 		
-		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap()));
+		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), sort, order));
 		
 		
 		modelAndView.setViewName("vehicleRecord");
@@ -114,7 +115,8 @@ public class VehicleRecordController {
 		Vehicle record = vehicleRecordService.findByID(id);
 		
 		// get all ids of vehicles - find position of current
-				List<Integer> vehicleRecordIds = vehicleRecordService.findIDWithSort(sort, order);
+				List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), Optional.ofNullable(sort), Optional.ofNullable(order)).stream().map(Vehicle::getId)
+						.collect(Collectors.toList());
 				int indexOfTarget = vehicleRecordIds.indexOf(id);
 				log.info("" + indexOfTarget);
 				log.info("" + vehicleRecordIds);

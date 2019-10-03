@@ -50,8 +50,8 @@ public class VehicleService {
 		return carRepository.findIDWithSort(sortProperty, sortOrder);
 	}
 	
-	public List<Vehicle> filterMultipleAttribute(Map<String, String> filter) {
-		return carRepository.filterMultipleAttribute(filter);
+	public List<Vehicle> filterMultipleAttribute(Map<String, String> filter, Optional<String> sortProperty, Optional<String> order) {
+		return carRepository.filterMultipleAttribute(filter, sortProperty, order);
 	}
 
 }
