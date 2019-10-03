@@ -4,17 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FilterBean {
-	private static Map<String, String> map ;
-	
-	//private constructor to prevent instantiation
+	private Map<String, String> map;
+
+	private static FilterBean instance;
+
+	// private constructor to prevent instantiation
 	private FilterBean() {
 		System.out.println("intialize");
 	}
-	
-	public static Map<String, String> getMap() {
-		//only one instance will be created
-		if(map == null)
-			map = new HashMap<String, String>();
+
+	public static FilterBean getInstance() {
+		// only one instance will be created
+		if (instance == null)
+			instance = new FilterBean();
+		return instance;
+	}
+
+	public Map<String, String> getMap() {
 		return map;
 	}
 }

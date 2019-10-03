@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sdmproject.beans.FilterBean;
@@ -39,7 +38,9 @@ public class VehicleRecordController {
 	
 	@Autowired
 	private ReservationService reservationService;
-
+	
+	private FilterBean filterBean = FilterBean.getInstance();
+	
 	@Autowired
 	private UserService userService;
 
@@ -63,40 +64,40 @@ public class VehicleRecordController {
 		
 		if(sort.isPresent()) {
 			//if already landed on page, process map and add value to modelAndView
-			for (Map.Entry<String, String> entry : FilterBean.getMap().entrySet()) {
+			for (Map.Entry<String, String> entry : filterBean.getMap().entrySet()) {
 				modelAndView.addObject(entry.getKey(),  entry.getValue());
 			}
 		}else {
 			//if landing on page for first time, clear the map
-			FilterBean.getMap().clear();
+			filterBean.getMap().clear();
 		}
 		
 		if(type.isPresent()) {
 			modelAndView.addObject("type", type.get());
-			FilterBean.getMap().put("type", type.get());
+			filterBean.getMap().put("type", type.get());
 		}
 		
 		if(make.isPresent()) {
 			modelAndView.addObject("make", make.get());
-			FilterBean.getMap().put("make", make.get());
+			filterBean.getMap().put("make", make.get());
 		}
 		
 		if(model.isPresent()) {
 			modelAndView.addObject("model", model.get());
-			FilterBean.getMap().put("model", model.get());
+			filterBean.getMap().put("model", model.get());
 		}
 		
 		if(color.isPresent()) {
-			FilterBean.getMap().put("color", color.get());
+			filterBean.getMap().put("color", color.get());
 			modelAndView.addObject("color", color.get());
 		}
 		
 		if(year.isPresent()) {
-			FilterBean.getMap().put("year", year.get());
+			filterBean.getMap().put("year", year.get());
 			modelAndView.addObject("year", year.get());
 		}
 		
-		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(FilterBean.getMap(), sort, order));
+		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), sort, order));
 		
 		
 		modelAndView.setViewName("vehicleRecord");
@@ -112,7 +113,7 @@ public class VehicleRecordController {
 		Vehicle record = vehicleRecordService.findByID(id);
 		
 		// get all ids of vehicles - find position of current
-		List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttribute(FilterBean.getMap(), Optional.ofNullable(sort), Optional.ofNullable(order)).stream().map(Vehicle::getId)
+		List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), Optional.ofNullable(sort), Optional.ofNullable(order)).stream().map(Vehicle::getId)
 				.collect(Collectors.toList());
 		int indexOfTarget = vehicleRecordIds.indexOf(id);
 		log.info("" + indexOfTarget);
