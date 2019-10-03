@@ -29,7 +29,12 @@ table th { user-select: none; background: #eee;}
 <body>
 
 	<div th:replace="clerk/header :: navbar"></div>
-	<span class="glyphicon glyphicon-envelope"></span>
+	<nav class="bodyMargin" aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a th:href="@{/clerk/home}">Home</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">Client Catalog</li>
+	  </ol>
+	</nav>
 	<main role="main" class="container">
 	
 	<h2> Client Catalog </h3>
