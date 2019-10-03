@@ -65,21 +65,18 @@ table th {
 					<label class="control-label" for="textinput">Color</label><input 
 						class="form-control content" name="color" th:value="${color}" 
 						type="text">
+				
+							
 					<label class="control-label" for="textinput">Year</label>
 					&nbsp;&nbsp;&nbsp;
-						<select name = "year">
-							<option th:value="any">ANY</option>
-							<option th:value="1">Not More than 1 year Old</option>
-							<option th:value="2">Not More than 2 year Old</option>
-							<option th:value="3">Not More than 3 year Old</option>
-							<option th:value="4">Not More than 4 year Old</option>
-							<option th:value="5">Not More than 5 year Old</option>
-							<option th:value="6">Not More than 6 year Old</option>
-							<option th:value="7">Not More than 7 year Old</option>
-							<option th:value="8">Not More than 8 year Old</option>
-							<option th:value="9">Not More than 9 year Old</option>
-							<option th:value="10">Not More than 10 year Old</option>
-							
+					
+					
+						<select name = "year"  >
+							<option disabled selected value>ANY</option>
+					
+							  <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" 
+							 th:text="${'Not more than  ' + i + ' years old'}"
+      th:selected="${year} == ${i}"></option>
 						</select>
 						
 						</div>
@@ -88,31 +85,13 @@ table th {
 						<label class="control-label" for="textinput">Type</label> 
 						&nbsp;&nbsp;&nbsp;
 						<select name = "type">
-							<option th:value="any">ANY</option>
-							<option th:value="seaden">Seaden</option>
-				            <option th:value="truck">Truck</option>
-				            <option th:value="suv">SUV</option>
+							<option disabled selected value>ANY</option>
+							<option th:value="seaden" th:selected="${type} == 'seaden' ">Seaden</option>
+				            <option th:value="truck" th:selected="${type} == 'truck'">Truck</option>
+				            <option th:value="suv" th:selected="${type} == 'suv'">SUV</option>
 							
 						</select>
 						
-			<!--		<input class="form-control content" name="type" th:value="${type}" type="text"> -->
-			<!--		<div class="multiselect">
-						<div class="selectBox" onclick="showCheckboxes()">
-						<select>
-					        <option>Select</option>
-					      </select>
-					      <div class="overSelect"></div>
-					    </div>
-					    <div id="checkboxes">
-					      <label for="seaden">
-					        <input type="checkbox" name="type" th:value="seaden" />Seaden</label>
-					      <label for="truck">
-					        <input type="checkbox" name="type" th:value="truck" />Truck</label>
-					      <label for="suv">
-					        <input type="checkbox" name="type" th:value="suv" />SUV</label>
-					    </div>
-					  </div>
--->
 					</div>
 					<br />
 

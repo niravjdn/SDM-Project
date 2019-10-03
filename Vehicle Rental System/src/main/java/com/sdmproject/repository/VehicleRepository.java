@@ -166,11 +166,10 @@ public class VehicleRepository {
 
 		return listOfIDs;
 	}
-	
 
 	public List<Vehicle> filterMultipleAttribute(Map<String, String> map) {
 		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
-		if(map.isEmpty()) {
+		if (map.isEmpty()) {
 			return filteredResult;
 		}
 		for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -194,16 +193,13 @@ public class VehicleRepository {
 		if (key.equals("year")) {
 			int value = Integer.parseInt(val);
 			int currentyear = Calendar.getInstance().get(Calendar.YEAR);
-			if(item.getYear() > (currentyear-value))
+			if (item.getYear() > (currentyear - value))
 				return true;
 			else
 				return false;
-		} 
-		else {
-			if(key.equals("type") && val.equalsIgnoreCase("any"))
-				return true;
+		} else {
 			return ((String) m.invoke(item)).equalsIgnoreCase(val);
 		}
-		}
+	}
 
 }
