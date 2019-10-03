@@ -3,6 +3,7 @@ package com.sdmproject.repository;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -166,31 +167,6 @@ public class VehicleRepository {
 		return listOfIDs;
 	}
 	
-	public List<Vehicle> filterType(String type) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getType().equalsIgnoreCase(type)))
-				.collect(Collectors.toList());
-		return result;
-	}
-	
-	public List<Vehicle> filterMake(String make) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getMake().equalsIgnoreCase(make)))
-				.collect(Collectors.toList());
-		return result;
-	}
-	
-	public List<Vehicle> filterModel(String model) {
-		List<Vehicle> result = records.stream().filter(data -> (data.getModel().equalsIgnoreCase(model)))
-				.collect(Collectors.toList());
-		return result;
-	}
-
-	
-	public List<Vehicle> filterYear(String year) {
-		int yearint=Integer.parseInt(year);
-		List<Vehicle> filteredResult = records.stream().filter(data -> (data.getYear()==yearint))
-				.collect(Collectors.toList());
-		return filteredResult;
-	}
 
 	public List<Vehicle> filterMultipleAttribute(Map<String, String> map) {
 		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
@@ -216,10 +192,18 @@ public class VehicleRepository {
 			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
 		if (key.equals("year")) {
-			return item.getYear() == Integer.parseInt(val);
-		} else {
+			int value = Integer.parseInt(val);
+			int currentyear = Calendar.getInstance().get(Calendar.YEAR);
+			if(item.getYear() > (currentyear-value))
+				return true;
+			else
+				return false;
+		} 
+		else {
+			if(key.equals("type") && val.equalsIgnoreCase("any"))
+				return true;
 			return ((String) m.invoke(item)).equalsIgnoreCase(val);
 		}
-	}
+		}
 
 }
