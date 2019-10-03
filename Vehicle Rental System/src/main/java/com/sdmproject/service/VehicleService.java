@@ -54,4 +54,8 @@ public class VehicleService {
 		return carRepository.filterMultipleAttribute(filter, sortProperty, order);
 	}
 
+	public List<Vehicle> findAll() {
+		return carRepository.findAll();
+	}
+
 }

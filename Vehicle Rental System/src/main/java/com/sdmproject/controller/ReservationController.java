@@ -29,10 +29,12 @@ import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.ReservationHistory;
+import com.sdmproject.model.Vehicle;
 import com.sdmproject.service.ClientRecordService;
 import com.sdmproject.service.ReservationHistoryService;
 import com.sdmproject.service.ReservationService;
 import com.sdmproject.service.UserService;
+import com.sdmproject.service.VehicleService;
 
 @Controller
 public class ReservationController {
@@ -41,6 +43,12 @@ public class ReservationController {
 
 	@Autowired
 	private ReservationService reservationService;
+	
+	@Autowired
+	private ClientRecordService clientRecordService;
+	
+	@Autowired
+	private VehicleService vehicleRecordService;
 	
 	@Autowired
 	private ReservationHistoryService reservationHistoryService;
@@ -64,6 +72,12 @@ public class ReservationController {
 	public ModelAndView createReservation() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("clerk/addReservation");
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles", vehicles);
+		
+		List<ClientRecord> clients = clientRecordService.findAll();
+		modelAndView.addObject("clients", clients);
+		
 		return modelAndView;
 	}
 

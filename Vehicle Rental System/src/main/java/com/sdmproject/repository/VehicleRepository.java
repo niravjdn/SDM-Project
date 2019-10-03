@@ -210,4 +210,8 @@ public class VehicleRepository {
 		}
 	}
 
+	public List<Vehicle> findAll() {
+		return records;
+	}
+
 }
