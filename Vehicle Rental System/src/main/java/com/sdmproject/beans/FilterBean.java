@@ -11,6 +11,7 @@ public class FilterBean {
 	// private constructor to prevent instantiation
 	private FilterBean() {
 		System.out.println("intialize");
+		map = new HashMap<String,String>();
 	}
 
 	public static FilterBean getInstance() {
