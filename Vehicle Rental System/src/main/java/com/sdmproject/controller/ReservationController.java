@@ -109,7 +109,7 @@ public class ReservationController {
 	@RequestMapping(value = { "/clerk/reservation/cancel/{id}" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		reservationService.deleteReservationByID(id);
-		atts.addFlashAttribute("successMessage", "Deleted Reservation Successfully");
+		atts.addFlashAttribute("successMessage", "Reservation Cancelled Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/cancel");
 	}
 	
@@ -127,7 +127,7 @@ public class ReservationController {
 		ReservationHistory history = new ReservationHistory(r.getId(),r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), "user", r.getFromDateTime(), r.getToDateTime(), new Date());
 		reservationHistoryService.save(history);
 		reservationService.returnReservationByID(id);
-		atts.addFlashAttribute("successMessage", "Deleted Reservation Successfully");
+		atts.addFlashAttribute("successMessage", "Vehicle Returned Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/returnView");
 	}
 	
