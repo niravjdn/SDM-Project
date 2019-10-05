@@ -29,16 +29,7 @@ public class ReservationService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 
-
-	public boolean isClientExist(String licience_no) {
-		return reservationRepository.isClientExist(licience_no);
-	}
-	
-	public boolean isVehicleExist(String plateNo) {
-		return reservationRepository.isVehicleExist(plateNo);
-	}
-
-	public Reservation save(Reservation reservationRecord) throws DuplicateEntryException {
+	public Reservation save(Reservation reservationRecord) {
 		return reservationRepository.save(reservationRecord);
 	}
 

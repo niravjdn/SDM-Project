@@ -37,13 +37,18 @@
 	<h2> Create Reservation</h3>
 	
 	<br/>
-	<form method="post" th:action="@{/clerk/reservation/add}"
+	
+	
+	<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
+		</div>
+		
+	<form method="post" th:action="@{/clerk/reservation/add}" 
 				class="form-signin">
 	
 				<br />
 					
 				<label class="control-label" for="vehicle">Select Vehicle</label>
-				<select class="form-control" name="vehicle" id="vehicle">
+				<select  class="form-control" name="vehicle" id="vehicle">
 				  <option th:each="v : ${vehicles}"
 				     th:text="${v.id + ' - ' + v.plateNo +  ' - ' + v.make + ' - ' + v.model + ' - ' + v.color }"
 				     th:value="${v.id}"

@@ -26,44 +26,16 @@ public class ReservationRepository {
 
 	private List<Reservation> records = new ArrayList<Reservation>();
 	private static int id = 1;
-	
-	public boolean isClientExist(String driverLicienceNo) {
-		Reservation result = records.stream().filter(record -> record.getClient().getDriverLicienceNo().equals(driverLicienceNo))
-				.findAny().orElse(null);
 
-		if (result != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean isVehicleExist(String plateNo) {
-		Reservation result = records.stream().filter(record -> record.getVehicle().getPlateNo().equals(plateNo))
-				.findAny().orElse(null);
-
-		if (result != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public Reservation save(Reservation record) throws DuplicateEntryException {
-		if (isClientExist(record.getClient().getDriverLicienceNo())&& isVehicleExist(record.getVehicle().getPlateNo())) {
-			throw new DuplicateEntryException("The Client with same licence number already have booking.", null);
-		}
-		if (isVehicleExist(record.getVehicle().getPlateNo())) {
-			throw new DuplicateEntryException("The Vehicle is not available", null);
-		}
+	public Reservation save(Reservation record) {
 		record.setId(id++);
 		records.add(record);
 		return record;
 	}
 
-
 	public List<Reservation> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
-		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().after(new Date()) )).collect(Collectors.toList());
+		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().after(new Date())))
+				.collect(Collectors.toList());
 		if (sortProperty.isPresent()) {
 
 			Collections.sort(result, new Comparator<Object>() {
@@ -109,10 +81,10 @@ public class ReservationRepository {
 
 		return result;
 	}
-	
-	
+
 	public List<Reservation> findAllOutReservationSort(Optional<String> sortProperty, Optional<String> sortOrder) {
-		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().before(new Date()) )).collect(Collectors.toList());
+		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().before(new Date())))
+				.collect(Collectors.toList());
 		if (sortProperty.isPresent()) {
 
 			Collections.sort(result, new Comparator<Object>() {
@@ -158,7 +130,6 @@ public class ReservationRepository {
 
 		return result;
 	}
-
 
 	public void deleteReservationByID(int id) {
 		for (Iterator<Reservation> iterator = records.iterator(); iterator.hasNext();) {
@@ -172,8 +143,8 @@ public class ReservationRepository {
 	}
 
 	public List<Integer> findAllReservationSortByID() {
-		List<Integer> result = records.stream().sorted(Comparator.comparing(Reservation::getId))
-				.map(Reservation::getId).collect(Collectors.toList());
+		List<Integer> result = records.stream().sorted(Comparator.comparing(Reservation::getId)).map(Reservation::getId)
+				.collect(Collectors.toList());
 		return result;
 	}
 
@@ -191,6 +162,4 @@ public class ReservationRepository {
 		return result.get(0);
 	}
 
-
 }
-

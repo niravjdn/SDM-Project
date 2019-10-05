@@ -1,4 +1,5 @@
 package com.sdmproject.controller;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -82,18 +84,24 @@ public class ReservationController {
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/add" }, method = RequestMethod.POST)
-	public ModelAndView createReservationPost(Reservation record) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("clerk/rentalRecordAdd");
-
-		try {
-			reservationService.save(record);
-			modelAndView.addObject("successMessage", "Reservation Record has been added successfully.");
-		} catch (DuplicateEntryException e) {
-			modelAndView.addObject("errorMessage", e.getMessage());
-			modelAndView.addObject("record", record);
-		}
-		return modelAndView;
+	public ModelAndView createReservationPost(int vehicle, int client,  String fromDate, String toDate, RedirectAttributes atts) throws ParseException, DuplicateEntryException {
+		Vehicle v = vehicleRecordService.findByID(vehicle);
+		ClientRecord c = clientRecordService.findByID(client);
+		Reservation reservation = new Reservation();
+		reservation.setClient(c);
+		reservation.setVehicle(v);
+		
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:MM");
+		Date from = format.parse(fromDate);
+		Date to = format.parse(toDate);
+		System.out.println(fromDate);
+		System.out.println(toDate);
+		reservation.setFromDateTime(from);
+		reservation.setToDateTime(to);
+		reservation.setCreatedOn(new Date());
+		reservationService.save(reservation);
+		atts.addFlashAttribute("successMessage", "Reservation Added Successfully.");
+		return new ModelAndView("redirect:/clerk/reservation/add");
 	}
 	
 	@RequestMapping(value = { "/clerk/reservation/cancel" }, method = RequestMethod.GET)
