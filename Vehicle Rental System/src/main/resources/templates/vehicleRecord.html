@@ -34,6 +34,14 @@ table th {
 	width: 100px;
 }
 
+label {
+	margin-top:4px;
+}
+
+#resetButton {
+	margin-left:10px;
+}
+
 </style>
 
 
@@ -65,7 +73,7 @@ table th {
 				<div class="row">
 					
 					<label class="control-label" for="textinput">Make</label> <input
-						class="form-control content" id="make" name="make" th:value="${make}"
+						class="form-control content" id="make" style="margin-left: 28px;" name="make" th:value="${make}"
 						type="text">
 					<label class="control-label" for="textinput">Model</label> <input
 						class="form-control content" id="model" name="model" th:value="${model}"
@@ -79,7 +87,7 @@ table th {
 					&nbsp;&nbsp;&nbsp;
 					
 					
-						<select name = "year" id="year" >
+						<select class="form-control content" name = "year" id="year" >
 							<option disabled selected value>ANY</option>
 					
 							  <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" 
@@ -92,7 +100,7 @@ table th {
 						<div class="row">
 						<label class="control-label" for="textinput">Type</label> 
 						&nbsp;&nbsp;&nbsp;
-						<select name = "type" id="type">
+						<select class="form-control content" name = "type" id="type">
 							<option disabled selected value>ANY</option>
 							<option th:value="seaden" th:selected="${type} == 'seaden' ">Seaden</option>
 				            <option th:value="truck" th:selected="${type} == 'truck'">Truck</option>
@@ -108,7 +116,7 @@ table th {
 					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
 					
 
-				<button type="button" class="btn btn-primary"  onclick="customReset()"
+				<button id="resetButton" type="button" class="btn btn-primary"  onclick="customReset()"
 					> <i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
 					</div>
 		</form>
