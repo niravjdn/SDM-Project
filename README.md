@@ -40,6 +40,10 @@
  - DB Username : root
  - DB Password : (No Password)
 
+## Live Demo
+
+http://sdm.niravjdn.xyz:8080/vehicle-rental/
+
  ### How to set up DB 
 
 if you don't want to connect mysql db, create db with above configuration and When you run your application it will create table and row data automatically.
