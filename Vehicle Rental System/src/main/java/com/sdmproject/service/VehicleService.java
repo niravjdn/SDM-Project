@@ -25,10 +25,6 @@ public class VehicleService {
     public boolean isVehicleExist(String plateNo) {
         return carRepository.isVehicleExist(plateNo);
     }
-
-    public Vehicle saveVehicle(Vehicle vehicle) throws DuplicateEntryException {
-        return carRepository.save(vehicle);
-    }
     
     public List<Vehicle> findAllWithSort(Optional<String> sort, Optional<String> order) {
 		return carRepository.findAllWithSort(sort, order);
@@ -56,6 +52,18 @@ public class VehicleService {
 
 	public List<Vehicle> findAll() {
 		return carRepository.findAll();
+	}
+
+	public void save(Vehicle vehicle) throws DuplicateEntryException {
+		carRepository.save(vehicle);
+	}
+
+	public void update(Vehicle vehicle) {
+		carRepository.update(vehicle);
+	}
+
+	public void deleteClientByID(int id) {
+		carRepository.deleteVehicleByID(id);
 	}
 
 }

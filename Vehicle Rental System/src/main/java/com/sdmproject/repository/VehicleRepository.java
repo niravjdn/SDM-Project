@@ -27,7 +27,7 @@ public class VehicleRepository {
 
 	private List<Vehicle> records = new ArrayList<Vehicle>();
 
-	private static int id = 0;
+	private static int id = 1;
 
 	Logger logger = LoggerFactory.getLogger(VehicleRepository.class);
 
@@ -52,7 +52,7 @@ public class VehicleRepository {
 
 	public Vehicle save(Vehicle vehicle) throws DuplicateEntryException {
 		if (isVehicleExist(vehicle.getPlateNo())) {
-			throw new DuplicateEntryException("The Client with same licience number already exist.", null);
+			throw new DuplicateEntryException("The Vehicle with same licience number already exist.", null);
 		}
 		vehicle.setId(id++);
 		records.add(vehicle);
@@ -212,6 +212,13 @@ public class VehicleRepository {
 
 	public List<Vehicle> findAll() {
 		return records;
+	}
+
+	public Vehicle update(Vehicle record) {
+		int location = records.indexOf(record);
+		records.set(location, record);
+		logger.trace("Updated rows for saving user -----");
+		return record;
 	}
 
 }
