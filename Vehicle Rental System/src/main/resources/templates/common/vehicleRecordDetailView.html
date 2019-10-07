@@ -19,7 +19,12 @@
 </head>
 <body>
 
-	<div th:replace="clerk/header :: navbar"></div>
+	<div sec:authorize="hasAuthority('ADMIN')">
+  		<div th:replace="admin/header :: navbar"></div>
+	</div>
+	<div sec:authorize="hasAuthority('CLERK')">
+	  <div th:replace="clerk/header :: navbar"></div>
+	</div>
 
 
 	<nav class="bodyMargin" aria-label="breadcrumb">
@@ -81,9 +86,9 @@
 		<ul class="pagination">
 			<li class="page-item">
 			<a class="page-link" th:if= "${previousItem} != -1"
-				th:href="@{'/vehicleRecord/view/' + ${previousItem} (sort=${sortProperty}, order=${order}) }"> Previous</a></li>
+				th:href="@{'/common/vehicleRecord/view/' + ${previousItem} (sort=${sortProperty}, order=${order}) }"> Previous</a></li>
 			<li class="page-item"><a class="page-link" th:if= "${nextItem} != -1"
-				th:href="@{'/vehicleRecord/view/' + ${nextItem} (sort=${sortProperty},  order=${order}) }">Next</a></li>
+				th:href="@{'/common/vehicleRecord/view/' + ${nextItem} (sort=${sortProperty},  order=${order}) }">Next</a></li>
 		</ul>
 	</nav>
 	
