@@ -94,17 +94,17 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 		Vehicle vehicle;
 		vehicle = new Vehicle(1, "SEADEN", "Tesla", "Model S", 2016, "White", "ABD ISZ");
-		vehicleService.saveVehicle(vehicle);
+		vehicleService.save(vehicle);
 		vehicle = new Vehicle(2, "TRUCK", "BMW", "S400", 2015, "Pink", "ABE UEZ");
-		vehicleService.saveVehicle(vehicle);
+		vehicleService.save(vehicle);
 		vehicle = new Vehicle(3, "SUV", "Audi", "Q3", 2013, "White", "EBC KGZ");
-		vehicleService.saveVehicle(vehicle);
+		vehicleService.save(vehicle);
 		vehicle = new Vehicle(4, "SUV", "Dodge", "Tiburon", 2012, "Black", "TSC JSZ");
-		vehicleService.saveVehicle(vehicle);
+		vehicleService.save(vehicle);
 		vehicle = new Vehicle(5, "SEADEN", "Subaru", "Mazda", 2011, "Green", "JHS YHZ");
-		vehicleService.saveVehicle(vehicle);
+		vehicleService.save(vehicle);
 		vehicle = new Vehicle(6, "SUV", "Benz", "GLE", 2015, "Black", "ABC YHZ");
-		vehicleService.saveVehicle(vehicle);
+		vehicleService.save(vehicle);
 	}
 
 	private void addClientRecords() throws ParseException, DuplicateEntryException {

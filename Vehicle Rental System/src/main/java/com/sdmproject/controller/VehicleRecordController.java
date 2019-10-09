@@ -14,15 +14,20 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.beans.FilterBean;
+import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.service.ReservationService;
@@ -56,7 +61,55 @@ public class VehicleRecordController {
 		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
 	}
 	
-	@RequestMapping(value = { "/vehicleRecord" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/admin/vehicleRecord/add" }, method = RequestMethod.GET)
+	public ModelAndView vehicleRecordAdd() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/vehicleRecordAdd");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/admin/vehicleRecord/add" }, method = RequestMethod.POST)
+	public ModelAndView vehicleRecordAddPost(Vehicle record) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/vehicleRecordAdd");
+
+		try {
+			vehicleRecordService.save(record);
+			modelAndView.addObject("successMessage", "Vehicle Record has been added successfully.");
+		} catch (DuplicateEntryException e) {
+			modelAndView.addObject("errorMessage", e.getMessage());
+			modelAndView.addObject("record", record);
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping(value = { "/admin/vehicleRecord/update/{id}" }, method = RequestMethod.GET)
+	public ModelAndView vehicleRecordUpdate(@PathVariable(value = "id") final int id,
+			@RequestParam Optional<String> errorMessage, @RequestParam Optional<String> successMessage) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/vehicleRecordEdit");
+		if (errorMessage.isPresent()) {
+			modelAndView.addObject("errorMessage", errorMessage.get());
+		}
+
+		if (successMessage.isPresent()) {
+			modelAndView.addObject("successMessage", successMessage.get());
+		}
+
+		Vehicle record = vehicleRecordService.findByID(id);
+		modelAndView.addObject("record", record);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = { "/admin/vehicleRecord/update" }, method = RequestMethod.POST)
+	public ModelAndView clientRecordUpdate(Vehicle record) {
+		ModelMap map = new ModelMap();
+		vehicleRecordService.update(record);
+		map.addAttribute("successMessage", "Vehicle Record has been updated successfully.");
+		return new ModelAndView("redirect:/admin/vehicleRecord/update/" + record.getId(), map);
+	}
+	
+	@RequestMapping(value = { "/common/vehicleRecord" }, method = RequestMethod.GET)
 	public ModelAndView viewVehicleRecord(Optional<String> sort, Optional<String> order, Optional<String> type,
 			Optional<String> make, Optional<String> model, Optional<String> color, Optional<String> year) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -100,16 +153,16 @@ public class VehicleRecordController {
 		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), sort, order));
 		
 		
-		modelAndView.setViewName("vehicleRecord");
+		modelAndView.setViewName("common/vehicleRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
 		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
 		return modelAndView;
 	}
 
-	@RequestMapping(value = { "/vehicleRecord/view/{id}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/common/vehicleRecord/view/{id}" }, method = RequestMethod.GET)
 	public ModelAndView vehicleRecordView(@PathVariable(value = "id") final int id, String sort, String order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("vehicleRecordDetailView");
+		modelAndView.setViewName("/common/vehicleRecordDetailView");
 		Vehicle record = vehicleRecordService.findByID(id);
 		
 		// get all ids of vehicles - find position of current
@@ -140,4 +193,12 @@ public class VehicleRecordController {
 		
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = { "/admin/vehicleRecord/delete/{id}" }, method = RequestMethod.GET)
+	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
+		vehicleRecordService.deleteClientByID(id);
+		atts.addFlashAttribute("successMessage", "Deleted Vehicle Record Successfully");
+		return new ModelAndView("redirect:/common/vehicleRecord/");
+	}
+
 }

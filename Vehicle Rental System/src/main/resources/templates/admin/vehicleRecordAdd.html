@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Add Client Record</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
+
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+	
+	
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css"/>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/png">
+</head>
+<body>
+
+	<div th:replace="admin/header :: navbar"></div>
+
+	<nav class="bodyMargin" aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a th:href="@{/clerk/home}">Home</a></li>
+	    <li class="breadcrumb-item" aria-current="page"><a th:href="@{/clerk/clientRecord}">Client Catalog</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">Add Vehicle</li>
+	  </ol>
+	</nav>
+	
+	<main role="main" class="container">
+
+
+	
+	<h2> Add Vehicle </h3>
+	
+	<br/>
+
+	<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
+		</div>
+		
+		<div align="center" th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert"  th:utext="${errorMessage}">
+		</div>
+		
+
+		<form method="post" name="addVehicleRecord" th:action="@{/admin/vehicleRecord/add}"
+			class="form-signin">
+
+			<br />
+			
+			<label for="type" > Type</label>
+			<select  class="form-control content" name = "type" id="type">
+							<option th:value="SEADEN" th:selected="${type} == 'seaden' ">Seaden</option>
+				            <option th:value="TRUCK" th:selected="${type} == 'truck'">Truck</option>
+				            <option th:value="SUV" th:selected="${type} == 'suv'">SUV</option>
+							
+						</select></br>
+						
+			<label for="make" > Make</label>
+			 <input type="text" id="make"  name="make"
+				placeholder="Maker" autocomplete="off" class="form-control" th:value="${record?.make}" required /> <br />
+
+			<label for="model" > Model</label>
+			<input type="text" placeholder="Model" id="model"
+				 name="model" class="form-control" autocomplete="off" th:value="${record?.model}"
+				required />
+			 <br />
+			 
+ 			<label for="color" > Color</label>
+			 <input type="text" placeholder="Color" id="color"
+				 name="color" autocomplete="off" class="form-control" th:value="${record?.color}"
+				required />
+			 <br />
+			 
+			<label for="plateNo" > Plate No</label>
+			 <input type="text" placeholder="Plate No" autocomplete="off" id="plateNo" th:value="${record?.plateNo}"
+				 name="plateNo"  class="form-control"
+				required /><br />
+				
+			<label for="year" > Year (e.g. 1996)</label>
+			<input type="text" placeholder="Year" autocomplete="off" id="year" th:value="${record?.year}"
+				 name="year" pattern="\d{4}" maxlength="4" class="form-control"
+				required />
+			 <br />
+
+			
+	
+			<button class="btn btn-lg btn-primary btn-block" name="Submit"
+				value="Login" type="Submit" th:text="Add"></button>
+			
+		</form>
+
+	</main>
+	<!-- /.container -->
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+$(document).ready(function(){
+    var date_input=$('input[name="expiryDate"]'); //our date input has the name "date"
+    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options={
+      format: 'mm/dd/yyyy',
+      startDate: new Date(),
+      todayHighlight: true,
+      orientation: "auto",
+      autoclose: true,
+    };
+    date_input.datepicker(options);
+  })
+</script>
+<script th:src="@{/js/main.js}" > </script>
+</body>
+</html>
