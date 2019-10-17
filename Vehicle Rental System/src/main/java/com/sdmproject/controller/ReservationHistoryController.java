@@ -1,7 +1,9 @@
 package com.sdmproject.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -70,8 +72,9 @@ public class ReservationHistoryController {
 	
 	@RequestMapping(value = { "/admin/reservation/historyView" }, method = RequestMethod.GET)
 	public ModelAndView reservationHistoryView(Optional<String> sort, Optional<String> order) {
+		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", reservationService.findAll());
+		modelAndView.addObject("records", reservationHistoryService.findAll());
 		modelAndView.setViewName("admin/reservationHistory");
 		return modelAndView;
 	}

@@ -39,7 +39,7 @@ public class ReservationHistory {
 
 	private String returnedBy;
 
-	private Date fromDateTIme;
+	private Date fromDateTime;
 
 	private Date toDateTime;
 
