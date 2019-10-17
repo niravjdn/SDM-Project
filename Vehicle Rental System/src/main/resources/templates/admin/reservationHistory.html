@@ -48,11 +48,22 @@ table th { user-select: none; background: #eee;}
 
 			<form method="get" id="filterForm" th:action="@{/admin/reservation/historyView}">
 					
-					<label for="textinput"><b>Client</b></label> <input id="firstName" style="margin-left: 28px;" name="firstName" th:value="${firstName}"
-						type="text">
-							
-		
-						<br /><br>				</div>
+	<!--				<label for="textinput"><b>Client</b></label> <input id="firstName" style="margin-left: 28px;" name="firstName" th:value="${firstName}"
+						type="text">-->
+						
+						<br />
+				<label class="control-label" for="client"><b>Select Client</b></label>
+				<select class="form-control" name="client" id="client">
+				  <option th:each="c : ${records}"
+				     th:text="${c.id + ' - ' + c.firstName +  ' - ' + c.lastName + ' - ' + c.driverLicienceNo + ' - ' + c.phoneNo }"
+				     th:value="${c.firstName}"
+				     >
+				  </option>
+				</select>
+
+				<br>
+				<br>
+				
 				<button type="submit" class="btn btn-primary" style="margin:right = 10px;"
 					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
 					
