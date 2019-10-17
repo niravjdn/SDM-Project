@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sdmproject.beans.FilterBean;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
@@ -58,6 +60,8 @@ public class ReservationHistoryController {
 	@Autowired
 	private UserService userService;
 
+	private FilterBean filterBean = FilterBean.getInstance();
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
@@ -70,12 +74,34 @@ public class ReservationHistoryController {
 		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
 	}
 	
-	@RequestMapping(value = { "/admin/reservation/historyView" }, method = RequestMethod.GET)
-	public ModelAndView reservationHistoryView(Optional<String> sort, Optional<String> order) {
+	@RequestMapping(value = { "/admin/reservation/historyView"}, method = RequestMethod.GET)
+	public ModelAndView reservationHistoryView(Optional<String> sort, Optional<String> order, Optional<String> firstName) {
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", reservationHistoryService.findAll());
+		modelAndView.addObject("records", reservationHistoryService.findAllWithSort(sort,order));
+		
+		if(sort.isPresent()) {
+			//if already landed on page, process map and add value to modelAndView
+			for (Map.Entry<String, String> entry : filterBean.getMap().entrySet()) {
+				modelAndView.addObject(entry.getKey(),  entry.getValue());
+			}
+		}else {
+			//if landing on page for first time, clear the map
+			filterBean.getMap().clear();
+		}
+		
+		if(firstName.isPresent()) {
+			modelAndView.addObject("firstName", firstName.get());
+			filterBean.getMap().put("firstName", firstName.get());
+		}
+		System.out.println(" in " + filterBean.getMap());
+		modelAndView.addObject("records", reservationHistoryService.filterMultipleAttribute(filterBean.getMap(), sort, order));
 		modelAndView.setViewName("admin/reservationHistory");
+		
+		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
+		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
+
+		
 		return modelAndView;
 	}
 }

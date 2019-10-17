@@ -149,6 +149,7 @@ public class VehicleRecordController {
 			filterBean.getMap().put("year", year.get());
 			modelAndView.addObject("year", year.get());
 		}
+		System.out.println("in2 : "+filterBean.getMap());
 		
 		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), sort, order));
 		

@@ -3,6 +3,8 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
+
 <title>Reservation History</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
@@ -42,12 +44,28 @@ table th { user-select: none; background: #eee;}
 	<h2> Reservation History View </h2>
 	
 	<br>
+	
+
+			<form method="get" id="filterForm" th:action="@{/admin/reservation/historyView}">
+					
+					<label for="textinput"><b>Client</b></label> <input id="firstName" style="margin-left: 28px;" name="firstName" th:value="${firstName}"
+						type="text">
+							
+		
+						<br /><br>				</div>
+				<button type="submit" class="btn btn-primary" style="margin:right = 10px;"
+					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+					
+
+		</form>
+		<br />
+		<br/>
 		
 		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
 		
 		
-	<table id="historyTable" class="table table-bordered">
+	<table id="filterableTable" class="table table-bordered">
 		<thead>
 			<tr>
 				<th data-sort-prop="id">Id</th>
@@ -142,5 +160,17 @@ table th { user-select: none; background: #eee;}
       });
     });
   </script>
+  <script>
+	window.onload = function() {
+		  document.getElementById('filterForm').addEventListener('submit', function() {
+		    Array.prototype.forEach.call(this.elements, function(el) {
+		      el.disabled = el.value == '';
+		    });
+		  }, false);
+		};
+		
+	
+			
+		</script>
 </body>
 </html>
