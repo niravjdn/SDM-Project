@@ -157,7 +157,7 @@ $('#dueDate').datetimepicker({
     datepicker: {
         disableDates:  function (date) {
         	const currentDate = new Date().setHours(0,0,0,0);
-            return date.setHours(0,0,0,0) >= currentDate ? true : false;
+            return date.setHours(0,0,0,0) >= currentDate ? true : true;
         }
     },
     onSelect: function(dateStr) 
@@ -184,7 +184,7 @@ $("#dueDate").on("close", function(e) {
 	    datepicker: {
 	        disableDates:  function (date) {
 	        	const currentDate = fromDate.setHours(0,0,0,0);
-	            return date.setHours(0,0,0,0) >= currentDate ? true : false;
+	            return date.setHours(0,0,0,0) >= currentDate ? true : true;
 	        }
 	    }
 	});
