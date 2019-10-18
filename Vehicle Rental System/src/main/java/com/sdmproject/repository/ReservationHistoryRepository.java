@@ -2,12 +2,15 @@ package com.sdmproject.repository;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -125,6 +128,9 @@ public class ReservationHistoryRepository {
 						| InvocationTargetException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				return false;
 			}).collect(Collectors.toList());
@@ -137,12 +143,25 @@ public class ReservationHistoryRepository {
 	}
 
 	public boolean predicateEvaluation(ReservationHistory item, String key, String val) throws NoSuchMethodException,
-			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException {
 		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
-		
+			if(key.equals("toDateTime")) {
+					
+					String st[] = item.getToDateTime().toString().split(" ");
+					String st1[] = val.split("-");
+					Date d = new SimpleDateFormat("MMM",Locale.ENGLISH).parse(st[1]);
+				
+					String st2[]=d.toString().split(" ");
+					if(st[2].equalsIgnoreCase(st1[0]) && st[5].equalsIgnoreCase(st1[2]) && st[1].equalsIgnoreCase(st2[1]) )
+						return true;
+					else {
+						return false;
+						}
+			}
 			return ((String) m.invoke(item)).equalsIgnoreCase(val);
 		
 	}
+	
 
 	
 	public List<ReservationHistory> findAll() {
