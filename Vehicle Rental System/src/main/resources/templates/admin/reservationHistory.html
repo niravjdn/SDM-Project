@@ -56,9 +56,9 @@ table th { user-select: none; background: #eee;}
 				<select class="form-control" name="client" id="client">
 				
 				  <option disabled selected value>ANY</option>
-				  <option th:each="c : ${records}"
-				     th:text="${c.id + ' - ' + c.firstName +  ' - ' + c.lastName + ' - ' + c.driverLicienceNo + ' - ' + c.phoneNo }"
-				     th:value="${c.firstName}"
+				  <option th:each="t : ${reservations}"
+				     th:text="${t.id + ' - ' + t.firstName +  ' - ' + t.lastName + ' - ' + t.driverLicienceNo + ' - ' + t.phoneNo }"
+				     th:value="${t.firstName}"
 				     >
 				  </option>
 				</select>
@@ -74,8 +74,8 @@ table th { user-select: none; background: #eee;}
 				<button type="submit" class="btn btn-primary" style="margin:right = 10px;"
 					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
 					
-					<button id="resetButton" type="button" class="btn btn-primary"  onclick="customReset()"
-					> <i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
+					<button id="resetButton" type="button" class="btn btn-primary"  onclick="customReset()"> 
+					<i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
 					
 
 		</form>
@@ -239,8 +239,8 @@ $("#dueDate").on("close", function(e) {
 		function customReset()
 		{
 		    document.getElementById("filterForm").reset();
-		    document.getElementById("firstName").value = "";
-		    document.getElementById("dueDate").value="";
+			document.getElementById("client").selectedIndex = 0;
+		    document.getElementById("dueDate").value = "";
 		}
 	
 			

@@ -146,7 +146,8 @@ public class ReservationHistoryRepository {
 			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException {
 		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
 			if(key.equals("toDateTime")) {
-					
+					if(val==null)
+						return true;
 					String st[] = item.getToDateTime().toString().split(" ");
 					String st1[] = val.split("-");
 					Date d = new SimpleDateFormat("MMM",Locale.ENGLISH).parse(st[1]);

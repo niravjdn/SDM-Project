@@ -106,6 +106,8 @@ public class ReservationHistoryController {
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
 		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
 
+		List<ReservationHistory> reservations = reservationHistoryService.findAll();
+		modelAndView.addObject("reservations",reservations);
 		
 		return modelAndView;
 	}
