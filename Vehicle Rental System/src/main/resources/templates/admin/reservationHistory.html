@@ -51,8 +51,8 @@ table th { user-select: none; background: #eee;}
 	<!--				<label for="textinput"><b>Client</b></label> <input id="firstName" style="margin-left: 28px;" name="firstName" th:value="${firstName}"
 						type="text">-->
 						
-						<br />
-				<label class="control-label" for="client"><b>Select Client</b></label>
+				
+				<label class="control-label" for="client"><b>Search Transaction History by Client</b></label>
 				<select class="form-control" name="client" id="client">
 				
 				  <option disabled selected value>ANY</option>
@@ -62,6 +62,19 @@ table th { user-select: none; background: #eee;}
 				     >
 				  </option>
 				</select>
+				
+				<br />	
+				<label class="control-label" for="vehicle"><b>Search Transaction History by Vehicle</b></label>
+				<select class="form-control" name="vehicle" id="vehicle">
+				
+				  <option disabled selected value>ANY</option>
+				  <option th:each="t : ${reservations}"
+				     th:text="${t.id + ' - ' + t.plateNo +  ' - ' + t.make + ' - ' + t.color + ' - ' + t.year }"
+				     th:value="${t.plateNo}"
+				     >
+				  </option>
+				</select>
+		
 				
 				<br />	
 				<label class="control-label" for="textinput"><b>Booking Due Date</b></label>
@@ -241,6 +254,7 @@ $("#dueDate").on("close", function(e) {
 		    document.getElementById("filterForm").reset();
 			document.getElementById("client").selectedIndex = 0;
 		    document.getElementById("dueDate").value = "";
+			document.getElementById("vehicle").selectedIndex= 0;
 		}
 	
 			
