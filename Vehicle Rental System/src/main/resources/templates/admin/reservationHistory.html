@@ -50,8 +50,8 @@ table th { user-select: none; background: #eee;}
 					
 	<!--				<label for="textinput"><b>Client</b></label> <input id="firstName" style="margin-left: 28px;" name="firstName" th:value="${firstName}"
 						type="text">-->
-						
-				
+				<div class="row">		
+				<div class="col-sm-4">
 				<label class="control-label" for="client"><b>Search Transaction History by Client</b></label>
 				<select class="form-control" name="client" id="client">
 				
@@ -62,8 +62,8 @@ table th { user-select: none; background: #eee;}
 				     >
 				  </option>
 				</select>
-				
-				<br />	
+				</div>
+				<div class="col-sm-4">	
 				<label class="control-label" for="vehicle"><b>Search Transaction History by Vehicle</b></label>
 				<select class="form-control" name="vehicle" id="vehicle">
 				
@@ -74,14 +74,12 @@ table th { user-select: none; background: #eee;}
 				     >
 				  </option>
 				</select>
-		
-				
-				<br />	
-				<label class="control-label" for="textinput"><b>Booking Due Date</b></label>
+				</div>
+				<div class="col-sm-4">
+				<label class="control-label" for="textinput"><b>Search Transaction History by Booking Due Date</b></label>
 	 			<input type="text"  name="dueDate" id="dueDate"
 				placeholder="Due Date" autocomplete="off" class="form-control" th:value="${toDateTime}" /></div>	
-				
-				<br>
+				</div>
 				<br>
 				
 				<button type="submit" class="btn btn-primary" style="margin:right = 10px;"
@@ -92,7 +90,7 @@ table th { user-select: none; background: #eee;}
 					
 
 		</form>
-		<br />
+		
 		<br/>
 		
 		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
