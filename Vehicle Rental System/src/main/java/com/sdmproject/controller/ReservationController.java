@@ -122,7 +122,7 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
-	public ModelAndView clientRecordReturnView(Optional<String> sort, Optional<String> order) {
+	public ModelAndView returnVehicleReturnView(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
 		modelAndView.setViewName("clerk/returnVehicle");
@@ -139,5 +139,13 @@ public class ReservationController {
 		return new ModelAndView("redirect:/clerk/reservation/returnView");
 	}
 	
+	
+	@RequestMapping(value = { "/admin/reservation/onging" }, method = RequestMethod.GET)
+	public ModelAndView ongoingTransactions(Optional<String> sort, Optional<String> order) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
+		modelAndView.setViewName("admin/currentOngoingRental");
+		return modelAndView;
+	}
 
 }

@@ -52,9 +52,6 @@ public class ReservationHistoryController {
 	private VehicleService vehicleRecordService;
 	
 	@Autowired
-	private ReservationService reservationService;
-	
-	@Autowired
 	private ReservationHistoryService reservationHistoryService;
 
 	@Autowired
