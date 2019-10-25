@@ -158,7 +158,10 @@ public class ReservationHistoryRepository {
 					else {
 						return false;
 						}
-			}
+			}else if (key.contains("id")) {
+				Integer id = item.getId();
+				return id == Integer.parseInt(val);
+			} 
 			return ((String) m.invoke(item)).equalsIgnoreCase(val);
 		
 	}

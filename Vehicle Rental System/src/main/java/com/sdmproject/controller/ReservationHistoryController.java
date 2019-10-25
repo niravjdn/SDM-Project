@@ -89,8 +89,9 @@ public class ReservationHistoryController {
 		}
 		
 		if(client.isPresent()) {
-			modelAndView.addObject("firstName", client.get());
-			filterBean.getMap().put("firstName", client.get());
+			System.out.println("here");
+			modelAndView.addObject("client", client.get());
+			filterBean.getMap().put("driverLicienceNo", client.get());
 		}
 		
 		if(vehicle.isPresent()) {
@@ -109,8 +110,13 @@ public class ReservationHistoryController {
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
 		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
 
-		List<ReservationHistory> reservations = reservationHistoryService.findAll();
-		modelAndView.addObject("reservations",reservations);
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles",vehicles);
+		
+		
+		List<ClientRecord> clients = clientRecordService.findAll();
+		modelAndView.addObject("clients",clients);
+		
 		
 		return modelAndView;
 	}

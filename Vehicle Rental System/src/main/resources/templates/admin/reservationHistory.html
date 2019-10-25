@@ -56,9 +56,9 @@ table th { user-select: none; background: #eee;}
 				<select class="form-control" name="client" id="client">
 				
 				  <option disabled selected value>ANY</option>
-				  <option th:each="t : ${reservations}"
-				     th:text="${t.id + ' - ' + t.firstName +  ' - ' + t.lastName + ' - ' + t.driverLicienceNo + ' - ' + t.phoneNo }"
-				     th:value="${t.firstName}"
+				  <option th:each="t : ${clients}"
+				     th:text="${t.id + ' - ' + t.firstName +  ' - ' + t.lastName + ' - ' + t.driverLicienceNo + ' - ' + t.phoneNo + ' - ' + client}"
+				     th:value="${t.driverLicienceNo}" th:selected="${t.driverLicienceNo} == ${client}"
 				     >
 				  </option>
 				</select>
@@ -68,9 +68,9 @@ table th { user-select: none; background: #eee;}
 				<select class="form-control" name="vehicle" id="vehicle">
 				
 				  <option disabled selected value>ANY</option>
-				  <option th:each="t : ${reservations}"
+				  <option th:each="t : ${vehicles}"
 				     th:text="${t.id + ' - ' + t.plateNo +  ' - ' + t.make + ' - ' + t.color + ' - ' + t.year }"
-				     th:value="${t.plateNo}"
+				     th:value="${t.plateNo}" th:selected="${plateNo} == ${t.plateNo}"
 				     >
 				  </option>
 				</select>
