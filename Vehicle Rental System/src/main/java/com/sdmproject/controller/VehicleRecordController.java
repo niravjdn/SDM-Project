@@ -219,13 +219,13 @@ public class VehicleRecordController {
 				@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")  Date toDate) {
 		
 		ModelAndView modelAndView = new ModelAndView();
-		System.out.println(plateNo);
 		System.out.println("fromDate "+ fromDate.toString());
 		System.out.println("todate "+toDate.toString());
 		
 		modelAndView.setViewName("admin/checkVehicleAvailibility");
-
-		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		
+		List<Reservation> vehicles = reservationService.findReservationWithDateRange(plateNo, fromDate, toDate);
+		
 		modelAndView.addObject("vehicles",vehicles);
 		
 		return modelAndView;

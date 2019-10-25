@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,9 @@ public class ReservationService {
 		return reservationRepository.findAllOutReservationSort(sort, order);
 	}
 	
+	public List<Reservation> findReservationWithDateRange(String plateNo, Date fromDate, Date toDate) {
+		return reservationRepository.findReservationWithDateRange(plateNo, fromDate, toDate);
+	}
 
 	public List<Reservation> findAll() {
 		return reservationRepository.findAll();
