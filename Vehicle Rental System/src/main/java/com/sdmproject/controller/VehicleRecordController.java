@@ -1,5 +1,6 @@
 package com.sdmproject.controller;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -223,10 +224,20 @@ public class VehicleRecordController {
 		System.out.println("todate "+toDate.toString());
 		
 		modelAndView.setViewName("admin/checkVehicleAvailibility");
-		
-		List<Reservation> vehicles = reservationService.findReservationWithDateRange(plateNo, fromDate, toDate);
-		
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
 		modelAndView.addObject("vehicles",vehicles);
+		
+		List<Reservation> reservations = reservationService.findReservationWithDateRange(plateNo, fromDate, toDate);
+		
+		modelAndView.addObject("reservations",reservations);
+		
+		modelAndView.addObject("isVehicleAvailable", reservations.size() <= 0);
+		modelAndView.addObject("plateNo", plateNo);
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");  
+          
+		modelAndView.addObject("fromDate",dateFormat.format(fromDate));
+		modelAndView.addObject("toDate",dateFormat.format(toDate));
 		
 		return modelAndView;
 	}

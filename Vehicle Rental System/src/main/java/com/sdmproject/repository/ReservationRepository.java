@@ -165,7 +165,7 @@ public class ReservationRepository {
 	public List<Reservation> findReservationWithDateRange(String plateNo, Date fromDate, Date toDate) {
 		
 		List<Reservation> result = records.stream().filter(i -> (i.getVehicle().getPlateNo().equals(plateNo)))
-				.filter(i -> (i.getFromDateTime().compareTo(toDate) > 0 )).filter(i -> (i.getToDateTime().compareTo(fromDate) < 0 ))
+				.filter(i -> (i.getFromDateTime().compareTo(toDate) <= 0 && i.getToDateTime().compareTo(fromDate) >= 0 ))
 				.collect(Collectors.toList());
 		
 		return result;
