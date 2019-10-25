@@ -148,4 +148,10 @@ public class ReservationController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.GET)
+	public ModelAndView checkVehicleAvailibility() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/checkVehicleAvailibility");
+		return modelAndView;
+	}
 }
