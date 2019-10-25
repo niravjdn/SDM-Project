@@ -1,6 +1,8 @@
 package com.sdmproject.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -27,7 +30,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.beans.FilterBean;
 import com.sdmproject.exceptions.DuplicateEntryException;
-import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.service.ReservationService;
@@ -48,11 +50,7 @@ public class VehicleRecordController {
 	
 	@Autowired
 	private UserService userService;
-
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
-	}
+	
 	
 	@ModelAttribute("username")
 	public String getCurrentUser() {
@@ -202,4 +200,34 @@ public class VehicleRecordController {
 		return new ModelAndView("redirect:/common/vehicleRecord/");
 	}
 
+	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.GET)
+	public ModelAndView checkVehicleAvailibility() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/checkVehicleAvailibility");
+
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles",vehicles);
+		
+		return modelAndView;
+	}
+	
+	
+	
+	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.POST
+			)
+	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("plateNo") String plateNo, @RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")  Date fromDate,
+				@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")  Date toDate) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println(plateNo);
+		System.out.println("fromDate "+ fromDate.toString());
+		System.out.println("todate "+toDate.toString());
+		
+		modelAndView.setViewName("admin/checkVehicleAvailibility");
+
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles",vehicles);
+		
+		return modelAndView;
+	}
 }

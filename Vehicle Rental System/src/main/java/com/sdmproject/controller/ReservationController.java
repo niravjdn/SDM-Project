@@ -147,5 +147,4 @@ public class ReservationController {
 		modelAndView.setViewName("admin/currentOngoingRental");
 		return modelAndView;
 	}
-
 }
