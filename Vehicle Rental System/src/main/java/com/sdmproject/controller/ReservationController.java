@@ -1,4 +1,5 @@
 package com.sdmproject.controller;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,11 +58,6 @@ public class ReservationController {
 
 	@Autowired
 	private UserService userService;
-
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
-	}
 
 	@ModelAttribute("username")
 	public String getCurrentUser() {
@@ -145,6 +141,22 @@ public class ReservationController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
 		modelAndView.setViewName("admin/currentOngoingRental");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/admin/reservation/onging" }, method = RequestMethod.POST
+			)
+	public ModelAndView findReservationByDueDate(@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  Date dueDate) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		
+		modelAndView.setViewName("/admin/currentOngoingRental");
+		
+		modelAndView.addObject("records", reservationService.findAllOutReservationOnDueDate(dueDate));
+		modelAndView.addObject("dueDate", dueDate);
+          
+		
 		return modelAndView;
 	}
 }

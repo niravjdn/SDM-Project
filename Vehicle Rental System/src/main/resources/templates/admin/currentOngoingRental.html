@@ -19,10 +19,17 @@
 	rel="stylesheet">
 
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/png">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css"/>
 </head>
 <style>
 table th { user-select: none; background: #eee;}
+
+.content {
+	margin-right: 20px;
+	margin-left: 20px;
+	width: 100px;
+}
+
 </style>
 
 
@@ -39,11 +46,29 @@ table th { user-select: none; background: #eee;}
 	
 	<main role="main" class="container-fluid">
 	
-	<h2> Ongoing Reservations (currently out cars) </h3>
+	<h2> Ongoing Reservations (currently out vehicles) </h3>
 	
 	<br> <input class="form-control" id="searchInput" type="text"
 			placeholder="Search.."> <br />
 	</div>	
+	
+	<div class="jumbotron">
+		<form th:action="@{/admin/reservation/onging}" method="post">
+			<label for="dueDate" >Filter by due date</label>
+			 <input type="text" placeholder="Expiry Date" autocomplete="off" id="dueDate" th:value="${#dates.format(dueDate, 'dd-MM-yyyy')}"
+				 name="dueDate"  class="form-control content" style="min-width:200px;" 
+				required />
+				<br/>
+				
+				
+				
+			<button type="submit" class="btn btn-primary" style=" min-width:200px;"
+					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+					
+			
+	</form>
+	
+	</div>
 		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
 		
@@ -111,6 +136,7 @@ table th { user-select: none; background: #eee;}
 
 	<script th:src="@{/js/filter.js}"> </script>
 	<script th:src="@{/js/main.js}" > </script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script th:inline="javascript">
     //thymeleaf to javascript variables
     /*<![CDATA[*/
@@ -147,5 +173,18 @@ table th { user-select: none; background: #eee;}
       });
     });
   </script>
+  <script>
+$(document).ready(function(){
+    var date_input=$('input[name="dueDate"]'); //our date input has the name "date"
+    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options={
+      format: 'dd-mm-yyyy',
+      todayHighlight: true,
+      orientation: "auto",
+      autoclose: true,
+    };
+    date_input.datepicker(options);
+  })
+</script>
 </body>
 </html>

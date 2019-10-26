@@ -62,4 +62,8 @@ public class ReservationService {
 	public Reservation findByID(int id) {
 		return reservationRepository.findByID(id);
 	}
+
+	public List<Reservation> findAllOutReservationOnDueDate(Date dueDate) {
+		return reservationRepository.findAllOutReservationOnDueDate(dueDate);
+	}
 }

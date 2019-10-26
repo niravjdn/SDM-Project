@@ -171,4 +171,11 @@ public class ReservationRepository {
 		return result;
 	}
 
+	public List<Reservation> findAllOutReservationOnDueDate(Date dueDate) {
+		List<Reservation> result = records.stream().filter(item -> (item.getToDateTime().compareTo(dueDate) == 0))
+				.collect(Collectors.toList());
+		
+		return result;
+	}
+
 }
