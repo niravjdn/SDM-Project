@@ -79,7 +79,7 @@ label {
 			 		<button type="submit" class="btn btn-primary" style="margin-right: 10px; margin-top:20px;" 
 					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
 					
-					<button id="resetButton" type="reset" class="btn btn-primary"  style="margin-top:20px;"> 
+					<button id="resetButton" type="reset" class="btn btn-primary" onclick="customReset()" style="margin-top:20px;"> 
 					<i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
 					
 			 				
@@ -169,7 +169,14 @@ label {
 	    },
 	    format: 'dd-mm-yyyy HH:MM:ss'
 	});
+	function customReset()
+	{
+	    document.getElementById("filterForm").reset();
+		document.getElementById("fromDate").selectedIndex = "";
+	    document.getElementById("toDate").value = "";
 	
+	}
+
 	</script>
 </body>
 </html>
