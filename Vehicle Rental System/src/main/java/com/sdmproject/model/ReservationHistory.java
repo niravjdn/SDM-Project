@@ -43,5 +43,5 @@ public class ReservationHistory {
 
 	private Date toDateTime;
 
-	private Date updatedOn;
+	private Date updatedDateTime;
 }

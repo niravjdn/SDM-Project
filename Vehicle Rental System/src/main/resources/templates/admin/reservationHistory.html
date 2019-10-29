@@ -112,7 +112,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
-				<th data-sort-prop="updatedOn">Reservation Updated</th>
+				<th data-sort-prop="updatedDateTime">Reservation Updated</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -129,12 +129,10 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.year}"></td>
 				<td th:text="${record.fromDateTime}"></td>
 				<td th:text="${record.toDateTime}"></td>
-				<td th:text="${record.updatedOn}"></td>
+				<td th:text="${record.updatedDateTime}"></td>
 			</tr>
 		</tbody>
 	</table>
-
-
 
 	</main>
 	<!-- /.container -->
