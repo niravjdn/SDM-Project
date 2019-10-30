@@ -27,12 +27,12 @@ import com.sdmproject.model.Vehicle;
 public class ReservationHistoryRepository {
 
 	private List<ReservationHistory> records = new ArrayList<ReservationHistory>();
-	
+
 	public ReservationHistory save(ReservationHistory record) {
 		records.add(record);
 		return record;
 	}
-	
+
 	public List<ReservationHistory> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
 		List<ReservationHistory> result = records.stream().collect(Collectors.toList());
 		if (sortProperty.isPresent()) {
@@ -90,7 +90,13 @@ public class ReservationHistoryRepository {
 						Integer s1 = (Integer) m.invoke(o1);
 						Integer s2 = (Integer) m.invoke(o2);
 						return s1.compareTo(s2);
-					} else {
+					}
+					else if (sortProperty.contains("Date")){
+						Date d1 = (Date) m.invoke(o1);
+						Date d2 = (Date) m.invoke(o2);
+						return d1.compareTo(d2);
+					}
+					else {
 						String s1 = (String) m.invoke(o1);
 						String s2 = (String) m.invoke(o2);
 						return s1.compareTo(s2);
@@ -115,59 +121,63 @@ public class ReservationHistoryRepository {
 		});
 	}
 
-	public List<ReservationHistory> filterMultipleAttribute(Map<String, String> map, Optional<String> sortProperty, Optional<String> order) {
+	public List<ReservationHistory> filterMultipleAttribute(Map<String, String> map, Optional<String> sortProperty,
+			Optional<String> order) {
 		List<ReservationHistory> filteredResult = records.stream().collect(Collectors.toList());
-		if (map.isEmpty()) {
-			return filteredResult;
+		if (!map.isEmpty()) {
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				filteredResult = filteredResult.stream().filter(item -> {
+					try {
+						return (predicateEvaluation(item, entry.getKey(), entry.getValue()));
+					} catch (IllegalAccessException | SecurityException | NoSuchMethodException
+							| IllegalArgumentException | InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return false;
+				}).collect(Collectors.toList());
+			}
 		}
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			filteredResult = filteredResult.stream().filter(item -> {
-				try {
-					return (predicateEvaluation(item, entry.getKey(), entry.getValue()));
-				} catch (IllegalAccessException | SecurityException | NoSuchMethodException | IllegalArgumentException
-						| InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return false;
-			}).collect(Collectors.toList());
-		}
-		
-		if(sortProperty.isPresent())
+
+		if (sortProperty.isPresent())
 			sort(sortProperty.get(), filteredResult);
 		
+		if(order.isPresent()) {
+			if(order.get().equals("desc"))
+				Collections.reverse(filteredResult);
+		}
+
 		return filteredResult;
 	}
 
-	public boolean predicateEvaluation(ReservationHistory item, String key, String val) throws NoSuchMethodException,
-			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException {
+	public boolean predicateEvaluation(ReservationHistory item, String key, String val)
+			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, ParseException {
 		Method m = item.getClass().getMethod("get" + WordUtils.capitalize(key));
-			if(key.equals("toDateTime")) {
-					if(val==null)
-						return true;
-					String st[] = item.getToDateTime().toString().split(" ");
-					String st1[] = val.split("-");
-					Date d = new SimpleDateFormat("MMM",Locale.ENGLISH).parse(st[1]);
-				
-					String st2[]=d.toString().split(" ");
-					if(st[2].equalsIgnoreCase(st1[0]) && st[5].equalsIgnoreCase(st1[2]) && st[1].equalsIgnoreCase(st2[1]) )
-						return true;
-					else {
-						return false;
-						}
-			}else if (key.contains("id")) {
-				Integer id = item.getId();
-				return id == Integer.parseInt(val);
-			} 
-			return ((String) m.invoke(item)).equalsIgnoreCase(val);
-		
-	}
-	
+		if (key.equals("toDateTime")) {
+			if (val == null)
+				return true;
+			String st[] = item.getToDateTime().toString().split(" ");
+			String st1[] = val.split("-");
+			Date d = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(st[1]);
 
-	
+			String st2[] = d.toString().split(" ");
+			if (st[2].equalsIgnoreCase(st1[0]) && st[5].equalsIgnoreCase(st1[2]) && st[1].equalsIgnoreCase(st2[1]))
+				return true;
+			else {
+				return false;
+			}
+		} else if (key.contains("id")) {
+			Integer id = item.getId();
+			return id == Integer.parseInt(val);
+		}
+		return ((String) m.invoke(item)).equalsIgnoreCase(val);
+
+	}
+
 	public List<ReservationHistory> findAll() {
 		return records;
 	}
