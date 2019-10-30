@@ -137,7 +137,7 @@ public class VehicleRepository {
 		return listOfIDs;
 	}
 
-	private void sort(String sortProperty, List<Vehicle> result) {
+	private List<Vehicle> sort(String sortProperty, List<Vehicle> result) {
 		Collections.sort(result, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
 				try {
@@ -169,13 +169,12 @@ public class VehicleRepository {
 				return 0;
 			}
 		});
+		return result;
 	}
 
 	public List<Vehicle> filterMultipleAttribute(Map<String, String> map, Optional<String> sortProperty, Optional<String> order) {
 		List<Vehicle> filteredResult = records.stream().collect(Collectors.toList());
-		if (map.isEmpty()) {
-			return filteredResult;
-		}
+		if (!map.isEmpty()) {
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			filteredResult = filteredResult.stream().filter(item -> {
 				try {
@@ -188,9 +187,15 @@ public class VehicleRepository {
 				return false;
 			}).collect(Collectors.toList());
 		}
+		}
 		
 		if(sortProperty.isPresent())
-			sort(sortProperty.get(), filteredResult);
+			filteredResult = sort(sortProperty.get(), filteredResult);
+		
+		if(order.isPresent()) {
+			if(order.get().equals("desc"))
+				Collections.reverse(filteredResult);
+		}
 		
 		return filteredResult;
 	}
