@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Cancel Reservations</title>
+<title>Return Vehicle</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 <link
@@ -39,7 +39,7 @@ table th { user-select: none; background: #eee;}
 	
 	<main role="main" class="container-fluid">
 	
-	<h2> Reservation Catalog </h3>
+	<h2> Reservation Catalog : Return Vehicle</h3>
 	
 	<br>
 		
@@ -135,7 +135,7 @@ table th { user-select: none; background: #eee;}
         });
 
      //set click action, reload page on clicking with all query params
-     $("table thead th").click(function() {
+    /* $("table thead th ").click(function() {
       var headerSortPropName = $(this).attr("data-sort-prop");
       if(headerSortPropName==undefined){
     	  return;
@@ -149,7 +149,7 @@ table th { user-select: none; background: #eee;}
            window.location.href = window.location.pathname+
           '?sort='+ headerSortPropName+'&order=asc';
       }
-      });
+      }); */ 
     });
   </script>
 </body>
