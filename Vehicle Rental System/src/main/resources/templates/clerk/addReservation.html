@@ -120,7 +120,7 @@ $('#fromDate').datetimepicker({
         $("#toDate").val(dateStr);
         $("#toDate").datetimepicker("option",{ minDate: new Date(dateStr)})
     },
-    format: 'mm/dd/yyyy HH:MM'
+    format: 'yyyy-mm-dd HH:MM'
 });
 
 
@@ -134,7 +134,7 @@ $("#fromDate").on("close", function(e) {
 	    uiLibrary: 'bootstrap4',
 	    modal: false,
 	    footer: true,
-	    format: 'mm/dd/yyyy HH:MM',
+	    format: 'yyyy-mm-dd HH:MM',
 	    datepicker: {
 	        disableDates:  function (date) {
 	        	const currentDate = fromDate.setHours(0,0,0,0);

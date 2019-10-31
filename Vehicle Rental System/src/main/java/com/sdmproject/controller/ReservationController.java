@@ -80,21 +80,20 @@ public class ReservationController {
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/add" }, method = RequestMethod.POST)
-	public ModelAndView createReservationPost(int vehicle, int client,  String fromDate, String toDate, RedirectAttributes atts) throws ParseException, DuplicateEntryException {
+	public ModelAndView createReservationPost(int vehicle, int client,  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date toDate, RedirectAttributes atts) throws ParseException, DuplicateEntryException {
 		Vehicle v = vehicleRecordService.findByID(vehicle);
 		ClientRecord c = clientRecordService.findByID(client);
 		Reservation reservation = new Reservation();
 		reservation.setClient(c);
 		reservation.setVehicle(v);
 		
-		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:MM");
-		Date from = format.parse(fromDate);
-		Date to = format.parse(toDate);
 		System.out.println(fromDate);
 		System.out.println(toDate);
-		reservation.setFromDateTime(from);
-		reservation.setToDateTime(to);
+		
+		reservation.setFromDateTime(fromDate);
+		reservation.setToDateTime(toDate);
 		reservation.setCreatedOn(new Date());
+		//System.out.println(from);
 		reservationService.save(reservation);
 		atts.addFlashAttribute("successMessage", "Reservation Added Successfully.");
 		return new ModelAndView("redirect:/clerk/reservation/add");
