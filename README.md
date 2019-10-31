@@ -14,7 +14,11 @@
 | Vikramjit Singh | 40075774 | vikramsandhu008@gmail.com |
 
 ## Team Leader For All Iterations
- Nirav Patel
+ Iteration 1 - Nirav Patel
+ Iteration 2 - Nirav Patel
+ Iteration 3 - Nirav Patel
+ Iteration 4 - Nirav Patel
+
  
  ## Trello Public URL For Task Division
  https://trello.com/b/gLlDT1V7/sdm-project
