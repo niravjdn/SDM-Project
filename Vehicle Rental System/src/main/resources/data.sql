@@ -110,10 +110,11 @@ Insert auth data
 
 INSERT INTO `user` (`user_id`, `active`, `email`, `firstName`, `lastName`, `password`) VALUES
 (1, 1, 'admin@niravjdn.xyz', 'admin', 'admin', '$2a$10$3UY4Ym7etTSepKYjrVUAnOYAi1JX4wkW9L4YYJ6tSJGkHrSv.AAri'),
-(2, 1, 'user@niravjdn.xyz', 'user', 'user', '$2a$10$Ckgc3oro24wEdK.C4mYObemK.qAfay0dIflXY/HDwgOYyMcH8o70.');
-
+(2, 1, 'user@niravjdn.xyz', 'user', 'user', '$2a$10$Ckgc3oro24wEdK.C4mYObemK.qAfay0dIflXY/HDwgOYyMcH8o70.'),
+(3, 1, 'admin2@niravjdn.xyz', 'admin2', 'admin2', '$2a$10$3UY4Ym7etTSepKYjrVUAnOYAi1JX4wkW9L4YYJ6tSJGkHrSv.AAri');
 
 INSERT INTO `user_role` (`user_id`, `role_id`) VALUES
 (1, 1),
-(2, 2);
+(2, 2),
+(3, 1);
 

@@ -13,6 +13,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
@@ -22,8 +24,8 @@ import com.sdmproject.model.Role;
 import com.sdmproject.model.User;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.ClientRecordRepository;
-import com.sdmproject.repository.ReservationRepository;
 import com.sdmproject.repository.ReservationHistoryRepository;
+import com.sdmproject.repository.ReservationRepository;
 import com.sdmproject.repository.RoleRepository;
 import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
@@ -48,6 +50,11 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 	
 	@Autowired
 	private ReservationHistoryRepository reservationHistoryService;
+	
+	@Bean
+	public HttpSessionEventPublisher sessionEventPublisher() {
+		return new HttpSessionEventPublisher();
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(VehicleRentingApplication.class, args);
@@ -78,7 +85,15 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 			admin.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 
 			userService.saveUser(admin);
+			
+			admin = new User();
+			admin.setEmail("admin2@niravjdn.xyz");
+			admin.setPassword("admin");
+			admin.setFirstName("admin2");
+			admin.setLastName("admin2");
+			userService.saveUser(admin);
 		}
+		
 
 		boolean isUserExist = userService.isUserExist("user@niravjdn.xyz");
 		if (!isUserExist) {
