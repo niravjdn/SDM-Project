@@ -45,8 +45,13 @@
 	<form method="post" th:action="@{/clerk/reservation/add}" 
 				class="form-signin">
 	
-				<br />
-					
+				<label class="control-label" for="isRental">Rental or Reservation</label>
+				<select class="form-control content" name = "isRental" id="isRental" style="min-width:200px;" onchange="report(this.value)" >
+							<option value="true">Rental</option>
+							<option value="false">Reservation</option>
+					</select>
+				</br>
+				
 				<label class="control-label" for="vehicle">Select Vehicle</label>
 				<select  class="form-control" name="vehicle" id="vehicle">
 				  <option th:each="v : ${vehicles}"
@@ -103,6 +108,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 <script>
+var picker;
+
 $('#fromDate').datetimepicker({
     uiLibrary: 'bootstrap4',
     modal: false,
@@ -127,10 +134,69 @@ $('#fromDate').datetimepicker({
 $("#fromDate").on("close", function(e) {
 	var date = $('#fromDate').val();
 	var fromDate = new Date(date);
-	console.log(new Date(date));
+	console.log(fromDate);
 	
+
+	if(typeof picker == "undefined")
+	{
+		console.log("undefined");
+	}else{
+		picker.destroy();
+	}
 	
 	$('#toDate').datetimepicker({
+	    uiLibrary: 'bootstrap4',
+	    modal: false,
+	    footer: true,
+	    format: 'yyyy-mm-dd HH:MM',
+	    minDate: new Date(fromDate),
+	    datepicker: {
+	        disableDates:  function (date) {
+	        	const currentDate = fromDate.setHours(0,0,0,0);
+	            return date.setHours(0,0,0,0) >= currentDate ? true : false;
+	        }
+	    }
+	});
+});
+
+
+	
+function getFormattedDate(){
+    var d = new Date();
+
+    d = d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
+
+    return d;
+}
+
+function report(v) {
+	console.log(v);
+	  switch(v) {
+	    case "true":
+	    	$("#fromDate").val(getFormattedDate());
+	    	document.getElementById("fromDate").readOnly = true;
+	    	if(typeof picker == "undefined")
+	    	{
+	    		console.log("undefined");
+	    	}else{
+	    		picker.destroy();
+	    	}
+	    	setToDatePicker();
+	      break;
+	    case "false":
+	    	$("#fromDate").val("");
+	    	$("#toDate").val("");
+	    	//picker.destroy();
+	    	document.getElementById("fromDate").readOnly = false;
+	      break;
+	    }
+	  }
+report("true");	
+
+function setToDatePicker(){
+	var date = getFormattedDate();
+	var fromDate = new Date(date);
+	picker = $('#toDate').datetimepicker({
 	    uiLibrary: 'bootstrap4',
 	    modal: false,
 	    footer: true,
@@ -142,9 +208,8 @@ $("#fromDate").on("close", function(e) {
 	        }
 	    }
 	});
-	
-});
-	
+}
+
 </script>
 <script th:src="@{/js/main.js}" > </script>
 </body>

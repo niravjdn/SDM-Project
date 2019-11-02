@@ -44,9 +44,6 @@
  - DB Username : root
  - DB Password : (No Password)
 
-## Live Demo
-
-http://sdm.niravjdn.xyz:8080/vehicle-rental/
 
  ### How to set up DB 
 
