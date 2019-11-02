@@ -112,6 +112,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
+				<th >Reservation Type</th>
 				<th data-sort-prop="updatedDateTime">Reservation Updated</th>
 			</tr>
 		</thead>
@@ -129,6 +130,8 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.year}"></td>
 				<td th:text="${record.fromDateTime}"></td>
 				<td th:text="${record.toDateTime}"></td>
+				<td th:if="${record.typeOfReservation} == 1">Cancelled</td>
+				<td th:if="${record.typeOfReservation} == 0">Returned</td>
 				<td th:text="${record.updatedDateTime}"></td>
 			</tr>
 		</tbody>

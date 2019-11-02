@@ -111,6 +111,11 @@ public class ReservationController {
 	
 	@RequestMapping(value = { "/clerk/reservation/cancel/{id}" }, method = RequestMethod.GET)
 	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
+		//add to reservation history
+		Reservation r = reservationService.findByID(id);
+		ReservationHistory history = new ReservationHistory(r.getId(), 1, r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), "user", r.getFromDateTime(), r.getToDateTime(), new Date());
+		reservationHistoryService.save(history);
+		
 		reservationService.deleteReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Reservation Cancelled Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/cancel");
@@ -127,7 +132,7 @@ public class ReservationController {
 	@RequestMapping(value = { "/clerk/reservation/return/{id}" }, method = RequestMethod.GET)
 	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		Reservation r = reservationService.findByID(id);
-		ReservationHistory history = new ReservationHistory(r.getId(),r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), "user", r.getFromDateTime(), r.getToDateTime(), new Date());
+		ReservationHistory history = new ReservationHistory(r.getId(), 0, r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), "user", r.getFromDateTime(), r.getToDateTime(), new Date());
 		reservationHistoryService.save(history);
 		reservationService.returnReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Vehicle Returned Successfully");

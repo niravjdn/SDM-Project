@@ -17,6 +17,9 @@ public class ReservationHistory {
 
 	private int id;
 	
+	//0 for return 1 for canclled
+	private int typeOfReservation;
+	
 	private String firstName;
 
 	private String lastName;
