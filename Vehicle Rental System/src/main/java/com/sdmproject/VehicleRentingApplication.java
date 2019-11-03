@@ -92,10 +92,10 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 			userService.saveUser(user);
 		}
 
-		addVehicleRecords();
-		addClientRecords();
-		addReservationRecords();
-		addReservationHistory();
+//		addVehicleRecords();
+//		addClientRecords();
+//		addReservationRecords();
+//		addReservationHistory();
 	}
 
 	private void addVehicleRecords() throws DuplicateEntryException {
@@ -117,7 +117,7 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 
 	private void addClientRecords() throws ParseException, DuplicateEntryException {
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		ClientRecord record = new ClientRecord(1, "Nirav", "Patel", "123", "3434412344", sdf.parse("31-08-2020"));
 		clientRecordRepository.save(record);
 		record = new ClientRecord(1, "Savan", "Patel", "1234", "6734412344", sdf.parse("30-11-2020"));

@@ -101,7 +101,7 @@ public class VehicleRecordController {
 	}
 
 	@RequestMapping(value = { "/admin/vehicleRecord/update" }, method = RequestMethod.POST)
-	public ModelAndView clientRecordUpdate(Vehicle record) {
+	public ModelAndView vehicleUpdate(Vehicle record) {
 		ModelMap map = new ModelMap();
 		vehicleRecordService.update(record);
 		map.addAttribute("successMessage", "Vehicle Record has been updated successfully.");
@@ -195,8 +195,8 @@ public class VehicleRecordController {
 	}
 	
 	@RequestMapping(value = { "/admin/vehicleRecord/delete/{id}" }, method = RequestMethod.GET)
-	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
-		vehicleRecordService.deleteClientByID(id);
+	public ModelAndView vehicleRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
+		vehicleRecordService.deleteById(id);
 		atts.addFlashAttribute("successMessage", "Deleted Vehicle Record Successfully");
 		return new ModelAndView("redirect:/common/vehicleRecord/");
 	}

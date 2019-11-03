@@ -15,7 +15,6 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class User {
 
     private int id;
