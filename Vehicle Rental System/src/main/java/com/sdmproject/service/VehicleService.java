@@ -62,7 +62,7 @@ public class VehicleService {
 		carRepository.update(vehicle);
 	}
 
-	public void deleteClientByID(int id) {
+	public void deleteById(int id) {
 		carRepository.deleteVehicleByID(id);
 	}
 
