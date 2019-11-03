@@ -34,6 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
+    	System.out.println("------------------"+dataSource);
         auth.
                 jdbcAuthentication()
                 .usersByUsernameQuery(usersQuery)
