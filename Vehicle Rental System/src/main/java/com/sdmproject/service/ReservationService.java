@@ -30,8 +30,8 @@ public class ReservationService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 
-	public Reservation save(Reservation reservationRecord) {
-		return reservationRepository.save(reservationRecord);
+	public void save(Reservation reservationRecord) {
+		reservationRepository.save(reservationRecord);
 	}
 
 	public void deleteReservationByID(int id) {
@@ -47,8 +47,12 @@ public class ReservationService {
 		return reservationRepository.findAllWithSort(sort, order);
 	}
 	
+	public List<Reservation> findAllFutureWithSort(Optional<String> sort, Optional<String> order) {
+		return reservationRepository.findAllFutureWithSort(sort.orElse(""), order.orElse("asc"));
+	}
+	
 	public List<Reservation> findAllOutReservationSort(Optional<String> sort, Optional<String> order) {
-		return reservationRepository.findAllOutReservationSort(sort, order);
+		return reservationRepository.findAllOutReservationSort(sort.orElse(""), order.orElse("asc"));
 	}
 	
 	public List<Reservation> findReservationWithDateRange(String plateNo, Date fromDate, Date toDate) {
