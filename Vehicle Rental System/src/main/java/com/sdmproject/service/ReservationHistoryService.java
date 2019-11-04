@@ -1,5 +1,6 @@
 package com.sdmproject.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,18 +19,27 @@ public class ReservationHistoryService {
 	@Autowired
 	private ReservationHistoryRepository reservationHistoryRepository;
 
-	public ReservationHistory save(ReservationHistory reservationRecord)  {
-		return reservationHistoryRepository.save(reservationRecord);
+	public void save(ReservationHistory reservationRecord)  {
+		reservationHistoryRepository.save(reservationRecord);
 	}
 
 	public List<ReservationHistory> findAllWithSort(Optional<String> sort, Optional<String> order) {
 		return reservationHistoryRepository.findAllWithSort(sort, order);
 	}
 	
-	public List<ReservationHistory> filterMultipleAttribute(Map<String, String> filter, Optional<String> sortProperty, Optional<String> order) {
-		return reservationHistoryRepository.filterMultipleAttribute(filter, sortProperty, order);
+	public List<ReservationHistory> filterMultipleAttribute(ArrayList<String> param, ArrayList<String> operator, ArrayList<Object> values,
+			Optional<String> sortProperty, Optional<String> order) {
+		String prop = "";
+		boolean isDesc = false;
+		if (sortProperty.isPresent()) {
+			prop = sortProperty.get();
+		}
+		if (order.isPresent()) {
+			isDesc = order.get().equals("desc");
+		}
+		return reservationHistoryRepository.filterMultipleAttribute(param.toArray(new String[param.size()]), operator.toArray(new String[operator.size()]),
+				values.toArray(new Object[values.size()]), prop, isDesc);
 	}
-	
 	public List<ReservationHistory> findAll() {
 		return reservationHistoryRepository.findAll();
 	}

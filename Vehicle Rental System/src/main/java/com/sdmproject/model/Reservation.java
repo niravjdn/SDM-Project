@@ -32,6 +32,9 @@ public class Reservation {
 	@DatabaseField(dateFormat = "yyyy-MM-dd hh:mm")
 	private Date toDateTime;
 	
+	@DatabaseField
+	private TypeOfReservation typeOfReservation;
+	
 	@DatabaseField(dateFormat = "yyyy-MM-dd hh:mm")
 	private Date createdOn;
 }

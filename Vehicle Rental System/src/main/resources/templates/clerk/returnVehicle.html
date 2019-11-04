@@ -60,6 +60,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="plateNo">Plate No</th>
 				<th data-sort-prop="make">Make</th>
 				<th data-sort-prop="year">Year</th>
+				<th data-sort-prop="year">Rental or Reservation</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
 				<th data-sort-prop="createdOn">Reservation Created on</th>
@@ -78,6 +79,7 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.vehicle.plateNo}"></td>
 				<td th:text="${record.vehicle.make}"></td>
 				<td th:text="${record.vehicle.year}"></td>
+				<td th:text="${record.typeOfReservation}"></td>
 				<td th:text="${record.fromDateTime}"></td>
 				<td th:text="${record.toDateTime}"></td>
 				<td th:text="${record.createdOn}"></td>

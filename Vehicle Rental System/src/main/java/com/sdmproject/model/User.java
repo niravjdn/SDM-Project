@@ -9,12 +9,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+import com.sdmproject.orm.DatabaseTable;
+
 import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DatabaseTable("user")
 public class User {
 
     private int id;
