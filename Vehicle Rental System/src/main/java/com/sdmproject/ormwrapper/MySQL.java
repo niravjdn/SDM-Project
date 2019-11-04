@@ -69,10 +69,10 @@ public class MySQL extends BaseSQL {
 //        return c;
     	
     	System.out.println(dataSource + " 00000000 ");
-    	ConnectionPool connectionPool = BasicConnectionPool
-    		      .create("jdbc:mysql://localhost:3306/zadmin_sdm2", "root", "");
+//    	ConnectionPool connectionPool = BasicConnectionPool
+//    		      .create("jdbc:mysql://localhost:3306/zadmin_sdm2", "root", "");
     	
-    	return connectionPool.getConnection();
+    	return HikariCPDataSource.getConnection();
     }
 
 

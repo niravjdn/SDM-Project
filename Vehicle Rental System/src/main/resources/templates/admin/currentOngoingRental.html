@@ -55,7 +55,7 @@ table th { user-select: none; background: #eee;}
 	<div class="jumbotron">
 		<form th:action="@{/admin/reservation/onging}" method="post">
 			<label for="dueDate" >Filter by due date</label>
-			 <input type="text" placeholder="Expiry Date" autocomplete="off" id="dueDate" th:value="${#dates.format(dueDate, 'dd-MM-yyyy')}"
+			 <input type="text" placeholder="Due Date" autocomplete="off" id="dueDate" th:value="${#dates.format(dueDate, 'dd-MM-yyyy')}"
 				 name="dueDate"  class="form-control content" style="min-width:200px;" 
 				required />
 				<br/>

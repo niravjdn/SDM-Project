@@ -20,8 +20,8 @@ public abstract class BaseSQL implements SQL {
     public abstract Connection getConnection() throws SQLException;
 
     public void write(String queryString,Object... parameters){
-        try {
-            PreparedStatement ps = setParams(getConnection().prepareStatement(queryString),parameters);
+        try(Connection conn = getConnection();
+        		PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);) {
             System.out.println(ps.toString());
             ps.executeUpdate();
             ps.close();
@@ -29,8 +29,8 @@ public abstract class BaseSQL implements SQL {
     }
 
     public ResultSet read(String queryString, Object... parameters){
-        try {
-            PreparedStatement ps = setParams(getConnection().prepareStatement(queryString),parameters);
+        try(Connection conn = getConnection();
+                PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);) {
             System.out.println(ps.toString());
             ResultSet rs = ps.executeQuery();
             statementMap.put(rs,ps);

@@ -17,18 +17,22 @@ public class BasicConnectionPool implements ConnectionPool {
     private final List<Connection> usedConnections = new ArrayList<>();
     private static final int INITIAL_POOL_SIZE = 2;
     private final int MAX_POOL_SIZE = 5;
-
+    private static List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
+    private static BasicConnectionPool instance;
     
     @Value("${spring.queries.users-query}")
     private String usersQuery;
     
     public static BasicConnectionPool create(String url, String user, String password) throws SQLException {
-        List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
+        
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
             pool.add(createConnection(url, user, password));
         }
         
-        return new BasicConnectionPool(url, user, password, pool);
+        if(instance == null) {
+        	instance = new BasicConnectionPool(url, user, password, pool);
+        }
+        return instance;
     }
 
     
@@ -61,6 +65,7 @@ public class BasicConnectionPool implements ConnectionPool {
         connectionPool.add(connection);
         return usedConnections.remove(connection);
     }
+    
 
     private static Connection createConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url, user, password);
