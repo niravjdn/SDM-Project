@@ -113,7 +113,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
 				<th >Reservation Type</th>
-				<th data-sort-prop="updatedDateTime">Reservation Updated</th>
+				<th data-sort-prop="updatedoOn">Reservation Updated On</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -130,9 +130,9 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.year}"></td>
 				<td th:text="${record.fromDateTime}"></td>
 				<td th:text="${record.toDateTime}"></td>
-				<td th:if="${record.typeOfReservation} == 1">Cancelled</td>
+				<td th:text="${record.typeOfReservation}"></td>
 				<td th:if="${record.typeOfReservation} == 0">Returned</td>
-				<td th:text="${record.updatedDateTime}"></td>
+				<td th:text="${record.updatedOn}"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -161,7 +161,7 @@ table th { user-select: none; background: #eee;}
 	<script th:src="@{/js/main.js}" > </script>
 	
 	<script>
-$('#dueDate').datetimepicker({
+$('#dueDate').datepicker({
     uiLibrary: 'bootstrap4',
     modal: false,
     defaultDate: new Date(),
@@ -178,30 +178,9 @@ $('#dueDate').datetimepicker({
         $("#toDate").val(dateStr);
         $("#toDate").datetimepicker("option",{ minDate: new Date(dateStr)})
     },
-    format: 'dd-mm-yyyy'
+    format: 'yyyy-mm-dd'
 });
 
-
-$("#dueDate").on("close", function(e) {
-	var date = $('#fromDate').val();
-	var fromDate = new Date(date);
-	console.log(new Date(date));
-	
-	
-	$('#toDate').datetimepicker({
-	    uiLibrary: 'bootstrap4',
-	    modal: false,
-	    footer: true,
-	    format: 'dd-mm-yyyy',
-	    datepicker: {
-	        disableDates:  function (date) {
-	        	const currentDate = fromDate.setHours(0,0,0,0);
-	            return date.setHours(0,0,0,0) >= currentDate ? true : true;
-	        }
-	    }
-	});
-	
-});
 	
 </script>
 	

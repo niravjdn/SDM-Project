@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.beans.FilterBean;
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.helper.AddToListForFilter;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.ReservationHistory;
@@ -78,32 +79,40 @@ public class ReservationHistoryController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", reservationHistoryService.findAllWithSort(sort,order));
 		
-		if(sort.isPresent()) {
-			//if already landed on page, process map and add value to modelAndView
+		ArrayList<String> param = new ArrayList<String>();
+		ArrayList<String> operator = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+
+		if (sort.isPresent()) {
+			// if already landed on page, process map and add value to modelAndView
 			for (Map.Entry<String, String> entry : filterBean.getMap().entrySet()) {
-				modelAndView.addObject(entry.getKey(),  entry.getValue());
+				modelAndView.addObject(entry.getKey(), entry.getValue());
+				AddToListForFilter.fillListUsingMap(param, operator, values, entry);
 			}
-		}else {
-			//if landing on page for first time, clear the map
+		} else {
+			// if landing on page for first time, clear the map
 			filterBean.getMap().clear();
 		}
 		
 		if(client.isPresent()) {
 			modelAndView.addObject("client", client.get());
 			filterBean.getMap().put("driverLicienceNo", client.get());
+			AddToListForFilter.add(param, operator, values,"driverLicienceNo", "=", client.get());
 		}
 		
 		if(vehicle.isPresent()) {
 			modelAndView.addObject("plateNo", vehicle.get());
 			filterBean.getMap().put("plateNo", vehicle.get());
+			AddToListForFilter.add(param, operator, values,"plateNo", "=", vehicle.get());
 		}
 		
 		if(dueDate.isPresent()) {
 			modelAndView.addObject("toDateTime", dueDate.get());
 			filterBean.getMap().put("toDateTime", dueDate.get());
+			AddToListForFilter.add(param, operator, values,"DATE(toDateTime)", "=", dueDate.get());
 		}
 		
-		modelAndView.addObject("records", reservationHistoryService.filterMultipleAttribute(filterBean.getMap(), sort, order));
+		modelAndView.addObject("records", reservationHistoryService.filterMultipleAttribute(param, operator, values, sort, order));
 		modelAndView.setViewName("admin/reservationHistory");
 		
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
