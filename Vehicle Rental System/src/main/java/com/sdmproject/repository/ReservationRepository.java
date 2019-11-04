@@ -2,6 +2,7 @@ package com.sdmproject.repository;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,9 +32,6 @@ public class ReservationRepository {
 		this.DAO = new Table<Reservation, Integer>(Reservation.class);
 	}
 
-	private List<Reservation> records = new ArrayList<Reservation>();
-	private static int id = 1;
-
 	public void save(Reservation record) {
 		DAO.create(record);
 	}
@@ -50,22 +48,15 @@ public class ReservationRepository {
 	}
 
 	public List<Reservation> findAllOutReservationSort(String sortProperty, String sortOrder) {
-		List<Reservation> result = records.stream().filter(item -> (item.getFromDateTime().before(new Date())))
-				.collect(Collectors.toList());
-
-		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] {"DATE(fromDateTime)"}, 
-				new String[] {"<="}, new String[] {"DATE(CURDATE())"},
-				sortProperty, sortOrder.equals("desc"));
+		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "DATE(fromDateTime)" },
+				new String[] { "<=" }, new String[] { "DATE(CURDATE())" }, sortProperty, sortOrder.equals("desc"));
 	}
-
 
 	public List<Reservation> findAllFutureWithSort(String sortProperty, String sortOrder) {
-		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] {"DATE(fromDateTime)"}, 
-				new String[] {">"}, new String[] {"DATE(CURDATE())"},
-				sortProperty, sortOrder.equals("desc"));
+		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "DATE(fromDateTime)" },
+				new String[] { ">" }, new String[] { "DATE(CURDATE())" }, sortProperty, sortOrder.equals("desc"));
 	}
 
-	
 	public void deleteReservationByID(int id) {
 		DAO.deleteById(id);
 	}
@@ -82,19 +73,14 @@ public class ReservationRepository {
 		return DAO.queryById(id);
 	}
 
-	public List<Reservation> findReservationWithDateRange(String plateNo, Date fromDate, Date toDate) {
-
-		List<Reservation> result = records.stream().filter(i -> (i.getVehicle().getPlateNo().equals(plateNo)))
-				.filter(i -> (i.getFromDateTime().compareTo(toDate) <= 0 && i.getToDateTime().compareTo(fromDate) >= 0))
-				.collect(Collectors.toList());
-
-		return result;
+	public List<Reservation> findReservationWithDateRange(int vehicleId, Date fromDate, Date toDate) {
+		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(fromDateTime)", "DATE(toDateTime)", "vehicleId" },
+				new String[] { "<=", ">=" , "="}, new Object[] { new SimpleDateFormat("yyyy-MM-dd hh:mm").format(toDate),
+						new SimpleDateFormat("yyyy-MM-dd hh:mm").format(fromDate), vehicleId });
 	}
 
 	public List<Reservation> findAllOutReservationOnDueDate(Date dueDate) {
-		List<Reservation> result = records.stream().filter(item -> (item.getToDateTime().compareTo(dueDate) == 0))
-				.collect(Collectors.toList());
-
-		return result;
+		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)" }, new String[] { "=" },
+				new String[] { new SimpleDateFormat("yyyy-MM-dd hh:mm").format(dueDate) });
 	}
 }

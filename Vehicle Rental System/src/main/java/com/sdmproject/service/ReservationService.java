@@ -55,8 +55,8 @@ public class ReservationService {
 		return reservationRepository.findAllOutReservationSort(sort.orElse(""), order.orElse("asc"));
 	}
 	
-	public List<Reservation> findReservationWithDateRange(String plateNo, Date fromDate, Date toDate) {
-		return reservationRepository.findReservationWithDateRange(plateNo, fromDate, toDate);
+	public List<Reservation> findReservationWithDateRange(int vehicleId, Date fromDate, Date toDate) {
+		return reservationRepository.findReservationWithDateRange(vehicleId, fromDate, toDate);
 	}
 
 	public List<Reservation> findAll() {

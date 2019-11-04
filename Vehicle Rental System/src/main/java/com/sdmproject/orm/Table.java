@@ -136,10 +136,10 @@ public class Table<ObjectType, KeyType> {
 				builder.and().lessThan(param[i], value[i]);
 				break;
 			case "<=":
-				builder.where().lessThanOrEqual(param[i], value[i]);
+				builder.and().lessThanOrEqual(param[i], value[i]);
 				break;
 			case ">=":
-				builder.where().greaterThanOrEqual(param[i], value[i]);
+				builder.and().greaterThanOrEqual(param[i], value[i]);
 				break;
 			}
 		}
@@ -328,9 +328,14 @@ public class Table<ObjectType, KeyType> {
 		}
 
 		public QueryBuilder eq(String columnName, Object value) {
-			if (columnName.contains("DATE(")) {
-				querySelector.append(" DATE(" + columnName + ")= DATE(CURDATE())");
-			} else {
+			if (columnName.contains(" DATE(") && value.toString().contains("CURDATE")) {
+				querySelector.append(" " +columnName + "= DATE(CURDATE())");
+			} else if(columnName.contains("DATE(")) {
+				// date is there but parameter is useful
+				querySelector.append(" " +columnName + "= ?");
+				parameters.add(sqlSafe(value));
+			}
+			else {
 				querySelector.append(" `" + columnName + "`=?");
 				parameters.add(sqlSafe(value));
 			}
@@ -343,9 +348,14 @@ public class Table<ObjectType, KeyType> {
 		}
 
 		public QueryBuilder lessThan(String columnName, Object value) {
-			if (columnName.contains("DATE(")) {
-				querySelector.append(" DATE(" + columnName + ")< DATE(CURDATE())");
-			} else {
+			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
+				querySelector.append(" " +columnName + "< DATE(CURDATE())");
+			} else if(columnName.contains("DATE(")) {
+				// date is there but parameter is useful
+				querySelector.append(" " +columnName + "< ?");
+				parameters.add(sqlSafe(value));
+			}
+			else {
 				querySelector.append(" `" + columnName + "`<?");
 				parameters.add(sqlSafe(value));
 			}
@@ -353,38 +363,47 @@ public class Table<ObjectType, KeyType> {
 		}
 
 		public QueryBuilder greaterThan(String columnName, Object value) {
-			System.out.println("----------+++++++Columnname" + columnName);
-			if (columnName.contains("DATE(")) {
-				querySelector.append(" DATE(" + columnName + ")> DATE(CURDATE())");
-			} else {
+			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
+				querySelector.append(" " +columnName + "> DATE(CURDATE())");
+			} else if(columnName.contains("DATE(")) {
+				// date is there but parameter is useful
+				querySelector.append(" " +columnName + "> ?");
+				parameters.add(sqlSafe(value));
+			}
+			else {
 				querySelector.append(" `" + columnName + "`>?");
 				parameters.add(sqlSafe(value));
 			}
-
 			return this;
 		}
 
 		public QueryBuilder greaterThanOrEqual(String columnName, Object value) {
-			System.out.println("----------+++++++Columnname" + columnName);
-			if (columnName.contains("DATE(")) {
-				querySelector.append(" DATE(" + columnName + ")>= DATE(CURDATE())");
-			} else {
+			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
+				querySelector.append(" " +columnName + ">= DATE(CURDATE())");
+			} else if(columnName.contains("DATE(")) {
+				// date is there but parameter is useful
+				querySelector.append(" " +columnName + ">= ?");
+				parameters.add(sqlSafe(value));
+			}
+			else {
 				querySelector.append(" `" + columnName + "`>=?");
 				parameters.add(sqlSafe(value));
 			}
-
 			return this;
 		}
 
 		public QueryBuilder lessThanOrEqual(String columnName, Object value) {
-			System.out.println("----------+++++++Columnname" + columnName);
-			if (columnName.contains("DATE(")) {
-				querySelector.append(" DATE(" + columnName + ")<= DATE(CURDATE())");
-			} else {
-				querySelector.append(" `" + columnName + "`<=?");
+			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
+				querySelector.append(" " +columnName + "<= DATE(CURDATE())");
+			} else if(columnName.contains("DATE(")) {
+				// date is there but parameter is useful
+				querySelector.append(" " +columnName + "<= ? ");
 				parameters.add(sqlSafe(value));
 			}
-
+			else {
+				querySelector.append(" `" + columnName + "`<= ?");
+				parameters.add(sqlSafe(value));
+			}
 			return this;
 		}
 

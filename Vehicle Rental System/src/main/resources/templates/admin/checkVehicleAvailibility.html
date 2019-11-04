@@ -55,10 +55,10 @@ label {
 			<form method="post" id="filterForm" th:action="@{/admin/checkVehicleAvailibility}">
 				<div class="row">
 					<label class="control-label" for="vehicle">Select Vehicle</label>
-				<select class="form-control" name="plateNo" id="vehicle">
+				<select class="form-control" name="vehicleId" id="vehicle">
 				  <option th:each="t : ${vehicles}"
-				     th:text="${t.id + ' - ' + t.plateNo +  ' - ' + t.make + ' - ' + t.color + ' - ' + t.year }"
-				     th:value="${t.plateNo}" th:selected="${plateNo} == ${t.plateNo}"
+				     th:text="${t.id + ' - ' + t.plateNo +  ' - ' + t.make + ' - ' + t.model + ' - ' + t.color + ' - ' + t.year }"
+				     th:value="${t.id}" th:selected="${vehicleId} == ${t.id}"
 				     >
 				  </option>
 				</select>

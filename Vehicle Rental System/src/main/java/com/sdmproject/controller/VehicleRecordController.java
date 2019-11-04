@@ -241,7 +241,7 @@ public class VehicleRecordController {
 	}
 
 	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.POST)
-	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("plateNo") String plateNo,
+	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("vehicleId") int vehicleId,
 			@RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date fromDate,
 			@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date toDate) {
 
@@ -253,12 +253,12 @@ public class VehicleRecordController {
 		List<Vehicle> vehicles = vehicleRecordService.findAll();
 		modelAndView.addObject("vehicles", vehicles);
 
-		List<Reservation> reservations = reservationService.findReservationWithDateRange(plateNo, fromDate, toDate);
+		List<Reservation> reservations = reservationService.findReservationWithDateRange(vehicleId, fromDate, toDate);
 
 		modelAndView.addObject("reservations", reservations);
 
 		modelAndView.addObject("isVehicleAvailable", reservations.size() <= 0);
-		modelAndView.addObject("plateNo", plateNo);
+		modelAndView.addObject("vehicleId", vehicleId);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
