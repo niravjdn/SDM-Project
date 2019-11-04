@@ -19,6 +19,7 @@ import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.ReservationHistory;
 import com.sdmproject.model.Role;
+import com.sdmproject.model.TypeOfCar;
 import com.sdmproject.model.User;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.ClientRecordRepository;
@@ -101,17 +102,17 @@ public class VehicleRentingApplication extends SpringBootServletInitializer impl
 	private void addVehicleRecords() throws DuplicateEntryException {
 		
 		Vehicle vehicle;
-		vehicle = new Vehicle(1, "SEADEN", "Tesla", "Model S", 2016, "White", "ABD ISZ");
+		vehicle = new Vehicle(1, TypeOfCar.SEADEN, "Tesla", "Model S", 2016, "White", "ABD ISZ");
 		vehicleService.save(vehicle);
-		vehicle = new Vehicle(2, "TRUCK", "BMW", "S400", 2015, "Pink", "ABE UEZ");
+		vehicle = new Vehicle(2, TypeOfCar.TRUCK, "BMW", "S400", 2015, "Pink", "ABE UEZ");
 		vehicleService.save(vehicle);
-		vehicle = new Vehicle(3, "SUV", "Audi", "Q3", 2013, "White", "EBC KGZ");
+		vehicle = new Vehicle(3, TypeOfCar.SUV, "Audi", "Q3", 2013, "White", "EBC KGZ");
 		vehicleService.save(vehicle);
-		vehicle = new Vehicle(4, "SUV", "Dodge", "Tiburon", 2012, "Black", "TSC JSZ");
+		vehicle = new Vehicle(4, TypeOfCar.SUV, "Dodge", "Tiburon", 2012, "Black", "TSC JSZ");
 		vehicleService.save(vehicle);
-		vehicle = new Vehicle(5, "SEADEN", "Subaru", "Mazda", 2011, "Green", "JHS YHZ");
+		vehicle = new Vehicle(5, TypeOfCar.SEADEN, "Subaru", "Mazda", 2011, "Green", "JHS YHZ");
 		vehicleService.save(vehicle);
-		vehicle = new Vehicle(6, "SUV", "Benz", "GLE", 2015, "Black", "ABC YHZ");
+		vehicle = new Vehicle(6, TypeOfCar.SUV, "Benz", "GLE", 2015, "Black", "ABC YHZ");
 		vehicleService.save(vehicle);
 	}
 

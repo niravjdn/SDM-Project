@@ -52,7 +52,7 @@ public class Table<ObjectType, KeyType> {
 	
 	public List<Integer> queryForIdWithSort(String property, String sortOrder) {
 		QueryBuilder builder = builder();
-		return builder.select("id").order(property, sortOrder.equals("desc")).queryForIDWithSortByID();
+		return builder.select("id").order(property, sortOrder.equals("desc")).queryForIDWithDefaultSortByID();
 	}
 	
 	public List<ObjectType> queryForAllSelectedColumn(String[] columns) {
@@ -94,7 +94,18 @@ public class Table<ObjectType, KeyType> {
 	public List<ObjectType> queryForParamsForDifferentOperations(String[] param, String[] ops, Object[] value){
     	QueryBuilder builder =  builder();
     	
-    	switch (ops[0]) {
+    	generateBuilder(param, ops, value, builder);
+    	
+        QueryResult result = builder.query();
+        return result.all();
+    }
+
+	private void generateBuilder(String[] param, String[] ops, Object[] value, QueryBuilder builder) {
+		if(param.length < 1) {
+			return;
+		}
+		
+		switch (ops[0]) {
 		case ">":
 			builder.where().greaterThan(param[0],value[0]);
 			break;
@@ -121,9 +132,37 @@ public class Table<ObjectType, KeyType> {
     			break;
     		}
     	}
+	}
+	
+	public List<ObjectType> queryForParamsForDifferentOperationsWithSort(String[] param, 
+			String[] ops, Object[] value, String sortProperty, boolean isDesc){
+    	QueryBuilder builder =  builder();
+    	
+    	generateBuilder(param, ops, value, builder);
+    	
+    	if(sortProperty.equals("")) {
+    		builder.order(keyField, false);
+    	}else {
+    		builder.order(sortProperty, isDesc);
+    	}
     	
         QueryResult result = builder.query();
         return result.all();
+    }
+	
+	public List<Integer> queryIDParamsForDifferentOperationsWithSort(String[] param, 
+			String[] ops, Object[] value, String sortProperty, boolean isDesc){
+    	QueryBuilder builder =  builder();
+    	
+    	generateBuilder(param, ops, value, builder);
+    	
+    	if(sortProperty.equals("")) {
+    		builder.order(keyField, false);
+    	}else {
+    		builder.order(sortProperty, isDesc);
+    	}
+    	
+        return builder.queryForIDWithDefaultSortByID();
     }
 
 	public List<ObjectType> queryForSQL(String query) {
@@ -363,7 +402,7 @@ public class Table<ObjectType, KeyType> {
 			return new QueryResult(objects);
 		}
 		
-		public List<Integer> queryForIDWithSortByID() {
+		public List<Integer> queryForIDWithDefaultSortByID() {
 			String query = "SELECT id FROM `" + getTableName() + "`" + querySelector.toString() + ";";
 			System.out.println(query);
 			ResultSet rs = sql.read(query, parameters.toArray());

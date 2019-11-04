@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,48 +33,51 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.beans.FilterBean;
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.helper.AddToListForFilter;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.service.ReservationService;
 import com.sdmproject.service.UserService;
 import com.sdmproject.service.VehicleService;
 
-@Controller 
+import lombok.val;
+
+@Controller
 public class VehicleRecordController {
 	Logger log = LoggerFactory.getLogger(VehicleRecordController.class);
-	
+
 	@Autowired
 	private VehicleService vehicleRecordService;
-	
+
 	@Autowired
 	private ReservationService reservationService;
-	
+
 	private FilterBean filterBean = FilterBean.getInstance();
-	
+
 	@Autowired
 	private UserService userService;
-	
-	
+
 	@ModelAttribute("username")
 	public String getCurrentUser() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
 	}
-	
+
 	@RequestMapping(value = { "/admin/vehicleRecord/add" }, method = RequestMethod.GET)
 	public ModelAndView vehicleRecordAdd() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("admin/vehicleRecordAdd");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = { "/admin/vehicleRecord/add" }, method = RequestMethod.POST)
 	public ModelAndView vehicleRecordAddPost(Vehicle record) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("admin/vehicleRecordAdd");
 
 		try {
+			record.setColor(record.getColor().toUpperCase());
 			vehicleRecordService.save(record);
 			modelAndView.addObject("successMessage", "Vehicle Record has been added successfully.");
 		} catch (DuplicateEntryException e) {
@@ -107,55 +112,71 @@ public class VehicleRecordController {
 		map.addAttribute("successMessage", "Vehicle Record has been updated successfully.");
 		return new ModelAndView("redirect:/admin/vehicleRecord/update/" + record.getId(), map);
 	}
-	
+
 	@RequestMapping(value = { "/common/vehicleRecord" }, method = RequestMethod.GET)
 	public ModelAndView viewVehicleRecord(Optional<String> sort, Optional<String> order, Optional<String> type,
 			Optional<String> make, Optional<String> model, Optional<String> color, Optional<String> year) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort,order));
-		
-		if(sort.isPresent()) {
-			//if already landed on page, process map and add value to modelAndView
+		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort, order));
+		ArrayList<String> param = new ArrayList<String>();
+		ArrayList<String> operator = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+
+		if (sort.isPresent()) {
+			// if already landed on page, process map and add value to modelAndView
 			for (Map.Entry<String, String> entry : filterBean.getMap().entrySet()) {
-				modelAndView.addObject(entry.getKey(),  entry.getValue());
+				modelAndView.addObject(entry.getKey(), entry.getValue());
+				AddToListForFilter.fillListUsingMap(param, operator, values, entry);
 			}
-		}else {
-			//if landing on page for first time, clear the map
+		} else {
+			// if landing on page for first time, clear the map
 			filterBean.getMap().clear();
 		}
-		
-		if(type.isPresent()) {
+
+		if (type.isPresent()) {
 			modelAndView.addObject("type", type.get());
 			filterBean.getMap().put("type", type.get());
+			AddToListForFilter.add(param, operator, values,"type", "=", type.get());
 		}
-		
-		if(make.isPresent()) {
+
+		if (make.isPresent()) {
 			modelAndView.addObject("make", make.get());
 			filterBean.getMap().put("make", make.get());
+			AddToListForFilter.add(param, operator, values,"make", "=", make.get());
 		}
-		
-		if(model.isPresent()) {
+
+		if (model.isPresent()) {
 			modelAndView.addObject("model", model.get());
 			filterBean.getMap().put("model", model.get());
+			AddToListForFilter.add(param, operator, values,"model", "=", model.get());
+			param.add("model");
+			operator.add("=");
+			values.add(model.get());
 		}
-		
-		if(color.isPresent()) {
+
+		if (color.isPresent()) {
 			filterBean.getMap().put("color", color.get());
 			modelAndView.addObject("color", color.get());
+			AddToListForFilter.add(param, operator, values,"color", "=", color.get());
 		}
-		
-		if(year.isPresent()) {
+
+		if (year.isPresent()) {
 			filterBean.getMap().put("year", year.get());
 			modelAndView.addObject("year", year.get());
+			Calendar prevYear = Calendar.getInstance();
+			prevYear.add(Calendar.YEAR, - Integer.parseInt(year.get()));
+			int greaterThan = prevYear.get(Calendar.YEAR);
+			AddToListForFilter.add(param, operator, values,"year", ">=", greaterThan);
 		}
-		System.out.println("in2 : "+filterBean.getMap());
-		
-		modelAndView.addObject("records", vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), sort, order));
-		
-		
+
+		System.out.println("Arrays " + param);
+
+		modelAndView.addObject("records",
+				vehicleRecordService.filterMultipleAttribute(param, operator, values, sort, order));
+
 		modelAndView.setViewName("common/vehicleRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
-		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
+		modelAndView.addObject("order", order.isPresent() ? order.get() : "asc");
 		return modelAndView;
 	}
 
@@ -164,10 +185,17 @@ public class VehicleRecordController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/common/vehicleRecordDetailView");
 		Vehicle record = vehicleRecordService.findByID(id);
-		
+
 		// get all ids of vehicles - find position of current
-		List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttribute(filterBean.getMap(), Optional.ofNullable(sort), Optional.ofNullable(order)).stream().map(Vehicle::getId)
-				.collect(Collectors.toList());
+		ArrayList<String> param = new ArrayList<String>();
+		ArrayList<String> operator = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		for (Map.Entry<String, String> entry : filterBean.getMap().entrySet()) {
+			AddToListForFilter.fillListUsingMap(param, operator, values, entry);
+		}
+
+		List<Integer> vehicleRecordIds = vehicleRecordService.filterMultipleAttributeAndGetId(param, operator, values, Optional.of(sort), Optional.of(order));
+
 		int indexOfTarget = vehicleRecordIds.indexOf(id);
 		log.info("" + indexOfTarget);
 		log.info("" + vehicleRecordIds);
@@ -175,25 +203,25 @@ public class VehicleRecordController {
 		int indexofNext = indexOfTarget != vehicleRecordIds.size() - 1 ? vehicleRecordIds.get(indexOfTarget + 1) : -1;
 
 		modelAndView.addObject("sortProperty", sort);
-		modelAndView.addObject("order",  order);
-		
-		
-		
-		List<Reservation> reservations = reservationService.findAllOutReservationSort(Optional.empty(), Optional.empty());
-		boolean isAvailable = reservations.stream().filter(reservation -> (reservation.getVehicle().getId() == id)).findAny().isPresent();
+		modelAndView.addObject("order", order);
+
+		List<Reservation> reservations = reservationService.findAllOutReservationSort(Optional.empty(),
+				Optional.empty());
+		boolean isAvailable = reservations.stream().filter(reservation -> (reservation.getVehicle().getId() == id))
+				.findAny().isPresent();
 		modelAndView.addObject("vehicleAvailability", !isAvailable);
 
 		modelAndView.addObject("previousItem", indexOfPrevious);
 
 		modelAndView.addObject("nextItem", indexofNext);
 
-
 		modelAndView.addObject("record", record);
-		
-		
+
 		return modelAndView;
 	}
+
 	
+
 	@RequestMapping(value = { "/admin/vehicleRecord/delete/{id}" }, method = RequestMethod.GET)
 	public ModelAndView vehicleRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		vehicleRecordService.deleteById(id);
@@ -207,38 +235,36 @@ public class VehicleRecordController {
 		modelAndView.setViewName("admin/checkVehicleAvailibility");
 
 		List<Vehicle> vehicles = vehicleRecordService.findAll();
-		modelAndView.addObject("vehicles",vehicles);
-		
+		modelAndView.addObject("vehicles", vehicles);
+
 		return modelAndView;
 	}
-	
-	
-	
-	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.POST
-			)
-	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("plateNo") String plateNo, @RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")  Date fromDate,
-				@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")  Date toDate) {
-		
+
+	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.POST)
+	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("plateNo") String plateNo,
+			@RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date fromDate,
+			@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date toDate) {
+
 		ModelAndView modelAndView = new ModelAndView();
-		System.out.println("fromDate "+ fromDate.toString());
-		System.out.println("todate "+toDate.toString());
-		
+		System.out.println("fromDate " + fromDate.toString());
+		System.out.println("todate " + toDate.toString());
+
 		modelAndView.setViewName("admin/checkVehicleAvailibility");
 		List<Vehicle> vehicles = vehicleRecordService.findAll();
-		modelAndView.addObject("vehicles",vehicles);
-		
+		modelAndView.addObject("vehicles", vehicles);
+
 		List<Reservation> reservations = reservationService.findReservationWithDateRange(plateNo, fromDate, toDate);
-		
-		modelAndView.addObject("reservations",reservations);
-		
+
+		modelAndView.addObject("reservations", reservations);
+
 		modelAndView.addObject("isVehicleAvailable", reservations.size() <= 0);
 		modelAndView.addObject("plateNo", plateNo);
-		
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");  
-          
-		modelAndView.addObject("fromDate",dateFormat.format(fromDate));
-		modelAndView.addObject("toDate",dateFormat.format(toDate));
-		
+
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+		modelAndView.addObject("fromDate", dateFormat.format(fromDate));
+		modelAndView.addObject("toDate", dateFormat.format(toDate));
+
 		return modelAndView;
 	}
 }

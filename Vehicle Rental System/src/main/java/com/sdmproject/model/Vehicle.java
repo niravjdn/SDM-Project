@@ -1,5 +1,8 @@
 package com.sdmproject.model;
 
+import com.sdmproject.orm.DatabaseField;
+import com.sdmproject.orm.DatabaseTable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,21 +12,29 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DatabaseTable("vehicle")
 public class Vehicle {
 
-	private int id;
+	@DatabaseField(id = true, ai = true)
+	int id;
 
-	private String type;
+	@DatabaseField
+	TypeOfCar type;
+	
+	@DatabaseField
+	String make;
 
-	private String make;
+	@DatabaseField
+	String model;
 
-	private String model;
+	@DatabaseField
+	int year;
 
-	private int year;
+	@DatabaseField
+	String color;
 
-	private String color;
-
-	private String plateNo;
+	@DatabaseField
+	String plateNo;	
 	
 	@Override
     public boolean equals(Object obj) 
