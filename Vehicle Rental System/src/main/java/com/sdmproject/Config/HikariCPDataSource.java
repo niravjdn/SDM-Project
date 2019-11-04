@@ -19,7 +19,7 @@ public class HikariCPDataSource {
         config.setUsername("root");
         config.setMaximumPoolSize(20);
         config.setPassword("");
-        config.setConnectionTimeout(6000);
+        config.setConnectionTimeout(3000);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

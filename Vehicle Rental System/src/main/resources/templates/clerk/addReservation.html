@@ -41,7 +41,8 @@
 	
 	<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
-		
+	<div align="center" th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert"  th:utext="${errorMessage}">
+		</div>
 	<form method="post" th:action="@{/clerk/reservation/add}" 
 				class="form-signin">
 	

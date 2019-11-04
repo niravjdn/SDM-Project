@@ -29,8 +29,9 @@ public abstract class BaseSQL implements SQL {
     }
 
     public ResultSet read(String queryString, Object... parameters){
-        try(Connection conn = getConnection();
-                PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);) {
+        try {
+        	Connection conn = getConnection();
+            PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);
             System.out.println(ps.toString());
             ResultSet rs = ps.executeQuery();
             statementMap.put(rs,ps);

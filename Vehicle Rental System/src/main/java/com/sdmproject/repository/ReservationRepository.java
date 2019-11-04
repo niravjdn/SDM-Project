@@ -2,6 +2,7 @@ package com.sdmproject.repository;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,11 +16,17 @@ import java.util.stream.Collectors;
 import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
+import com.sdmproject.model.Vehicle;
 import com.sdmproject.orm.Table;
 
 @Repository

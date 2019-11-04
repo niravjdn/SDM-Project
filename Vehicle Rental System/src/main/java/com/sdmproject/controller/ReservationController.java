@@ -86,19 +86,26 @@ public class ReservationController {
 	public ModelAndView createReservationPost(int vehicle, boolean isRental, int client,  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date toDate, RedirectAttributes atts) throws ParseException, DuplicateEntryException {
 		Vehicle v = vehicleRecordService.findByID(vehicle);
 		ClientRecord c = clientRecordService.findByID(client);
-		Reservation reservation = new Reservation();
-		reservation.setClient(c);
-		reservation.setVehicle(v);
-		reservation.setTypeOfReservation(TypeOfReservation.valueOf(isRental ? 0 : 1).get());
 		
-		System.out.println(fromDate);
-		System.out.println(toDate);
-		reservation.setCreatedOn(new Date());
-		reservation.setFromDateTime(fromDate);
-		reservation.setToDateTime(toDate);
+		List<Reservation> reservations = reservationService.findReservationWithDateRange(v.getId(), fromDate, toDate);
+		if(reservations.isEmpty()) {
+			Reservation reservation = new Reservation();
+			reservation.setClient(c);
+			reservation.setVehicle(v);
+			reservation.setTypeOfReservation(TypeOfReservation.valueOf(isRental ? 0 : 1).get());
+			
+			System.out.println(fromDate);
+			System.out.println(toDate);
+			reservation.setCreatedOn(new Date());
+			reservation.setFromDateTime(fromDate);
+			reservation.setToDateTime(toDate);
+			
+			reservationService.save(reservation);
+		}else {
+			atts.addFlashAttribute("errorMessage", "Car has been reserved for another user.");
+			logger.debug("Car has been reserved for another user.");
+		}
 		
-		reservationService.save(reservation);
-		atts.addFlashAttribute("successMessage", "Reservation Added Successfully.");
 		return new ModelAndView("redirect:/clerk/reservation/add");
 	}
 	
@@ -115,7 +122,7 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = { "/clerk/reservation/cancel/{id}" }, method = RequestMethod.GET)
-	public ModelAndView clientRecordDelete(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
+	public ModelAndView cancleReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		//add to reservation history
 		Reservation r = reservationService.findByID(id);
 		ReservationHistory rh  = new ReservationHistory(r.getId(), r.getTypeOfReservation(), TypeOfEndOfTransaction.CANCLE,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
@@ -166,6 +173,34 @@ public class ReservationController {
 		modelAndView.addObject("dueDate", dueDate);
           
 		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.POST)
+	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("vehicleId") int vehicleId,
+			@RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date fromDate,
+			@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date toDate) {
+
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println("fromDate " + fromDate.toString());
+		System.out.println("todate " + toDate.toString());
+
+		modelAndView.setViewName("admin/checkVehicleAvailibility");
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles", vehicles);
+
+		List<Reservation> reservations = reservationService.findReservationWithDateRange(vehicleId, fromDate, toDate);
+
+		modelAndView.addObject("reservations", reservations);
+
+		modelAndView.addObject("isVehicleAvailable", reservations.size() <= 0);
+		modelAndView.addObject("vehicleId", vehicleId);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+		modelAndView.addObject("fromDate", dateFormat.format(fromDate));
+		modelAndView.addObject("toDate", dateFormat.format(toDate));
+
 		return modelAndView;
 	}
 }
