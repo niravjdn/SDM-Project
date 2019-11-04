@@ -62,7 +62,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
-				<th >Reservation Created</th>
+				<th data-sort-prop="createdOn">Reservation Created on</th>
 				<th >Cancel Booking</th>
 			</tr>
 		</thead>
@@ -135,7 +135,7 @@ table th { user-select: none; background: #eee;}
         });
 
      //set click action, reload page on clicking with all query params
-     $("table thead th").click(function() {
+    /*  $("table thead th").click(function() {
       var headerSortPropName = $(this).attr("data-sort-prop");
       if(headerSortPropName==undefined){
     	  return;
@@ -149,7 +149,7 @@ table th { user-select: none; background: #eee;}
            window.location.href = window.location.pathname+
           '?sort='+ headerSortPropName+'&order=asc';
       }
-      });
+      }); */
     });
   </script>
 </body>

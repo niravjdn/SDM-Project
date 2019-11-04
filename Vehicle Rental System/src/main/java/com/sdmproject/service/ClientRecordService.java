@@ -35,8 +35,8 @@ public class ClientRecordService {
 		return clientRecordRepository.isClientExist(licience_no);
 	}
 
-	public ClientRecord save(ClientRecord clientRecord) throws DuplicateEntryException {
-		return clientRecordRepository.save(clientRecord);
+	public void save(ClientRecord clientRecord) throws DuplicateEntryException {
+		clientRecordRepository.save(clientRecord);
 	}
 
 	public ClientRecord update(ClientRecord clientRecord) throws DuplicateEntryException {
@@ -59,12 +59,6 @@ public class ClientRecordService {
 		return clientRecordRepository.findAllWithSort(sort, order);
 	}
 	
-	
-
-	public List<Integer> findAllID() {
-		return clientRecordRepository.findAllIDsAndSortByID();
-	}
-
 	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
 		return clientRecordRepository.findIDWithSort(sortProperty, sortOrder);
 	}

@@ -1,5 +1,6 @@
 package com.sdmproject.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,54 +17,81 @@ import com.sdmproject.repository.VehicleRepository;
 public class VehicleService {
 
 	@Autowired
-    private VehicleRepository carRepository;
+	private VehicleRepository vehicleRepository;
 
-    public Vehicle findUserByPlateNo(String plateNo) {
-        return carRepository.findByPlateNo(plateNo);
-    }
-    
-    public boolean isVehicleExist(String plateNo) {
-        return carRepository.isVehicleExist(plateNo);
-    }
-    
-    public List<Vehicle> findAllWithSort(Optional<String> sort, Optional<String> order) {
-		return carRepository.findAllWithSort(sort, order);
+	public Vehicle findUserByPlateNo(String plateNo) {
+		return vehicleRepository.findByPlateNo(plateNo);
 	}
-    
-    public void deleteVehicleByID(int id) {
-    	carRepository.deleteVehicleByID(id);
-    }
-    
-    public Vehicle findByID(int id) {
-		return carRepository.findById(id);
+
+	public boolean isVehicleExist(String plateNo) {
+		return vehicleRepository.isVehicleExist(plateNo);
 	}
-    
-    public List<Integer> findAllID() {
-		return carRepository.findAllIDsAndSortByID();
+
+	public List<Vehicle> findAllWithSort(Optional<String> sort, Optional<String> order) {
+		return vehicleRepository.findAllWithSort(sort, order);
+	}
+
+	public void deleteVehicleByID(int id) {
+		vehicleRepository.deleteVehicleByID(id);
+	}
+
+	public Vehicle findByID(int id) {
+		return vehicleRepository.findById(id);
 	}
 
 	public List<Integer> findIDWithSort(String sortProperty, String sortOrder) {
-		return carRepository.findIDWithSort(sortProperty, sortOrder);
-	}
-	
-	public List<Vehicle> filterMultipleAttribute(Map<String, String> filter, Optional<String> sortProperty, Optional<String> order) {
-		return carRepository.filterMultipleAttribute(filter, sortProperty, order);
+		return vehicleRepository.findIDWithSort(sortProperty, sortOrder);
 	}
 
 	public List<Vehicle> findAll() {
-		return carRepository.findAll();
+		return vehicleRepository.findAll();
 	}
 
 	public void save(Vehicle vehicle) throws DuplicateEntryException {
-		carRepository.save(vehicle);
+		vehicleRepository.save(vehicle);
 	}
 
 	public void update(Vehicle vehicle) {
-		carRepository.update(vehicle);
+		vehicleRepository.update(vehicle);
 	}
 
-	public void deleteClientByID(int id) {
-		carRepository.deleteVehicleByID(id);
+	public void deleteById(int id) {
+		vehicleRepository.deleteVehicleByID(id);
+	}
+
+	public List<Vehicle> filterMultipleAttribute(ArrayList<String> param, ArrayList<String> operator, ArrayList<Object> values,
+			Optional<String> sortProperty, Optional<String> order) {
+		String prop = "";
+		boolean isDesc = false;
+		if (sortProperty.isPresent()) {
+			prop = sortProperty.get();
+		}
+		if (order.isPresent()) {
+			isDesc = order.get().equals("desc");
+		}
+		System.err.println(param);
+		System.err.println(operator);
+		System.err.println(values);
+		System.err.println(param.toArray(new String[param.size()]));
+		System.err.println(operator.toArray(new String[operator.size()]));
+		System.err.println(values.toArray(new Object[values.size()]));
+		return vehicleRepository.filterMultipleAttribute(param.toArray(new String[param.size()]), operator.toArray(new String[operator.size()]),
+				values.toArray(new Object[values.size()]), prop, isDesc);
+	}
+	
+	public List<Integer> filterMultipleAttributeAndGetId(ArrayList<String> param, ArrayList<String> operator, ArrayList<Object> values,
+			Optional<String> sortProperty, Optional<String> order) {
+		String prop = "";
+		boolean isDesc = false;
+		if (sortProperty.isPresent()) {
+			prop = sortProperty.get();
+		}
+		if (order.isPresent()) {
+			isDesc = order.get().equals("desc");
+		}
+
+		return vehicleRepository.queryIDParamsForDifferentOperationsWithSort(param.toArray(new String[param.size()]), operator.toArray(new String[operator.size()]),
+				values.toArray(new Object[values.size()]), prop, isDesc);
 	}
 
 }

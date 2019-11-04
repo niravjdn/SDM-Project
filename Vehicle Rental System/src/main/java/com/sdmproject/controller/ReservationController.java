@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -89,20 +90,21 @@ public class ReservationController {
 		
 		System.out.println(fromDate);
 		System.out.println(toDate);
-		
+		reservation.setCreatedOn(new Date());
 		reservation.setFromDateTime(fromDate);
 		reservation.setToDateTime(toDate);
-		reservation.setCreatedOn(new Date());
-		//System.out.println(from);
+		
 		reservationService.save(reservation);
 		atts.addFlashAttribute("successMessage", "Reservation Added Successfully.");
 		return new ModelAndView("redirect:/clerk/reservation/add");
 	}
 	
+	
+	
 	@RequestMapping(value = { "/clerk/reservation/cancel" }, method = RequestMethod.GET)
 	public ModelAndView viewReservationRecord(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records",reservationService.findAllWithSort(sort,order));
+		modelAndView.addObject("records",reservationService.findAllFutureWithSort(sort,order));
 		modelAndView.setViewName("clerk/reservationRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
 		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
