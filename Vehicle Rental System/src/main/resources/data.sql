@@ -47,9 +47,8 @@ CONSTRAINT driverLicienceNo UNIQUE(driverLicienceNo)) ;
 
 
 /* Reservation */
-
-create table IF NOT EXISTS reservation (id integer not null auto_increment, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME not null, toDateTime DATETIME not null, primary key(id), 
-	createdBy varchar(255),
+create table IF NOT EXISTS reservation (id integer not null auto_increment, typeOfReservation varchar(15) not null, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME not null, toDateTime DATETIME not null, primary key(id), 
+	createdOn DATETIME not null,
                                         foreign key (vehicleID) references vehicle(id) on DELETE CASCADE,
                                         foreign key (clientID) references client_record(id) on DELETE CASCADE
 
@@ -59,22 +58,29 @@ create table IF NOT EXISTS reservation (id integer not null auto_increment, clie
 /* Mock Data for Reservation */
 
 
-create table IF NOT EXISTS reservation_history (id integer not null auto_increment, 
-	firstName varchar(255) not null, lastName varchar(255) not null, driverLicienceNo varchar(255) not null, 
-	expiryDate DATE not null, primary key(id), phoneNo varchar(25) not null,
-	color varchar(255) not null, plateNo varchar(255) not null, make varchar(255) not null, model varchar(255) not null, year integer not null,
-	fromDateTIme DATETIME not null, toDateTime DATETIME not null,
-	updatedOn DateTIME not null,
-	createdBy varchar(255)
- );
+create table IF NOT EXISTS reservation_history (id integer PRIMARY KEY,
+ `typeOfReservation` varchar(15) NOT NULL,
+  `typeOfEndOfTransaction` varchar(10) NOT NULL,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `driverLicienceNo` varchar(255) NOT NULL,
+  `expiryDate` date NOT NULL,
+  `phoneNo` varchar(25) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `plateNo` varchar(255) NOT NULL,
+  `make` varchar(255) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `year` int(11) NOT NULL,
+  `fromDateTIme` datetime NOT NULL,
+  `toDateTime` datetime NOT NULL,
+  `updatedOn` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 
 /* 
 Insert auth data
 */
-
-
 
 insert ignore into `user` values
 (1, 1, 'admin@niravjdn.xyz', 'admin', 'admin', '$2a$10$3UY4Ym7etTSepKYjrVUAnOYAi1JX4wkW9L4YYJ6tSJGkHrSv.AAri');
