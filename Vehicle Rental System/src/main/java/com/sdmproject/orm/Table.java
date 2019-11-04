@@ -235,13 +235,22 @@ public class Table<ObjectType, KeyType> {
 		if (type.equals(UUID.class))
 			return value.toString();
 		if(type.equals(Date.class)) {
-			//parse according to date format
-			//yyyy-MM-dd  hh:mm:ss
 			 DateFormat df = new SimpleDateFormat(dateFormat);  
              System.out.println(value+" date here "+dateFormat);  
              return df.format(value);
 			
 		}
+		
+		if(type.equals(ClientRecord.class)) {
+			System.err.println("Parsing Client Record");
+			return String.valueOf(((ClientRecord)value).getId());
+		}
+		
+		if(type.equals(Vehicle.class)) {
+			System.err.println("Parsing Vehicle Record");
+			return String.valueOf(((Vehicle)value).getId());
+		}
+		
 		return String.valueOf(value);
 	}
 	
