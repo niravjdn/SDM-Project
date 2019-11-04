@@ -97,7 +97,7 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.client.firstName}"></td>
 				<td th:text="${record.client.lastName}"></td>
 				<td th:text="${record.client.driverLicienceNo}"></td>
-				<td th:text="${record.client.expiryDate}"></td>
+				<td th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td>
 				<td th:text="${record.client.phoneNo}"></td>
 				<td th:text="${record.vehicle.color}"></td>
 				<td th:text="${record.vehicle.plateNo}"></td>

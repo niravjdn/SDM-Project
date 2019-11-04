@@ -122,17 +122,18 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.firstName}"></td>
 				<td th:text="${record.lastName}"></td>
 				<td th:text="${record.driverLicienceNo}"></td>
-				<td th:text="${record.expiryDate}"></td>
+				<td th:text="${#dates.format(record.expiryDate, 'MM/dd/yyyy')}"></td>
 				<td th:text="${record.phoneNo}"></td>
 				<td th:text="${record.color}"></td>
 				<td th:text="${record.plateNo}"></td>
 				<td th:text="${record.make}"></td>
 				<td th:text="${record.year}"></td>
-				<td th:text="${record.fromDateTime}"></td>
-				<td th:text="${record.toDateTime}"></td>
+				<td th:text="${#dates.format(record.fromDateTime, 'MM/dd/yyyy hh:mm')}"></td>
+				<td th:text="${#dates.format(record.toDateTime, 'MM/dd/yyyy hh:mm')}"></td>
+				
 				<td th:text="${record.typeOfReservation}"></td>
 				<td th:if="${record.typeOfReservation} == 0">Returned</td>
-				<td th:text="${record.updatedOn}"></td>
+				<td th:text="${#dates.format(record.updatedOn, 'MM/dd/yyyy hh:mm')}"></td>
 			</tr>
 		</tbody>
 	</table>
