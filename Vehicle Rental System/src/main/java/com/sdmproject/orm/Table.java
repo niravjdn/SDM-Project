@@ -44,20 +44,20 @@ public class Table<ObjectType, KeyType> {
 		QueryResult result = builder().query();
 		return result.all();
 	}
-	
+
 	public List<ObjectType> queryForAllWithSort(String param, String order) {
 		QueryResult result = builder().order(param, order.equals("desc")).query();
 		return result.all();
 	}
-	
+
 	public List<Integer> queryForIdWithSort(String property, String sortOrder) {
 		QueryBuilder builder = builder();
 		return builder.select("id").order(property, sortOrder.equals("desc")).queryForIDWithDefaultSortByID();
 	}
-	
+
 	public List<ObjectType> queryForAllSelectedColumn(String[] columns) {
 		QueryBuilder builder = builder();
-		for(String col : columns) {
+		for (String col : columns) {
 			builder.select(col);
 		}
 		QueryResult result = builder().queryForSelectedField();
@@ -68,7 +68,6 @@ public class Table<ObjectType, KeyType> {
 		return builder().count();
 	}
 
-	
 	public List<ObjectType> queryForCustomBuilder(QueryBuilder builder) {
 		QueryResult result = builder.query();
 		return result.all();
@@ -88,82 +87,94 @@ public class Table<ObjectType, KeyType> {
 	}
 
 	public int countForParam(String[] param, Object[] value) {
-		return builder().where().eq(param[0],value[0]).count();
+		return builder().where().eq(param[0], value[0]).count();
 	}
-	
-	public List<ObjectType> queryForParamsForDifferentOperations(String[] param, String[] ops, Object[] value){
-    	QueryBuilder builder =  builder();
-    	
-    	generateBuilder(param, ops, value, builder);
-    	
-        QueryResult result = builder.query();
-        return result.all();
-    }
+
+	public List<ObjectType> queryForParamsForDifferentOperations(String[] param, String[] ops, Object[] value) {
+		QueryBuilder builder = builder();
+
+		generateBuilder(param, ops, value, builder);
+
+		QueryResult result = builder.query();
+		return result.all();
+	}
 
 	private void generateBuilder(String[] param, String[] ops, Object[] value, QueryBuilder builder) {
-		if(param.length < 1) {
+		if (param.length < 1) {
 			return;
 		}
-		
+
 		switch (ops[0]) {
 		case ">":
-			builder.where().greaterThan(param[0],value[0]);
+			builder.where().greaterThan(param[0], value[0]);
 			break;
 
 		case "=":
-			builder.where().eq(param[0],value[0]);	
+			builder.where().eq(param[0], value[0]);
 			break;
 		case "<":
-			builder.where().lessThan(param[0],value[0]);
+			builder.where().lessThan(param[0], value[0]);
+			break;
+		case "<=":
+			builder.where().lessThanOrEqual(param[0], value[0]);
+			break;
+		case ">=":
+			builder.where().greaterThanOrEqual(param[0], value[0]);
 			break;
 		}
 
-    	for(int i=1; i<param.length; i++) {
-    		switch (ops[i]) {
-    		case ">":
-    			builder.and().greaterThan(param[i],value[i]);
-    			break;
+		for (int i = 1; i < param.length; i++) {
+			switch (ops[i]) {
+			case ">":
+				builder.and().greaterThan(param[i], value[i]);
+				break;
 
-    		case "=":
-    			builder.and().eq(param[i],value[i]);	
-    			break;
-    		case "<":
-    			builder.and().lessThan(param[i],value[i]);
-    			break;
-    		}
-    	}
+			case "=":
+				builder.and().eq(param[i], value[i]);
+				break;
+			case "<":
+				builder.and().lessThan(param[i], value[i]);
+				break;
+			case "<=":
+				builder.where().lessThanOrEqual(param[i], value[i]);
+				break;
+			case ">=":
+				builder.where().greaterThanOrEqual(param[i], value[i]);
+				break;
+			}
+		}
 	}
-	
-	public List<ObjectType> queryForParamsForDifferentOperationsWithSort(String[] param, 
-			String[] ops, Object[] value, String sortProperty, boolean isDesc){
-    	QueryBuilder builder =  builder();
-    	
-    	generateBuilder(param, ops, value, builder);
-    	
-    	if(sortProperty.equals("")) {
-    		builder.order(keyField, false);
-    	}else {
-    		builder.order(sortProperty, isDesc);
-    	}
-    	
-        QueryResult result = builder.query();
-        return result.all();
-    }
-	
-	public List<Integer> queryIDParamsForDifferentOperationsWithSort(String[] param, 
-			String[] ops, Object[] value, String sortProperty, boolean isDesc){
-    	QueryBuilder builder =  builder();
-    	
-    	generateBuilder(param, ops, value, builder);
-    	
-    	if(sortProperty.equals("")) {
-    		builder.order(keyField, false);
-    	}else {
-    		builder.order(sortProperty, isDesc);
-    	}
-    	
-        return builder.queryForIDWithDefaultSortByID();
-    }
+
+	public List<ObjectType> queryForParamsForDifferentOperationsWithSort(String[] param, String[] ops, Object[] value,
+			String sortProperty, boolean isDesc) {
+		QueryBuilder builder = builder();
+
+		generateBuilder(param, ops, value, builder);
+
+		if (sortProperty.equals("")) {
+			builder.order(keyField, false);
+		} else {
+			builder.order(sortProperty, isDesc);
+		}
+
+		QueryResult result = builder.query();
+		return result.all();
+	}
+
+	public List<Integer> queryIDParamsForDifferentOperationsWithSort(String[] param, String[] ops, Object[] value,
+			String sortProperty, boolean isDesc) {
+		QueryBuilder builder = builder();
+
+		generateBuilder(param, ops, value, builder);
+
+		if (sortProperty.equals("")) {
+			builder.order(keyField, false);
+		} else {
+			builder.order(sortProperty, isDesc);
+		}
+
+		return builder.queryForIDWithDefaultSortByID();
+	}
 
 	public List<ObjectType> queryForSQL(String query) {
 		QueryResult result = builder().queryUsingSQLString(query);
@@ -234,26 +245,25 @@ public class Table<ObjectType, KeyType> {
 			return ((boolean) value) ? "1" : "0";
 		if (type.equals(UUID.class))
 			return value.toString();
-		if(type.equals(Date.class)) {
-			 DateFormat df = new SimpleDateFormat(dateFormat);  
-             System.out.println(value+" date here "+dateFormat);  
-             return df.format(value);
-			
+		if (type.equals(Date.class)) {
+			DateFormat df = new SimpleDateFormat(dateFormat);
+			System.out.println(value + " date here " + dateFormat);
+			return df.format(value);
+
 		}
-		
-		if(type.equals(ClientRecord.class)) {
-			System.err.println("Parsing Client Record");
-			return String.valueOf(((ClientRecord)value).getId());
+
+		if (type.equals(ClientRecord.class)) {
+			System.err.println("Parsing Client Record - " + String.valueOf(((ClientRecord) value).getId()));
+			return String.valueOf(((ClientRecord) value).getId());
 		}
-		
-		if(type.equals(Vehicle.class)) {
-			System.err.println("Parsing Vehicle Record");
-			return String.valueOf(((Vehicle)value).getId());
+
+		if (type.equals(Vehicle.class)) {
+			System.err.println("Parsing Vehicle Record " + String.valueOf(((Vehicle) value).getId()));
+			return String.valueOf(((Vehicle) value).getId());
 		}
-		
+
 		return String.valueOf(value);
 	}
-	
 
 	public SQL getConnection() {
 		return sql;
@@ -300,17 +310,15 @@ public class Table<ObjectType, KeyType> {
 			this.table = table;
 		}
 
-		
 		public QueryBuilder where() {
 			querySelector.append(" WHERE");
 			return this;
 		}
 
-
 		public int quryForTotalCount() {
 			return builder().count();
 		}
-		
+
 		public QueryBuilder c(String custom, Object... params) {
 			querySelector.append(custom);
 			for (Object param : params) {
@@ -320,8 +328,12 @@ public class Table<ObjectType, KeyType> {
 		}
 
 		public QueryBuilder eq(String columnName, Object value) {
-			querySelector.append(" `" + columnName + "`=?");
-			parameters.add(sqlSafe(value));
+			if (columnName.contains("DATE(")) {
+				querySelector.append(" DATE(" + columnName + ")= DATE(CURDATE())");
+			} else {
+				querySelector.append(" `" + columnName + "`=?");
+				parameters.add(sqlSafe(value));
+			}
 			return this;
 		}
 
@@ -330,16 +342,49 @@ public class Table<ObjectType, KeyType> {
 			return this;
 		}
 
-		
 		public QueryBuilder lessThan(String columnName, Object value) {
-			querySelector.append(" `" + columnName + "`<?");
-			parameters.add(sqlSafe(value));
+			if (columnName.contains("DATE(")) {
+				querySelector.append(" DATE(" + columnName + ")< DATE(CURDATE())");
+			} else {
+				querySelector.append(" `" + columnName + "`<?");
+				parameters.add(sqlSafe(value));
+			}
 			return this;
 		}
 
 		public QueryBuilder greaterThan(String columnName, Object value) {
-			querySelector.append(" `" + columnName + "`>?");
-			parameters.add(sqlSafe(value));
+			System.out.println("----------+++++++Columnname" + columnName);
+			if (columnName.contains("DATE(")) {
+				querySelector.append(" DATE(" + columnName + ")> DATE(CURDATE())");
+			} else {
+				querySelector.append(" `" + columnName + "`>?");
+				parameters.add(sqlSafe(value));
+			}
+
+			return this;
+		}
+
+		public QueryBuilder greaterThanOrEqual(String columnName, Object value) {
+			System.out.println("----------+++++++Columnname" + columnName);
+			if (columnName.contains("DATE(")) {
+				querySelector.append(" DATE(" + columnName + ")>= DATE(CURDATE())");
+			} else {
+				querySelector.append(" `" + columnName + "`>=?");
+				parameters.add(sqlSafe(value));
+			}
+
+			return this;
+		}
+
+		public QueryBuilder lessThanOrEqual(String columnName, Object value) {
+			System.out.println("----------+++++++Columnname" + columnName);
+			if (columnName.contains("DATE(")) {
+				querySelector.append(" DATE(" + columnName + ")<= DATE(CURDATE())");
+			} else {
+				querySelector.append(" `" + columnName + "`<=?");
+				parameters.add(sqlSafe(value));
+			}
+
 			return this;
 		}
 
@@ -399,10 +444,10 @@ public class Table<ObjectType, KeyType> {
 			sql.close(rs);
 			return new QueryResult(objects);
 		}
-		
-		
+
 		public QueryResult queryForSelectedField() {
-			String query = "SELECT "+ String.join(",", columns) +" FROM `" + getTableName() + "`" + querySelector.toString() + ";";
+			String query = "SELECT " + String.join(",", columns) + " FROM `" + getTableName() + "`"
+					+ querySelector.toString() + ";";
 			System.out.println(query);
 			ResultSet rs = sql.read(query, parameters.toArray());
 			System.out.println(parameters);
@@ -410,7 +455,7 @@ public class Table<ObjectType, KeyType> {
 			sql.close(rs);
 			return new QueryResult(objects);
 		}
-		
+
 		public List<Integer> queryForIDWithDefaultSortByID() {
 			String query = "SELECT id FROM `" + getTableName() + "`" + querySelector.toString() + ";";
 			System.out.println(query);
@@ -418,7 +463,7 @@ public class Table<ObjectType, KeyType> {
 			List<Integer> list = new ArrayList<Integer>();
 			try {
 				while (rs.next())
-					 list .add(rs.getInt(1));
+					list.add(rs.getInt(1));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -426,7 +471,6 @@ public class Table<ObjectType, KeyType> {
 			return list;
 		}
 
-		
 		public QueryResult queryUsingSQLString(String query) {
 			ResultSet rs = sql.read(query, parameters.toArray());
 			List<ObjectType> objects = parseResult(rs);
@@ -496,7 +540,6 @@ public class Table<ObjectType, KeyType> {
 			if (insertKeys.length() > 0)
 				insertKeys = insertKeys.substring(1);
 			String q = "INSERT INTO `" + getTableName() + "` (" + insertKeys + ") VALUES (" + insertData + ");";
-			System.out.println(q);
 			sql.write(q, parameters.toArray());
 		}
 
@@ -504,10 +547,10 @@ public class Table<ObjectType, KeyType> {
 			Map<String, String> data = new HashMap<>();
 			for (String fieldName : fieldReflection.keySet()) {
 				Field field = fieldReflection.get(fieldName);
-				
+
 				try {
 					String dateFormat = fieldDescriptors.get(field).dateFormat();
-					System.out.println("01021020102"+dateFormat);
+					System.out.println("01021020102" + dateFormat);
 					String value = convert(field.getType(), field.get(object), dateFormat);
 					String colName = getColName(fieldName);
 					data.put(colName, value);
@@ -538,28 +581,28 @@ public class Table<ObjectType, KeyType> {
 					String colName = descriptor.columnName();
 					if (colName.length() == 0)
 						colName = fieldName;
-					if(descriptor.otherClassReference()) {
-						//this is referencing to other class // do call to that class and parse and set
+					if (descriptor.otherClassReference()) {
+						// this is referencing to other class // do call to that class and parse and set
 						Type t2 = field.getType();
-						if(t2.equals(ClientRecord.class)) {
+						if (t2.equals(ClientRecord.class)) {
 							Table t = new Table<ClientRecord, Integer>(ClientRecord.class);
 							Object id = getValue(resultSet, colName, int.class);
-							System.out.println("Id - "+id);
-							ClientRecord clientInfo =  (ClientRecord) t.queryById(id);
+							System.out.println("Id - " + id);
+							ClientRecord clientInfo = (ClientRecord) t.queryById(id);
 							System.out.println(clientInfo);
 							field.set(object, clientInfo);
-						}else {
+						} else {
 							Table t = new Table<Vehicle, Integer>(Vehicle.class);
 							Object id = getValue(resultSet, colName, int.class);
-							System.out.println("Id - "+id);
-							Vehicle vehicle =  (Vehicle) t.queryById(id);
+							System.out.println("Id - " + id);
+							Vehicle vehicle = (Vehicle) t.queryById(id);
 							System.out.println(vehicle);
 							field.set(object, vehicle);
 						}
-					}else {
+					} else {
 						field.set(object, getValue(resultSet, colName, field.getType()));
 					}
-					
+
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -625,5 +668,4 @@ public class Table<ObjectType, KeyType> {
 		}
 	}
 
-	
 }
