@@ -59,9 +59,12 @@ public class VehicleRecordController {
 
 	@ModelAttribute("username")
 	public String getCurrentUser() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			return ((UserDetails) principal).getUsername();
+		} else {
+			return principal.toString();
+		}
 	}
 
 	@RequestMapping(value = { "/admin/vehicleRecord/add" }, method = RequestMethod.GET)
@@ -117,7 +120,6 @@ public class VehicleRecordController {
 	public ModelAndView viewVehicleRecord(Optional<String> sort, Optional<String> order, Optional<String> type,
 			Optional<String> make, Optional<String> model, Optional<String> color, Optional<String> year) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", vehicleRecordService.findAllWithSort(sort, order));
 		ArrayList<String> param = new ArrayList<String>();
 		ArrayList<String> operator = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
@@ -168,8 +170,6 @@ public class VehicleRecordController {
 			int greaterThan = prevYear.get(Calendar.YEAR);
 			AddToListForFilter.add(param, operator, values,"year", ">=", greaterThan);
 		}
-
-		System.out.println("Arrays " + param);
 
 		modelAndView.addObject("records",
 				vehicleRecordService.filterMultipleAttribute(param, operator, values, sort, order));

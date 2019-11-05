@@ -6,10 +6,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+// this class is singleton
 public class BasicConnectionPool implements ConnectionPool {
 
+	static Logger logger = LoggerFactory.getLogger(BasicConnectionPool.class);
+	
     private final String url;
     private final String user;
     private final String password;
@@ -25,28 +30,29 @@ public class BasicConnectionPool implements ConnectionPool {
     
     public static BasicConnectionPool create(String url, String user, String password) throws SQLException {
         
-        for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-            pool.add(createConnection(url, user, password));
-        }
         
         if(instance == null) {
         	instance = new BasicConnectionPool(url, user, password, pool);
+
+            for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+                pool.add(createConnection(url, user, password));
+            }
         }
         return instance;
     }
 
     
-    
+    // to make it singleton
     private BasicConnectionPool(String url, String user, String password, List<Connection> connectionPool) {
         this.url = url;
         this.user = user;
         this.password = password;
         this.connectionPool = connectionPool;
-        System.err.println("0000000000000"+usersQuery);
     }
 
     @Override
     public Connection getConnection() throws SQLException {
+    	System.err.println("Asking for new Connection");
         if (connectionPool.isEmpty()) {
             if (usedConnections.size() < MAX_POOL_SIZE) {
                 connectionPool.add(createConnection(url, user, password));
@@ -62,12 +68,18 @@ public class BasicConnectionPool implements ConnectionPool {
 
     @Override
     public boolean releaseConnection(Connection connection) {
+    	logger.info("Releasing");
+    	
         connectionPool.add(connection);
+        System.out.println("connectionPool " + connectionPool.size());
+    	System.out.println("usedConnections " + usedConnections.size() + usedConnections.contains(connection));
+        
         return usedConnections.remove(connection);
     }
     
 
     private static Connection createConnection(String url, String user, String password) throws SQLException {
+    	logger.debug("Creating new connection");
         return DriverManager.getConnection(url, user, password);
     }
 

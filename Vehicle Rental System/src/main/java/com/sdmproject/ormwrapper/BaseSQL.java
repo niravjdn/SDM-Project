@@ -11,16 +11,17 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sdmproject.connectionpool.ConnectionPool;
 import com.sdmproject.orm.SQL;
 
 public abstract class BaseSQL implements SQL {
 
     private Map<ResultSet,Statement> statementMap = new HashMap<>();
 
-    public abstract Connection getConnection() throws SQLException;
+    public abstract ConnectionPool getPool();
 
     public void write(String queryString,Object... parameters){
-        try(Connection conn = getConnection();
+        try(Connection conn = getPool().getConnection();
         		PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);) {
             System.out.println(ps.toString());
             ps.executeUpdate();
@@ -28,10 +29,9 @@ public abstract class BaseSQL implements SQL {
         } catch (SQLException e) {e.printStackTrace();}
     }
 
-    public ResultSet read(String queryString, Object... parameters){
+    public ResultSet read(String queryString, Connection connection, Object... parameters){
         try {
-        	Connection conn = getConnection();
-            PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);
+            PreparedStatement ps = setParams(connection.prepareStatement(queryString),parameters);
             System.out.println(ps.toString());
             ResultSet rs = ps.executeQuery();
             statementMap.put(rs,ps);

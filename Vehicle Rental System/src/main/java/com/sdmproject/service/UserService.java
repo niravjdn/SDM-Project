@@ -32,20 +32,4 @@ public class UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-    
-    public boolean isUserExist(String email) {
-        return userRepository.isUserExist(email);
-    }
-
-    public User saveUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(1);
-        return userRepository.save(user);
-        
-    }
-    
-    public void deleteUserByEmail(String email) {
-    	userRepository.deleteByEmail(email);
-    }
-
 }

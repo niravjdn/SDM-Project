@@ -69,12 +69,6 @@ public class VehicleService {
 		if (order.isPresent()) {
 			isDesc = order.get().equals("desc");
 		}
-		System.err.println(param);
-		System.err.println(operator);
-		System.err.println(values);
-		System.err.println(param.toArray(new String[param.size()]));
-		System.err.println(operator.toArray(new String[operator.size()]));
-		System.err.println(values.toArray(new Object[values.size()]));
 		return vehicleRepository.filterMultipleAttribute(param.toArray(new String[param.size()]), operator.toArray(new String[operator.size()]),
 				values.toArray(new Object[values.size()]), prop, isDesc);
 	}

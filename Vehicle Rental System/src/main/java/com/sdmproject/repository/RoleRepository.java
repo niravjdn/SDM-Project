@@ -9,22 +9,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.sdmproject.model.Role;
+import com.sdmproject.model.User;
+import com.sdmproject.orm.Table;
 
 @Repository
 public class RoleRepository {
 
 	Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
-	private List<Role> records = new ArrayList<Role>(); 
-
-	public Role findByRole(String roleName) {
-		List<Role> result = records.stream().filter(record -> (record.getRole().equals(roleName)))
-				.collect(Collectors.toList());
-		return result.get(0);
+	public Table<Role, Integer> DAO;
+	public RoleRepository() {
+		this.DAO = new Table<Role, Integer>(Role.class);
 	}
-
-	public void save(Role role) {
-		records.add(role);
+	
+	public Role findByRole(String roleName) {
+		return DAO.queryForEq("role",roleName).get(0);
 	}
 
 }

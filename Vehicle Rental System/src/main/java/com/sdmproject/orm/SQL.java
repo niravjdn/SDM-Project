@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.sdmproject.connectionpool.ConnectionPool;
+
 public interface SQL {
 
-    Connection getConnection() throws SQLException;
-    ResultSet read(String queryString,Object... parameters);
+	ConnectionPool getPool();
+    ResultSet read(String queryString,Connection connection, Object... parameters);
     void write(String queryString,Object... parameters);
     void close(ResultSet resultSet);
+	void close(ConnectionPool connectionPool, Connection connection);
 
 }

@@ -34,12 +34,11 @@ public class LoginController {
 	// pass to all view served by this controller
 	@ModelAttribute("username")
 	public String getCurrentUser() {
-		Object userDetails =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		if (userDetails instanceof UserDetails) {
-			return userService.findUserByEmail(((UserDetails) userDetails).getUsername()).getFirstName();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			return ((UserDetails) principal).getUsername();
 		} else {
-			return userDetails.toString();
+			return principal.toString();
 		}
 	}
 
@@ -50,8 +49,7 @@ public class LoginController {
 		return modelAndView;
 	}
 
-
-	@RequestMapping(value = {"/clerk/home", "/clerk"}, method = RequestMethod.GET)
+	@RequestMapping(value = { "/clerk/home", "/clerk" }, method = RequestMethod.GET)
 	public ModelAndView home() {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,7 +58,7 @@ public class LoginController {
 		modelAndView.setViewName("clerk/home");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/admin/dashboard", method = RequestMethod.GET)
 	public ModelAndView dashboard() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -73,46 +71,4 @@ public class LoginController {
 		modelAndView.setViewName("admin/dashboard");
 		return modelAndView;
 	}
-
-	@RequestMapping(value = "/profile/changepassword", method = RequestMethod.GET)
-	public ModelAndView changePassword() {
-		ModelAndView modelAndView = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-
-		modelAndView.addObject("welcomeString",
-				"Welcome " + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-		modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-		modelAndView.setViewName("changepassword");
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/profile/changepassword", method = RequestMethod.POST)
-	public ModelAndView changePasswordForUser(@RequestParam("password")String password, @RequestParam("confirmPassword")String confirmPassword) {
-		ModelAndView modelAndView = new ModelAndView();
-		logger.info("Got in Password Reset Action");
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-
-		logger.info("Got in Password Reset Action -" + user.getPassword());
-		logger.info("Got in Password Reset Action -" + confirmPassword);
-		if (password.equals(confirmPassword)) {
-			// change password
-			user.setPassword(password);
-			userService.saveUser(user);
-			logger.info("Success - Password Change");
-			modelAndView.addObject("successMessage", "Password Changed Successfully.");
-		} else {
-			logger.info("Error - Password Change");
-			modelAndView.addObject("errorMessage", "Password Mismatch.");
-		}
-
-		modelAndView.addObject("welcomeString",
-				"Welcome " + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-		modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-		modelAndView.setViewName("changepassword");
-		return modelAndView;
-	}
-	
-
 }

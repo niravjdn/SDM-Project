@@ -2,6 +2,7 @@ package com.sdmproject.orm;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -457,10 +458,18 @@ public class Table<ObjectType, KeyType> {
 		public QueryResult query() {
 			String query = "SELECT * FROM `" + getTableName() + "`" + querySelector.toString() + ";";
 			System.out.println(query);
-			ResultSet rs = sql.read(query, parameters.toArray());
+			Connection connection = null;
+			try {
+				connection = sql.getPool().getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ResultSet rs = sql.read(query, connection, parameters.toArray());
 			System.out.println(parameters);
 			List<ObjectType> objects = parseResult(rs);
 			sql.close(rs);
+			sql.close(sql.getPool(), connection);
 			return new QueryResult(objects);
 		}
 
@@ -468,17 +477,32 @@ public class Table<ObjectType, KeyType> {
 			String query = "SELECT " + String.join(",", columns) + " FROM `" + getTableName() + "`"
 					+ querySelector.toString() + ";";
 			System.out.println(query);
-			ResultSet rs = sql.read(query, parameters.toArray());
+			Connection connection = null;
+			try {
+				connection = sql.getPool().getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ResultSet rs = sql.read(query, connection, parameters.toArray());
 			System.out.println(parameters);
 			List<ObjectType> objects = parseResult(rs);
 			sql.close(rs);
+			sql.close(sql.getPool(), connection);
 			return new QueryResult(objects);
 		}
 
 		public List<Integer> queryForIDWithDefaultSortByID() {
 			String query = "SELECT id FROM `" + getTableName() + "`" + querySelector.toString() + ";";
 			System.out.println(query);
-			ResultSet rs = sql.read(query, parameters.toArray());
+			Connection connection = null;
+			try {
+				connection = sql.getPool().getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ResultSet rs = sql.read(query, connection, parameters.toArray());
 			List<Integer> list = new ArrayList<Integer>();
 			try {
 				while (rs.next())
@@ -487,19 +511,35 @@ public class Table<ObjectType, KeyType> {
 				e.printStackTrace();
 			}
 			sql.close(rs);
+			sql.close(sql.getPool(), connection);
 			return list;
 		}
 
 		public QueryResult queryUsingSQLString(String query) {
-			ResultSet rs = sql.read(query, parameters.toArray());
+			Connection connection = null;
+			try {
+				connection = sql.getPool().getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ResultSet rs = sql.read(query, connection, parameters.toArray());
 			List<ObjectType> objects = parseResult(rs);
 			sql.close(rs);
+			sql.close(sql.getPool(), connection);
 			return new QueryResult(objects);
 		}
 
 		public ObjectType query(ObjectType object) {
+			Connection connection = null;
+			try {
+				connection = sql.getPool().getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			ResultSet rs = sql.read("SELECT * FROM `" + getTableName() + "`" + querySelector.toString() + ";",
-					parameters.toArray());
+					connection, parameters.toArray());
 			try {
 				if (rs.next())
 					parseResult(rs, object);
@@ -507,12 +547,20 @@ public class Table<ObjectType, KeyType> {
 				e.printStackTrace();
 			}
 			sql.close(rs);
+			sql.close(sql.getPool(), connection);
 			return object;
 		}
 
 		public int count() {
+			Connection connection = null;
+			try {
+				connection = sql.getPool().getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			ResultSet rs = sql.read("SELECT COUNT(*) FROM `" + getTableName() + "`" + querySelector.toString() + ";",
-					parameters.toArray());
+					connection, parameters.toArray());
 			try {
 				if (rs.next())
 					return rs.getInt(1);
@@ -520,6 +568,7 @@ public class Table<ObjectType, KeyType> {
 				e.printStackTrace();
 			}
 			sql.close(rs);
+			sql.close(sql.getPool(), connection);
 			return -1;
 		}
 

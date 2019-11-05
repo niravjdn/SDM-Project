@@ -64,9 +64,12 @@ public class ReservationController {
 
 	@ModelAttribute("username")
 	public String getCurrentUser() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		return userService.findUserByEmail(userDetails.getUsername()).getFirstName();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			return ((UserDetails) principal).getUsername();
+		} else {
+			return principal.toString();
+		}
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/add" }, method = RequestMethod.GET)
@@ -99,7 +102,7 @@ public class ReservationController {
 			reservation.setCreatedOn(new Date());
 			reservation.setFromDateTime(fromDate);
 			reservation.setToDateTime(toDate);
-			
+			atts.addFlashAttribute("successMessage", "Car has been reserved for another user.");
 			reservationService.save(reservation);
 		}else {
 			atts.addFlashAttribute("errorMessage", "Car has been reserved for another user.");

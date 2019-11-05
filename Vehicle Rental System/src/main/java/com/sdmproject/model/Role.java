@@ -1,13 +1,12 @@
 package com.sdmproject.model;
 
+import com.sdmproject.orm.DatabaseField;
+import com.sdmproject.orm.DatabaseTable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-
-import com.sdmproject.orm.DatabaseTable;
 
 @Data
 @Builder
@@ -15,6 +14,10 @@ import com.sdmproject.orm.DatabaseTable;
 @NoArgsConstructor
 @DatabaseTable("role")
 public class Role {
+	
+	@DatabaseField(id = true)
     private int id;
+    
+    @DatabaseField
     private String role;
 }

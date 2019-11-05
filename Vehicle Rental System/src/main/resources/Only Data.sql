@@ -50,35 +50,9 @@ create table IF NOT EXISTS reservation (id integer not null auto_increment, clie
 
 /* Mock Data for Reservation */
 
-insert into reservation select * from (
-select 1, 3, 2, '2019-10-20 13:00:00', '2019-10-25 17:00:00', 'user'
-) x where not exists(select * from reservation);
 
+INSERT INTO `reservation` (`id`, `typeOfReservation`, `clientID`, `vehicleID`, `fromDateTIme`, `toDateTime`, `createdOn`) VALUES
+(1, 'RESERVATION', 1, 4, '2019-12-15 08:00:00', '2019-11-30 15:00:00', '2019-11-05 17:00:00');
 
-create table IF NOT EXISTS reservation_history (id integer not null auto_increment, 
-	firstName varchar(255) not null, lastName varchar(255) not null, driverLicienceNo varchar(255) not null, 
-	expiryDate DATE not null, primary key(id), phoneNo varchar(25) not null,
-	color varchar(255) not null, plateNo varchar(255) not null, make varchar(255) not null, model varchar(255) not null, year integer not null,
-	fromDateTIme DATETIME not null, toDateTime DATETIME not null,
-	updatedOn DateTIME not null,
-	createdBy varchar(255)
- );
-
-
-
-/* 
-Insert auth data
-*/
-
-
-insert into `user` select * from (
-select 1, 1, 'admin@niravjdn.xyz', 'admin', 'admin', '$2a$10$3UY4Ym7etTSepKYjrVUAnOYAi1JX4wkW9L4YYJ6tSJGkHrSv.AAri' union
-select 2, 1, 'user@niravjdn.xyz', 'user', 'user', '$2a$10$Ckgc3oro24wEdK.C4mYObemK.qAfay0dIflXY/HDwgOYyMcH8o70.'
-) x where not exists(select * from `user`);
-
-insert into `user_role` select * from (
-select 1, 1 union
-select 2, 2
-) x where not exists(select * from `user_role`);
 
 

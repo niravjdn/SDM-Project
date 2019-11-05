@@ -89,6 +89,10 @@ insert ignore into `user` values
 insert ignore into `user` values
 (2, 1, 'user@niravjdn.xyz', 'user', 'user', '$2a$10$3UY4Ym7etTSepKYjrVUAnOYAi1JX4wkW9L4YYJ6tSJGkHrSv.AAri');
 
+insert ignore into `user` values
+(3, 1, 'user2@niravjdn.xyz', 'user2', 'user2', '$2a$10$3UY4Ym7etTSepKYjrVUAnOYAi1JX4wkW9L4YYJ6tSJGkHrSv.AAri');
+
+
 
 insert ignore into `user_role` values (1,1);
 insert  ignore into `user_role` values (2,2);
