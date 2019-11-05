@@ -15,8 +15,11 @@
 
 ## Team Leader For All Iterations
  Iteration 1 - Nirav Patel
+ 
  Iteration 2 - Nirav Patel
+ 
  Iteration 3 - Nirav Patel
+ 
  Iteration 4 - Nirav Patel
 
  
@@ -47,16 +50,7 @@
 
  ### How to set up DB 
 
-if you don't want to connect mysql db, create db with above configuration and When you run your application it will create table and row data automatically.
-
-if you want to use embeded db, then  comment this lines in application.properties
-
- ```
-spring.datasource.url = jdbc:mysql://127.0.0.1:3306/zadmin_sdm?useSSL=true&characterEncoding=utf8&sessionVariables=storage_engine=InnoDB
-spring.datasource.username = root
-```
-
-and uncomment this string
+Just set up this properties in application.properties with valid db profile.
 
 ```
 spring.datasource.url=jdbc:h2:mem:testdb
