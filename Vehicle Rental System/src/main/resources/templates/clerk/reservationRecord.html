@@ -18,11 +18,15 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
 	rel="stylesheet">
 
-<link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/png">
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}"
+	type="image/png">
 
 </head>
 <style>
-table th { user-select: none; background: #eee;}
+table th {
+	user-select: none;
+	background: #eee;
+}
 </style>
 
 
@@ -31,71 +35,76 @@ table th { user-select: none; background: #eee;}
 	<div th:replace="clerk/header :: navbar"></div>
 	<span class="glyphicon glyphicon-envelope"></span>
 	<nav class="bodyMargin" aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item"><a th:href="@{/clerk/home}">Home</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">Cancle Reservation</li>
-	  </ol>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/clerk/home}">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Cancel
+				Reservation</li>
+		</ol>
 	</nav>
-	
+
 	<main role="main" class="container-fluid">
-	
-	<h2> Reservation Catalog :  Cancle Reservation </h3>
-	
-	<br>
-		
-			
-		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
-		</div>
-		
-	<table class="table table-bordered" id="filterableTable">
-		<thead>
-			<tr>
-				<th data-sort-prop="id">Id</th>
-				<th data-sort-prop="firstName">FirstName</th>
-				<th data-sort-prop="lastName">LastName</th>
-				<th data-sort-prop="driverLicienceNo">Driver Licence No</th>
-				<th data-sort-prop="expiryDate">Expiry Date</th>
-				<th data-sort-prop="phoneNo">Phone No</th>
-				<th data-sort-prop="color">Color</th>
-				<th data-sort-prop="plateNo">Plate No</th>
-				<th data-sort-prop="make">Make</th>
-				<th data-sort-prop="year">Year</th>
-				<th data-sort-prop="fromDateTime">Booking From</th>
-				<th data-sort-prop="toDateTime">Booking Due</th>
-				<th data-sort-prop="createdOn">Reservation Created on</th>
-				<th >Cancel Booking</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="record : ${records}">
-				<td th:text="${record.id}"></td>
-				<td th:text="${record.client.firstName}"></td>
-				<td th:text="${record.client.lastName}"></td>
-				<td th:text="${record.client.driverLicienceNo}"></td>
-				<td th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td>
-				<td th:text="${record.client.phoneNo}"></td>
-				<td th:text="${record.vehicle.color}"></td>
-				<td th:text="${record.vehicle.plateNo}"></td>
-				<td th:text="${record.vehicle.make}"></td>
-				<td th:text="${record.vehicle.year}"></td>
-				<td th:text="${#dates.format(record.fromDateTime, 'MM/dd/yyyy hh:mm')}"></td>
-				<td th:text="${#dates.format(record.toDateTime, 'MM/dd/yyyy hh:mm')}"></td>
-				<td th:text="${#dates.format(record.createdOn, 'MM/dd/yyyy hh:mm')}"></td>
-				
-				<td>
-					<a					
-						th:href="@{'/clerk/reservation/cancel/' + ${record.id} }"> 
-						<button type="button" class="btn btn-labeled btn-danger">
-						<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Cancel</button>
-					</a>
-				</td>
-						
-			</tr>
-		</tbody>
-	</table>
+
+		<h2>
+			Reservation Catalog : Cancel Reservation
+			</h3>
+
+			<br>
 
 
+			<div align="center" th:if="${successMessage}"
+				class="alert alert-success alert-dismissible fade show" role="alert"
+				th:utext="${successMessage}"></div>
 
+			<table class="table table-bordered" id="filterableTable">
+				<thead>
+					<tr>
+						<th data-sort-prop="id">Id</th>
+						<th data-sort-prop="firstName">FirstName</th>
+						<th data-sort-prop="lastName">LastName</th>
+						<th data-sort-prop="driverLicienceNo">Driver Licence No</th>
+						<th data-sort-prop="expiryDate">Expiry Date</th>
+						<th data-sort-prop="phoneNo">Phone No</th>
+						<th data-sort-prop="color">Color</th>
+						<th data-sort-prop="plateNo">Plate No</th>
+						<th data-sort-prop="make">Make</th>
+						<th data-sort-prop="year">Year</th>
+						<th data-sort-prop="fromDateTime">Booking From</th>
+						<th data-sort-prop="toDateTime">Booking Due</th>
+						<th data-sort-prop="createdOn">Reservation Created on</th>
+						<th>Cancel Booking</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="record : ${records}">
+						<td th:text="${record.id}"></td>
+						<td th:text="${record.client.firstName}"></td>
+						<td th:text="${record.client.lastName}"></td>
+						<td th:text="${record.client.driverLicienceNo}"></td>
+						<td
+							th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td>
+						<td th:text="${record.client.phoneNo}"></td>
+						<td th:text="${record.vehicle.color}"></td>
+						<td th:text="${record.vehicle.plateNo}"></td>
+						<td th:text="${record.vehicle.make}"></td>
+						<td th:text="${record.vehicle.year}"></td>
+						<td
+							th:text="${#dates.format(record.fromDateTime, 'MM/dd/yyyy hh:mm')}"></td>
+						<td
+							th:text="${#dates.format(record.toDateTime, 'MM/dd/yyyy hh:mm')}"></td>
+						<td
+							th:text="${#dates.format(record.createdOn, 'MM/dd/yyyy hh:mm')}"></td>
+
+						<td><a
+							th:href="@{'/clerk/reservation/cancel/' + ${record.id} }">
+								<button type="button" class="btn btn-labeled btn-danger">
+									<span class="btn-label"><i
+										class="glyphicon glyphicon-remove"></i></span>Cancel
+								</button>
+						</a></td>
+
+					</tr>
+				</tbody>
+			</table>
 	</main>
 	<!-- /.container -->
 
@@ -115,42 +124,52 @@ table th { user-select: none; background: #eee;}
 		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
 		crossorigin="anonymous"></script>
 
-	<script th:src="@{/js/filter.js}"> </script>
-	<script th:src="@{/js/main.js}" > </script>
-<script th:inline="javascript">
-    //thymeleaf to javascript variables
-    /*<![CDATA[*/
-    var sortProperty = /*[[${sortProperty}]]*/ null;
-    var sortDesc = /*[[${order}]]*/ null;
-  
-    /*]]>*/
+	<script th:src="@{/js/filter.js}">
+		
+	</script>
+	<script th:src="@{/js/main.js}">
+		
+	</script>
+	<script th:inline="javascript">
+		//thymeleaf to javascript variables
+		/*<![CDATA[*/
+		var sortProperty = /*[[${sortProperty}]]*/null;
+		var sortDesc = /*[[${order}]]*/null;
 
-    $(document).ready(function(){
-     //show up/down arrows
-     $("table thead th").each(function(){
-        var head = $(this);
-        if(head.attr('data-sort-prop')==sortProperty){
-            head.append(sortDesc == "desc" ? ' <i class="fa fa-sort-desc"></i>' : ' <i class="fa fa-sort-asc"></i>');
-        }
-        });
+		/*]]>*/
 
-     //set click action, reload page on clicking with all query params
-    /*  $("table thead th").click(function() {
-      var headerSortPropName = $(this).attr("data-sort-prop");
-      if(headerSortPropName==undefined){
-    	  return;
-      }
-      if(headerSortPropName==sortProperty){
-          window.location.href = window.location.pathname+
-          '?sort='+ headerSortPropName+'&order='+
-          (sortDesc == "desc" ?'asc':'desc');
-          console.log("a");
-      }else{
-           window.location.href = window.location.pathname+
-          '?sort='+ headerSortPropName+'&order=asc';
-      }
-      }); */
-    });
-  </script>
+		$(document)
+				.ready(
+						function() {
+							//show up/down arrows
+							$("table thead th")
+									.each(
+											function() {
+												var head = $(this);
+												if (head.attr('data-sort-prop') == sortProperty) {
+													head
+															.append(sortDesc == "desc" ? ' <i class="fa fa-sort-desc"></i>'
+																	: ' <i class="fa fa-sort-asc"></i>');
+												}
+											});
+
+							//set click action, reload page on clicking with all query params
+							/*  $("table thead th").click(function() {
+							  var headerSortPropName = $(this).attr("data-sort-prop");
+							  if(headerSortPropName==undefined){
+								  return;
+							  }
+							  if(headerSortPropName==sortProperty){
+							      window.location.href = window.location.pathname+
+							      '?sort='+ headerSortPropName+'&order='+
+							      (sortDesc == "desc" ?'asc':'desc');
+							      console.log("a");
+							  }else{
+							       window.location.href = window.location.pathname+
+							      '?sort='+ headerSortPropName+'&order=asc';
+							  }
+							  }); */
+						});
+	</script>
 </body>
 </html>
