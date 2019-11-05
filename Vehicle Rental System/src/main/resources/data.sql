@@ -59,8 +59,7 @@ create table IF NOT EXISTS reservation (id integer not null auto_increment, type
 
 
 create table IF NOT EXISTS reservation_history (id integer PRIMARY KEY,
- `typeOfReservation` varchar(15) NOT NULL,
-  `typeOfEndOfTransaction` varchar(10) NOT NULL,
+  `status` varchar(10) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `driverLicienceNo` varchar(255) NOT NULL,

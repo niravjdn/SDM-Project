@@ -77,7 +77,7 @@ public class ReservationHistoryController {
 	
 	@RequestMapping(value = { "/admin/reservation/historyView"}, method = RequestMethod.GET)
 	public ModelAndView reservationHistoryView(Optional<String> sort, Optional<String> order, Optional<String> client,
-			Optional<String> vehicle, Optional<String>dueDate) {
+			Optional<String> vehicle, Optional<String> dueDate, Optional<String> status) {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", reservationHistoryService.findAllWithSort(sort,order));
@@ -113,6 +113,12 @@ public class ReservationHistoryController {
 			modelAndView.addObject("toDateTime", dueDate.get());
 			filterBean.getMap().put("toDateTime", dueDate.get());
 			AddToListForFilter.add(param, operator, values,"DATE(toDateTime)", "=", dueDate.get());
+		}
+		
+		if(status.isPresent()) {
+			modelAndView.addObject("status", status.get());
+			filterBean.getMap().put("status", status.get());
+			AddToListForFilter.add(param, operator, values,"status", "=", status.get());
 		}
 		
 		modelAndView.addObject("records", reservationHistoryService.filterMultipleAttribute(param, operator, values, sort, order));

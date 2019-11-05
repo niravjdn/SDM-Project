@@ -63,6 +63,7 @@ table th { user-select: none; background: #eee;}
 				  </option>
 				</select>
 				</div>
+				
 				<div class="col-sm-4">	
 				<label class="control-label" for="vehicle"><b>Search Transaction History by Vehicle</b></label>
 				<select class="form-control" name="vehicle" id="vehicle">
@@ -75,6 +76,23 @@ table th { user-select: none; background: #eee;}
 				  </option>
 				</select>
 				</div>
+				
+				
+				
+				<div class="col-sm-4">
+					<label class="control-label" for="vehicle"><b>Search Transaction Status of Transaction</b></label>
+					<select class="form-control" name="status" id="status">
+					
+					  <option disabled selected value>ANY</option>
+					  <option th:value="RETURN" th:selected="${status} == 'RETURN'"> RETURN </option>
+					  <option th:value="CANCLE" th:selected="${status} == 'CANCLE'"> CANCLE </option>
+					</select>
+				</div>
+				
+				</div>
+				
+				<br/>
+				<div class="row">
 				<div class="col-sm-4">
 				<label class="control-label" for="textinput"><b>Search Transaction History by Booking Due Date</b></label>
 	 			<input type="text"  name="dueDate" id="dueDate"
@@ -112,7 +130,7 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
-				<th >Reservation Type</th>
+				<th >Status</th>
 				<th data-sort-prop="updatedoOn">Reservation Updated On</th>
 			</tr>
 		</thead>
@@ -131,8 +149,7 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${#dates.format(record.fromDateTime, 'MM/dd/yyyy hh:mm')}"></td>
 				<td th:text="${#dates.format(record.toDateTime, 'MM/dd/yyyy hh:mm')}"></td>
 				
-				<td th:text="${record.typeOfReservation}"></td>
-				<td th:if="${record.typeOfReservation} == 0">Returned</td>
+				<td th:text="${record.status}"></td>
 				<td th:text="${#dates.format(record.updatedOn, 'MM/dd/yyyy hh:mm')}"></td>
 			</tr>
 		</tbody>

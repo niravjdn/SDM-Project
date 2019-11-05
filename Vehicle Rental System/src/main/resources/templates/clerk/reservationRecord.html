@@ -45,7 +45,7 @@ table th {
 	<main role="main" class="container-fluid">
 
 		<h2>
-			Reservation Catalog : Cancel Reservation
+			Reservation Catalog : Cancel Reservation or Convert Reservation to Rental
 			</h3>
 
 			<br>
@@ -60,7 +60,7 @@ table th {
 					<tr>
 						<th data-sort-prop="id">Id</th>
 						<th data-sort-prop="firstName">FirstName</th>
-						<th data-sort-prop="lastName">LastName</th>
+						<!-- <th data-sort-prop="lastName">LastName</th> -->
 						<th data-sort-prop="driverLicienceNo">Driver Licence No</th>
 						<th data-sort-prop="expiryDate">Expiry Date</th>
 						<th data-sort-prop="phoneNo">Phone No</th>
@@ -71,6 +71,7 @@ table th {
 						<th data-sort-prop="fromDateTime">Booking From</th>
 						<th data-sort-prop="toDateTime">Booking Due</th>
 						<th data-sort-prop="createdOn">Reservation Created on</th>
+						<th>Make it Rental</th>
 						<th>Cancel Booking</th>
 					</tr>
 				</thead>
@@ -78,8 +79,9 @@ table th {
 					<tr th:each="record : ${records}">
 						<td th:text="${record.id}"></td>
 						<td th:text="${record.client.firstName}"></td>
-						<td th:text="${record.client.lastName}"></td>
-						<td th:text="${record.client.driverLicienceNo}"></td>
+<!-- 						<td th:text="${record.client.lastName}"></td>
+ -->
+ 						<td th:text="${record.client.driverLicienceNo}"></td>
 						<td
 							th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td>
 						<td th:text="${record.client.phoneNo}"></td>
@@ -95,8 +97,16 @@ table th {
 							th:text="${#dates.format(record.createdOn, 'MM/dd/yyyy hh:mm')}"></td>
 
 						<td><a
+							th:href="@{'/clerk/reservation/makeitrental/' + ${record.id} }">
+								<button type="button" class="btn btn-labeled btn-success btn-sm">
+									<span class="btn-label"><i
+										class="glyphicon glyphicon-remove"></i></span>Rental
+								</button>
+						</a></td>
+						
+						<td><a
 							th:href="@{'/clerk/reservation/cancel/' + ${record.id} }">
-								<button type="button" class="btn btn-labeled btn-danger">
+								<button type="button" class="btn btn-labeled btn-danger btn-sm">
 									<span class="btn-label"><i
 										class="glyphicon glyphicon-remove"></i></span>Cancel
 								</button>

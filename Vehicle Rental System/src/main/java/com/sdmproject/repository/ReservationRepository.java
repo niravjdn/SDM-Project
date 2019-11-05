@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
+import com.sdmproject.model.TypeOfReservation;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.orm.Table;
 
@@ -88,6 +89,30 @@ public class ReservationRepository {
 
 	public List<Reservation> findAllOutReservationOnDueDate(Date dueDate) {
 		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)" }, new String[] { "=" },
-				new String[] { new SimpleDateFormat("yyyy-MM-dd hh:mm").format(dueDate) });
+				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate) });
+	}
+
+	public List<Reservation> findAllRental(String sortProperty, String sortOrder) {
+		System.out.println(TypeOfReservation.RENTAL);
+		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "typeOfReservation" },
+				new String[] { "="}, new String[] { "RENTAL"}, sortProperty, sortOrder.equals("desc"));
+	}
+
+	public List<Reservation> findAllRentalsDueDate(Date dueDate) {
+		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)", "typeOfReservation" },
+				new String[] { "=", "=" },
+				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate), "RENTAL" });
+	}
+
+	public List<Reservation> findAllReservations(String orElse, String orElse2) {
+		return DAO.queryForParamsForDifferentOperations(new String[] { "typeOfReservation" },
+				new String[] { "="},
+				new String[] { "RESERVATION" });
+	}
+
+	public List<Reservation> findAllResvationOnDueDate(Date dueDate) {
+		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)", "typeOfReservation" },
+				new String[] { "=", "=" },
+				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate), "RESERVATION" });
 	}
 }

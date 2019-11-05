@@ -128,7 +128,7 @@ public class ReservationController {
 	public ModelAndView cancleReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		//add to reservation history
 		Reservation r = reservationService.findByID(id);
-		ReservationHistory rh  = new ReservationHistory(r.getId(), r.getTypeOfReservation(), TypeOfEndOfTransaction.CANCLE,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
+		ReservationHistory rh  = new ReservationHistory(r.getId(), TypeOfEndOfTransaction.CANCLE,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
 		reservationHistoryService.save(rh);
 		
 		reservationService.deleteReservationByID(id);
@@ -136,10 +136,24 @@ public class ReservationController {
 		return new ModelAndView("redirect:/clerk/reservation/cancel");
 	}
 	
+	@RequestMapping(value = { "/clerk/reservation/makeitrental//{id}" }, method = RequestMethod.GET)
+	public ModelAndView makeItRental(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
+		//add to reservation history
+		Reservation r = reservationService.findByID(id);
+		r.setFromDateTime(new Date());
+		r.setTypeOfReservation(TypeOfReservation.RENTAL);
+		reservationService.save(r);
+		
+		reservationService.deleteReservationByID(id);
+		atts.addFlashAttribute("successMessage", "Reservation Marked as Rental Successfully");
+		return new ModelAndView("redirect:/clerk/reservation/cancel");
+	}
+	
+	
 	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
 	public ModelAndView returnVehicleReturnView(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
+		modelAndView.addObject("records", reservationService.findAllRentals(sort, order));
 		modelAndView.setViewName("clerk/returnVehicle");
 		return modelAndView;
 	}
@@ -147,7 +161,8 @@ public class ReservationController {
 	@RequestMapping(value = { "/clerk/reservation/return/{id}" }, method = RequestMethod.GET)
 	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		Reservation r = reservationService.findByID(id);
-		ReservationHistory reservationHistory  = new ReservationHistory(r.getId(), r.getTypeOfReservation(), TypeOfEndOfTransaction.RETURN,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
+		r.setToDateTime(new Date());
+		ReservationHistory reservationHistory  = new ReservationHistory(r.getId(), TypeOfEndOfTransaction.RETURN,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
 		reservationHistoryService.save(reservationHistory);
 		reservationService.returnReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Vehicle Returned Successfully");
@@ -155,24 +170,48 @@ public class ReservationController {
 	}
 	
 	
-	@RequestMapping(value = { "/admin/reservation/onging" }, method = RequestMethod.GET)
-	public ModelAndView ongoingTransactions(Optional<String> sort, Optional<String> order) {
+	@RequestMapping(value = { "/admin/rentals" }, method = RequestMethod.GET)
+	public ModelAndView rentalsTransactions(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", reservationService.findAllOutReservationSort(sort, order));
-		modelAndView.setViewName("admin/currentOngoingRental");
+		modelAndView.addObject("records", reservationService.findAllRentals(sort, order));
+		modelAndView.setViewName("admin/rentals");
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = { "/admin/reservation/onging" }, method = RequestMethod.POST
+	@RequestMapping(value = { "/admin/rentals" }, method = RequestMethod.POST
 			)
-	public ModelAndView findReservationByDueDate(@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  Date dueDate) {
+	public ModelAndView findRentalsByDueDate(@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  Date dueDate) {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		
 		
-		modelAndView.setViewName("/admin/currentOngoingRental");
+		modelAndView.setViewName("/admin/rentals");
 		
-		modelAndView.addObject("records", reservationService.findAllOutReservationOnDueDate(dueDate));
+		modelAndView.addObject("records", reservationService.findAllRentalsOnDueDate(dueDate));
+		modelAndView.addObject("dueDate", dueDate);
+          
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/admin/reservations" }, method = RequestMethod.GET)
+	public ModelAndView reservationsTransactions(Optional<String> sort, Optional<String> order) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("records", reservationService.findAllReservations(sort, order));
+		modelAndView.setViewName("admin/reservations");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/admin/reservations" }, method = RequestMethod.POST
+			)
+	public ModelAndView findReservationsByDueDate(@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  Date dueDate) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		
+		modelAndView.setViewName("/admin/reservations");
+		
+		modelAndView.addObject("records", reservationService.findAllResvationOnDueDate(dueDate));
 		modelAndView.addObject("dueDate", dueDate);
           
 		

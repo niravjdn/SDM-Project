@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Cancel Reservations</title>
+<title>Rentals</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 <link
@@ -46,28 +46,26 @@ table th { user-select: none; background: #eee;}
 	
 	<main role="main" class="container-fluid">
 	
-	<h2> Ongoing Reservations (currently out vehicles) </h3>
+	<h2> Rentals (currently out vehicles) </h3>
 	
 	<br> <input class="form-control" id="searchInput" type="text"
 			placeholder="Search.."> <br />
 	</div>	
 	
 	<div class="jumbotron">
-		<form th:action="@{/admin/reservation/onging}" method="post">
+		<form th:action="@{/admin/reservations}" method="post">
+		 <div class="form-group">
 			<label for="dueDate" >Filter by due date</label>
 			 <input type="text" placeholder="Due Date" autocomplete="off" id="dueDate" th:value="${#dates.format(dueDate, 'dd-MM-yyyy')}"
-				 name="dueDate"  class="form-control content" style="min-width:200px;" 
+				 name="dueDate"  class="form-control" style="max-width:200px;" 
 				required />
 				<br/>
+			</div>
 				
-				
-				
-			<button type="submit" class="btn btn-primary" style=" min-width:200px;"
+			<button type="submit" class="btn btn-primary" 
 					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
 					
-			
-	</form>
-	
+		</form>
 	</div>
 		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>

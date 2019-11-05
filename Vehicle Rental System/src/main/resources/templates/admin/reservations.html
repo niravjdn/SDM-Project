@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Return Vehicle</title>
+<title>Cancel Reservations</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 <link
@@ -19,30 +19,55 @@
 	rel="stylesheet">
 
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/png">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css"/>
 </head>
 <style>
 table th { user-select: none; background: #eee;}
+
+.content {
+	margin-right: 20px;
+	margin-left: 20px;
+	width: 100px;
+}
+
 </style>
 
 
 <body>
 
-	<div th:replace="clerk/header :: navbar"></div>
+	<div th:replace="admin/header :: navbar"></div>
 	<span class="glyphicon glyphicon-envelope"></span>
 	<nav class="bodyMargin" aria-label="breadcrumb">
 	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item"><a th:href="@{/clerk/home}">Home</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">Return Vehicle</li>
+	    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Home</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">Ongoing Reservations</li>
 	  </ol>
 	</nav>
 	
 	<main role="main" class="container-fluid">
 	
-	<h2> Reservation Catalog : Return Vehicle</h3>
+	<h2> Reservations </h3>
 	
-	<br>
-		
+	<br> <input class="form-control" id="searchInput" type="text"
+			placeholder="Search.."> <br />
+	</div>	
+	
+	<div class="jumbotron">
+		<form th:action="@{/admin/reservations}" method="post">
+		 <div class="form-group">
+			<label for="dueDate" >Filter by due date</label>
+			 <input type="text" placeholder="Due Date" autocomplete="off" id="dueDate" th:value="${#dates.format(dueDate, 'dd-MM-yyyy')}"
+				 name="dueDate"  class="form-control" style="max-width:200px;" 
+				required />
+				<br/>
+			</div>
+				
+			<button type="submit" class="btn btn-primary" 
+					value="Go"> <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+					
+	</form>
+	
+	</div>
 		<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
 		
@@ -52,6 +77,7 @@ table th { user-select: none; background: #eee;}
 			<tr>
 				<th data-sort-prop="id">Id</th>
 				<th data-sort-prop="firstName">FirstName</th>
+				<th data-sort-prop="lastName">LastName</th>
 				<th data-sort-prop="driverLicienceNo">Driver Licence No</th>
 				<th data-sort-prop="expiryDate">Expiry Date</th>
 				<th data-sort-prop="phoneNo">Phone No</th>
@@ -59,17 +85,16 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="plateNo">Plate No</th>
 				<th data-sort-prop="make">Make</th>
 				<th data-sort-prop="year">Year</th>
-				<th data-sort-prop="year">Rental or Reservation</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
-				<th data-sort-prop="createdOn">Reservation Created on</th>
-				<th >Return Vehicle</th>
+				<th data-sort-prop="createdOn">Reservation Created</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="record : ${records}">
 				<td th:text="${record.id}"></td>
 				<td th:text="${record.client.firstName}"></td>
+				<td th:text="${record.client.lastName}"></td>
 				<td th:text="${record.client.driverLicienceNo}"></td>
 				<td th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td>
 				<td th:text="${record.client.phoneNo}"></td>
@@ -77,18 +102,11 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.vehicle.plateNo}"></td>
 				<td th:text="${record.vehicle.make}"></td>
 				<td th:text="${record.vehicle.year}"></td>
-				<td th:text="${record.typeOfReservation}"></td>
-				<td th:text="${#dates.format(record.fromDateTime, 'MM/dd/yyyy hh:mm')}"></td>
-				<td th:text="${#dates.format(record.toDateTime, 'MM/dd/yyyy hh:mm')}"></td>
+				<td th:text="${record.fromDateTime}"></td>
+				<td th:text="${record.toDateTime}"></td>
 				<td th:text="${record.createdOn}"></td>
 				
-				<td>
-					<a					
-						th:href="@{'/clerk/reservation/return/' + ${record.id} }"> 
-						<button type="button" class="btn btn-labeled btn-danger">
-						<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Return</button>
-					</a>
-				</td>
+				
 						
 			</tr>
 		</tbody>
@@ -117,6 +135,7 @@ table th { user-select: none; background: #eee;}
 
 	<script th:src="@{/js/filter.js}"> </script>
 	<script th:src="@{/js/main.js}" > </script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script th:inline="javascript">
     //thymeleaf to javascript variables
     /*<![CDATA[*/
@@ -128,15 +147,16 @@ table th { user-select: none; background: #eee;}
     $(document).ready(function(){
      //show up/down arrows
      $("table thead th").each(function(){
-     /*    var head = $(this);
+        var head = $(this);
         if(head.attr('data-sort-prop')==sortProperty){
             head.append(sortDesc == "desc" ? ' <i class="fa fa-sort-desc"></i>' : ' <i class="fa fa-sort-asc"></i>');
         }
         });
- */
+
      //set click action, reload page on clicking with all query params
-    /* $("table thead th ").click(function() {
-      var headerSortPropName = $(this).attr("data-sort-prop");
+     $("table thead th").click(function() {
+    	 //commented here for not sorting
+      /* var headerSortPropName = $(this).attr("data-sort-prop");
       if(headerSortPropName==undefined){
     	  return;
       }
@@ -148,9 +168,22 @@ table th { user-select: none; background: #eee;}
       }else{
            window.location.href = window.location.pathname+
           '?sort='+ headerSortPropName+'&order=asc';
-      }
-      }); */ 
+      } */
+      });
     });
   </script>
+  <script>
+$(document).ready(function(){
+    var date_input=$('input[name="dueDate"]'); //our date input has the name "date"
+    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options={
+      format: 'dd-mm-yyyy',
+      todayHighlight: true,
+      orientation: "auto",
+      autoclose: true,
+    };
+    date_input.datepicker(options);
+  })
+</script>
 </body>
 </html>

@@ -21,11 +21,9 @@ public class ReservationHistory {
 	private int id;
 
 	// 0 for return 1 for canclled
-	@DatabaseField
-	private TypeOfReservation typeOfReservation;
 	
 	@DatabaseField
-	private TypeOfEndOfTransaction typeOfEndOfTransaction;
+	private TypeOfEndOfTransaction status;
 	
 
 	@DatabaseField
