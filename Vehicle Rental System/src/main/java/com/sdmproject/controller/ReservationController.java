@@ -102,7 +102,7 @@ public class ReservationController {
 			reservation.setCreatedOn(new Date());
 			reservation.setFromDateTime(fromDate);
 			reservation.setToDateTime(toDate);
-			atts.addFlashAttribute("successMessage", "Car has been reserved for another user.");
+			atts.addFlashAttribute("successMessage", "Car has been reserved successfully.");
 			reservationService.save(reservation);
 		}else {
 			atts.addFlashAttribute("errorMessage", "Car has been reserved for another user.");
