@@ -33,7 +33,7 @@ import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.ReservationHistory;
-import com.sdmproject.model.TypeOfEndOfTransaction;
+import com.sdmproject.model.Status;
 import com.sdmproject.model.TypeOfReservation;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.service.ClientRecordService;
@@ -128,7 +128,7 @@ public class ReservationController {
 	public ModelAndView cancleReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		//add to reservation history
 		Reservation r = reservationService.findByID(id);
-		ReservationHistory rh  = new ReservationHistory(r.getId(), TypeOfEndOfTransaction.CANCLE,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
+		ReservationHistory rh  = new ReservationHistory(r.getId(), Status.CANCLE,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
 		reservationHistoryService.save(rh);
 		
 		reservationService.deleteReservationByID(id);
@@ -162,7 +162,7 @@ public class ReservationController {
 	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		Reservation r = reservationService.findByID(id);
 		r.setToDateTime(new Date());
-		ReservationHistory reservationHistory  = new ReservationHistory(r.getId(), TypeOfEndOfTransaction.RETURN,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
+		ReservationHistory reservationHistory  = new ReservationHistory(r.getId(), Status.RETURN,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
 		reservationHistoryService.save(reservationHistory);
 		reservationService.returnReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Vehicle Returned Successfully");

@@ -1,5 +1,5 @@
 package com.sdmproject.model;
 
-public enum TypeOfEndOfTransaction {
+public enum Status {
 	CANCLE, RETURN
 }

@@ -1,5 +1,10 @@
 # SDM-Project
 
+# Hi, TA
+
+You can use our demo link given in the website.  We know that it was not working in last iteration, but we have fixed it now onwards by purchasing paid server from digitalocean, so you can utilize that link.
+Sorry for the inconvience during the iteration 2.
+
 ## This repository contains code of SDM Project for Fall 2019.
 
 
@@ -15,11 +20,8 @@
 
 ## Team Leader For All Iterations
  Iteration 1 - Nirav Patel
- 
  Iteration 2 - Nirav Patel
- 
  Iteration 3 - Nirav Patel
- 
  Iteration 4 - Nirav Patel
 
  
@@ -40,6 +42,7 @@
  | Username | Password ID | 
  | --- | --- | 
  | user@niravjdn.xyz  | user |
+ | user2@niravjdn.xyz  | user |
  |admin@niravjdn.xyz | admin|
 
  ## Database Set up (Not Required for Iteration 1 and 2)
@@ -50,7 +53,16 @@
 
  ### How to set up DB 
 
-Just set up this properties in application.properties with valid db profile.
+if you don't want to connect mysql db, create db with above configuration and When you run your application it will create table and row data automatically.
+
+if you want to use embeded db, then  comment this lines in application.properties
+
+ ```
+spring.datasource.url = jdbc:mysql://127.0.0.1:3306/zadmin_sdm?useSSL=true&characterEncoding=utf8&sessionVariables=storage_engine=InnoDB
+spring.datasource.username = root
+```
+
+and uncomment this string
 
 ```
 spring.datasource.url=jdbc:h2:mem:testdb
@@ -59,5 +71,7 @@ spring.datasource.username=sa
 spring.datasource.password=
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect 
 ```
+
+Also change in DBConfig Configuration class.
 
 **don't push change in application.properties to github unless it is really necessary.**

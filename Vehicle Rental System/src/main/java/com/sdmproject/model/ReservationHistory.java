@@ -23,7 +23,7 @@ public class ReservationHistory {
 	// 0 for return 1 for canclled
 	
 	@DatabaseField
-	private TypeOfEndOfTransaction status;
+	private Status status;
 	
 
 	@DatabaseField

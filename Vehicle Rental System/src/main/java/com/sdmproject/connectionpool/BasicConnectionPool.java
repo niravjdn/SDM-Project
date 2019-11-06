@@ -6,11 +6,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 // this class is singleton
+
 public class BasicConnectionPool implements ConnectionPool {
 
 	static Logger logger = LoggerFactory.getLogger(BasicConnectionPool.class);
@@ -115,5 +119,28 @@ public class BasicConnectionPool implements ConnectionPool {
             c.close();
         }
         connectionPool.clear();
+    }
+    
+    @PreDestroy
+    public void cleanUp() {
+    	
+    	System.err.println("Cleaning --------");
+    	
+    	connectionPool.forEach(connection -> {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+    	usedConnections.forEach(connection -> {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
     }
 }
