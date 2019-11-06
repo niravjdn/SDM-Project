@@ -138,7 +138,7 @@ label {
 	    datepicker: {
 	        disableDates:  function (date) {
 	        	const currentDate = new Date().setHours(0,0,0,0);
-	            return date.setHours(0,0,0,0) >= currentDate ? true : true;
+	            return date.setHours(0,0,0,0) >= currentDate ? true : false;
 	        }
 	    },
 	    onSelect: function(dateStr) 
@@ -147,28 +147,38 @@ label {
 	        $("#toDate").val(dateStr);
 	        $("#toDate").datetimepicker("option",{ minDate: new Date(dateStr)})
 	    },
-	    format: 'dd-mm-yyyy HH:MM:ss'
+	    format: 'yyyy-mm-dd HH:MM'
+	});
+
+
+	$("#fromDate").on("close", function(e) {
+		var date = $('#fromDate').val();
+		var fromDate = new Date(date);
+		console.log(fromDate);
+		
+
+		if(typeof picker == "undefined")
+		{
+			console.log("undefined");
+		}else{
+			picker.destroy();
+		}
+		
+		$('#toDate').datetimepicker({
+		    uiLibrary: 'bootstrap4',
+		    modal: false,
+		    footer: true,
+		    format: 'yyyy-mm-dd HH:MM',
+		    minDate: new Date(fromDate),
+		    datepicker: {
+		        disableDates:  function (date) {
+		        	const currentDate = fromDate.setHours(0,0,0,0);
+		            return date.setHours(0,0,0,0) >= currentDate ? true : false;
+		        }
+		    }
+		});
 	});
 	
-	$('#toDate').datetimepicker({
-	    uiLibrary: 'bootstrap4',
-	    modal: false,
-	    defaultDate: new Date(),
-	    footer: true,
-	    datepicker: {
-	        disableDates:  function (date) {
-	        	const currentDate = new Date().setHours(0,0,0,0);
-	            return date.setHours(0,0,0,0) >= currentDate ? true : true;
-	        }
-	    },
-	    onSelect: function(dateStr) 
-	    {      
-	    	console.log('a');
-	        $("#toDate").val(dateStr);
-	        $("#toDate").datetimepicker("option",{ minDate: new Date(dateStr)})
-	    },
-	    format: 'dd-mm-yyyy HH:MM:ss'
-	});
 	function customReset()
 	{
 	    document.getElementById("filterForm").reset();

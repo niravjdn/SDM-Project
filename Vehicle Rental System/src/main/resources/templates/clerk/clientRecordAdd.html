@@ -45,27 +45,31 @@
 			class="form-signin">
 
 			<br />
-			
-			 <input type="text"  name="firstName"
+			<label class="control-label" for="firstName">First Name</label>
+			 <input type="text"  name="firstName" id="firstName"
 				placeholder="First Name" autocomplete="off" class="form-control" th:value="${record?.firstName}" required /> <br />
 
-			<input type="text" placeholder="Last Name"
+			<label class="control-label" for="lastName">Last Name</label>
+			<input type="text" placeholder="Last Name" id="lastName"
 				 name="lastName" class="form-control" autocomplete="off" th:value="${record?.lastName}"
 				required />
 			 <br />
 			 
-			 <input type="text" placeholder="Licience No"
+			 <label class="control-label" for="licienceno">Licience No</label>
+			 <input type="text" placeholder="Licience No" id=""licienceno""
 				 name="driverLicienceNo" autocomplete="off" class="form-control" th:value="${record?.driverLicienceNo}"
 				required />
 			 <br />
 			 
+			 <label class="control-label" for="expiryDate">Expiry Date</label>
 			 <input type="text" placeholder="Expiry Date" autocomplete="off" id="expiryDate" th:value="${#dates.format(record?.expiryDate, 'MM/dd/yyyy')}"
 				 name="expiryDate"  class="form-control"
 				required />
 			 <br />
 			 
-			 <input type="text" placeholder="Phone No" autocomplete="off" id="expiryDate" th:value="${record?.phoneNo}"
-				 name="phoneNo"  class="form-control"
+			 <label class="control-label" for="phonoNo">Phone No</label>
+			 <input type="text" placeholder="Phone No" autocomplete="off" th:value="${record?.phoneNo}"
+				 name="phoneNo"  class="form-control" id="phonoNo"
 				required />
 			 <br />
 

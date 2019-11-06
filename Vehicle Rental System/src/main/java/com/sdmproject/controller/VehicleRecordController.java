@@ -228,16 +228,4 @@ public class VehicleRecordController {
 		atts.addFlashAttribute("successMessage", "Deleted Vehicle Record Successfully");
 		return new ModelAndView("redirect:/common/vehicleRecord/");
 	}
-
-	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.GET)
-	public ModelAndView checkVehicleAvailibility() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("admin/checkVehicleAvailibility");
-
-		// edit here
-		List<Vehicle> vehicles = vehicleRecordService.findAll();
-		modelAndView.addObject("vehicles", vehicles);
-
-		return modelAndView;
-	}
 }

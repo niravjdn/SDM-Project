@@ -218,10 +218,23 @@ public class ReservationController {
 		return modelAndView;
 	}
 	
+
+	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.GET)
+	public ModelAndView checkVehicleAvailibility() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/checkVehicleAvailibility");
+
+		// edit here
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles", vehicles);
+
+		return modelAndView;
+	}
+
 	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.POST)
 	public ModelAndView checkVehicleAvailibilityFromDateRange(@RequestParam("vehicleId") int vehicleId,
-			@RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date fromDate,
-			@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date toDate) {
+			@RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDate,
+			@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date toDate) {
 
 		ModelAndView modelAndView = new ModelAndView();
 		System.out.println("fromDate " + fromDate.toString());
@@ -238,11 +251,12 @@ public class ReservationController {
 		modelAndView.addObject("isVehicleAvailable", reservations.size() <= 0);
 		modelAndView.addObject("vehicleId", vehicleId);
 
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 		modelAndView.addObject("fromDate", dateFormat.format(fromDate));
 		modelAndView.addObject("toDate", dateFormat.format(toDate));
 
 		return modelAndView;
 	}
+	
 }
