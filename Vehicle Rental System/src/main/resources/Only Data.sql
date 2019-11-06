@@ -7,9 +7,9 @@ INSERT INTO `vehicle` (`color`, `plateNo`, `make`, `model`, `year`, `type`) VALU
 ('Pink', 'WAUWFAFH0EN615344', 'BMW', 'X5', 2009, 'SEADEN'),
 ('Crimson', '1G6AA5RX5F0530359', 'Subaru', 'Legacy', 2008, 'SEADEN'),
 ( 'Pink', 'WBABD334X4P945075', 'Hyundai', 'Tiburon', 1998, 'TRUCK'),
-( 'balck', '113', 'Mazda', 'XYX', 2012, 'SUV'),
-( 'balck', '1323', 'Maruti', '800', 2012, 'SUV'),
-( 'balck', '1312123', 'Jeep', 'XD', 2012, 'SEADEN');
+( 'Black', '113', 'Mazda', 'XYX', 2012, 'SUV'),
+( 'Black', '1323', 'Maruti', '800', 2012, 'SUV'),
+( 'Black', '1312123', 'Jeep', 'XD', 2012, 'SEADEN');
 
 
 
