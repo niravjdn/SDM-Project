@@ -21,11 +21,13 @@ public abstract class BaseSQL implements SQL {
     public abstract ConnectionPool getPool();
 
     public void write(String queryString,Object... parameters){
-        try(Connection conn = getPool().getConnection();
-        		PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);) {
+        try {
+        	Connection conn = getPool().getConnection();
+    		PreparedStatement ps = setParams(conn.prepareStatement(queryString),parameters);
             System.out.println(ps.toString());
             ps.executeUpdate();
             ps.close();
+            getPool().releaseConnection(conn);
         } catch (SQLException e) {e.printStackTrace();}
     }
 
