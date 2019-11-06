@@ -1,4 +1,5 @@
 package com.sdmproject.controller;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,13 +50,13 @@ public class ReservationController {
 
 	@Autowired
 	private ReservationService reservationService;
-	
+
 	@Autowired
 	private ClientRecordService clientRecordService;
-	
+
 	@Autowired
 	private VehicleService vehicleRecordService;
-	
+
 	@Autowired
 	private ReservationHistoryService reservationHistoryService;
 
@@ -78,78 +79,86 @@ public class ReservationController {
 		modelAndView.setViewName("clerk/addReservation");
 		List<Vehicle> vehicles = vehicleRecordService.findAll();
 		modelAndView.addObject("vehicles", vehicles);
-		
+
 		List<ClientRecord> clients = clientRecordService.findAll();
 		modelAndView.addObject("clients", clients);
-		
+
 		return modelAndView;
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/add" }, method = RequestMethod.POST)
-	public ModelAndView createReservationPost(int vehicle, boolean isRental, int client,  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date toDate, RedirectAttributes atts) throws ParseException, DuplicateEntryException {
+	public ModelAndView createReservationPost(int vehicle, boolean isRental, int client,
+			@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDate,
+			@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date toDate, RedirectAttributes atts)
+			throws ParseException, DuplicateEntryException {
 		Vehicle v = vehicleRecordService.findByID(vehicle);
 		ClientRecord c = clientRecordService.findByID(client);
-		
+
 		List<Reservation> reservations = reservationService.findReservationWithDateRange(v.getId(), fromDate, toDate);
-		if(reservations.isEmpty()) {
-			Reservation reservation = new Reservation();
-			reservation.setClient(c);
-			reservation.setVehicle(v);
-			reservation.setTypeOfReservation(TypeOfReservation.valueOf(isRental ? 0 : 1).get());
-			
-			System.out.println(fromDate);
-			System.out.println(toDate);
-			reservation.setCreatedOn(new Date());
-			reservation.setFromDateTime(fromDate);
-			reservation.setToDateTime(toDate);
-			atts.addFlashAttribute("successMessage", "Car has been reserved successfully.");
-			reservationService.save(reservation);
-		}else {
+		if (reservations.isEmpty()) {
+			if (fromDate.compareTo(toDate) == 1)
+				atts.addFlashAttribute("errorMessage", "Please choose To_Date greater than From_Date");
+			else {
+				Reservation reservation = new Reservation();
+				reservation.setClient(c);
+				reservation.setVehicle(v);
+				reservation.setTypeOfReservation(TypeOfReservation.valueOf(isRental ? 0 : 1).get());
+
+				System.out.println(fromDate);
+				System.out.println(toDate);
+				reservation.setCreatedOn(new Date());
+				reservation.setFromDateTime(fromDate);
+				reservation.setToDateTime(toDate);
+				atts.addFlashAttribute("successMessage", "Car has been reserved successfully.");
+				reservationService.save(reservation);
+			}
+		} else {
 			atts.addFlashAttribute("errorMessage", "Car has been reserved for another user.");
 			logger.debug("Car has been reserved for another user.");
 		}
-		
+
 		return new ModelAndView("redirect:/clerk/reservation/add");
 	}
-	
-	
-	
+
 	@RequestMapping(value = { "/clerk/reservation/cancel" }, method = RequestMethod.GET)
 	public ModelAndView viewReservationRecord(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records",reservationService.findAllFutureWithSort(sort,order));
+		modelAndView.addObject("records", reservationService.findAllFutureWithSort(sort, order));
 		modelAndView.setViewName("clerk/reservationRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
-		modelAndView.addObject("order",  order.isPresent() ? order.get() : "asc" );
+		modelAndView.addObject("order", order.isPresent() ? order.get() : "asc");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = { "/clerk/reservation/cancel/{id}" }, method = RequestMethod.GET)
 	public ModelAndView cancleReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
-		//add to reservation history
+		// add to reservation history
 		Reservation r = reservationService.findByID(id);
-		ReservationHistory rh  = new ReservationHistory(r.getId(), Status.CANCLE,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
+		ReservationHistory rh = new ReservationHistory(r.getId(), Status.CANCLE, r.getClient().getFirstName(),
+				r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(),
+				r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(),
+				r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(),
+				r.getToDateTime(), new Date());
 		reservationHistoryService.save(rh);
-		
+
 		reservationService.deleteReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Reservation Cancelled Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/cancel");
 	}
-	
+
 	@RequestMapping(value = { "/clerk/reservation/makeitrental//{id}" }, method = RequestMethod.GET)
 	public ModelAndView makeItRental(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
-		//add to reservation history
+		// add to reservation history
 		Reservation r = reservationService.findByID(id);
 		r.setFromDateTime(new Date());
 		r.setTypeOfReservation(TypeOfReservation.RENTAL);
 		reservationService.save(r);
-		
+
 		reservationService.deleteReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Reservation Marked as Rental Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/cancel");
 	}
-	
-	
+
 	@RequestMapping(value = { "/clerk/reservation/returnView" }, method = RequestMethod.GET)
 	public ModelAndView returnVehicleReturnView(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -157,19 +166,22 @@ public class ReservationController {
 		modelAndView.setViewName("clerk/returnVehicle");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = { "/clerk/reservation/return/{id}" }, method = RequestMethod.GET)
 	public ModelAndView returnVehicle(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		Reservation r = reservationService.findByID(id);
 		r.setToDateTime(new Date());
-		ReservationHistory reservationHistory  = new ReservationHistory(r.getId(), Status.RETURN,r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(),  new Date());
+		ReservationHistory reservationHistory = new ReservationHistory(r.getId(), Status.RETURN,
+				r.getClient().getFirstName(), r.getClient().getLastName(), r.getClient().getDriverLicienceNo(),
+				r.getClient().getExpiryDate(), r.getClient().getPhoneNo(), r.getVehicle().getColor(),
+				r.getVehicle().getPlateNo(), r.getVehicle().getMake(), r.getVehicle().getModel(),
+				r.getVehicle().getYear(), r.getFromDateTime(), r.getToDateTime(), new Date());
 		reservationHistoryService.save(reservationHistory);
 		reservationService.returnReservationByID(id);
 		atts.addFlashAttribute("successMessage", "Vehicle Returned Successfully");
 		return new ModelAndView("redirect:/clerk/reservation/returnView");
 	}
-	
-	
+
 	@RequestMapping(value = { "/admin/rentals" }, method = RequestMethod.GET)
 	public ModelAndView rentalsTransactions(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -177,23 +189,21 @@ public class ReservationController {
 		modelAndView.setViewName("admin/rentals");
 		return modelAndView;
 	}
-	
-	@RequestMapping(value = { "/admin/rentals" }, method = RequestMethod.POST
-			)
-	public ModelAndView findRentalsByDueDate(@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  Date dueDate) {
-		
+
+	@RequestMapping(value = { "/admin/rentals" }, method = RequestMethod.POST)
+	public ModelAndView findRentalsByDueDate(
+			@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date dueDate) {
+
 		ModelAndView modelAndView = new ModelAndView();
-		
-		
+
 		modelAndView.setViewName("/admin/rentals");
-		
+
 		modelAndView.addObject("records", reservationService.findAllRentalsOnDueDate(dueDate));
 		modelAndView.addObject("dueDate", dueDate);
-          
-		
+
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = { "/admin/reservations" }, method = RequestMethod.GET)
 	public ModelAndView reservationsTransactions(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -201,23 +211,20 @@ public class ReservationController {
 		modelAndView.setViewName("admin/reservations");
 		return modelAndView;
 	}
-	
-	@RequestMapping(value = { "/admin/reservations" }, method = RequestMethod.POST
-			)
-	public ModelAndView findReservationsByDueDate(@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  Date dueDate) {
-		
+
+	@RequestMapping(value = { "/admin/reservations" }, method = RequestMethod.POST)
+	public ModelAndView findReservationsByDueDate(
+			@RequestParam("dueDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date dueDate) {
+
 		ModelAndView modelAndView = new ModelAndView();
-		
-		
+
 		modelAndView.setViewName("/admin/reservations");
-		
+
 		modelAndView.addObject("records", reservationService.findAllResvationOnDueDate(dueDate));
 		modelAndView.addObject("dueDate", dueDate);
-          
-		
+
 		return modelAndView;
 	}
-	
 
 	@RequestMapping(value = { "/admin/checkVehicleAvailibility" }, method = RequestMethod.GET)
 	public ModelAndView checkVehicleAvailibility() {
@@ -258,5 +265,5 @@ public class ReservationController {
 
 		return modelAndView;
 	}
-	
+
 }
