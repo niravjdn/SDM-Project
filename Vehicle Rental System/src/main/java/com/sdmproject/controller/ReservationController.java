@@ -123,7 +123,7 @@ public class ReservationController {
 	@RequestMapping(value = { "/clerk/reservation/cancel" }, method = RequestMethod.GET)
 	public ModelAndView viewReservationRecord(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("records", reservationService.findAllFutureWithSort(sort, order));
+		modelAndView.addObject("records", reservationService.findAllReservations(sort, order));
 		modelAndView.setViewName("clerk/reservationRecord");
 		modelAndView.addObject("sortProperty", sort.isPresent() ? sort.get() : "id");
 		modelAndView.addObject("order", order.isPresent() ? order.get() : "asc");
