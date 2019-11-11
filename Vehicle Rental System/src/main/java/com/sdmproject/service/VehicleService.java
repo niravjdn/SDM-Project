@@ -1,5 +1,6 @@
 package com.sdmproject.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class VehicleService {
 		vehicleRepository.save(vehicle);
 	}
 
-	public void update(Vehicle vehicle) {
+	public void update(Vehicle vehicle) throws SQLException {
 		vehicleRepository.update(vehicle);
 	}
 

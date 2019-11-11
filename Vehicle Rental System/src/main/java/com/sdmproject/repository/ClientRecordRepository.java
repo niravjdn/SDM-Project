@@ -1,5 +1,6 @@
 package com.sdmproject.repository;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class ClientRecordRepository {
 		DAO.create(record);
 	}
 
-	public ClientRecord update(ClientRecord record) throws DuplicateEntryException {
+	public ClientRecord update(ClientRecord record) throws DuplicateEntryException, SQLException {
 		logger.trace("Updated rows for saving user -----");
 		DAO.update(record);
 		return record;

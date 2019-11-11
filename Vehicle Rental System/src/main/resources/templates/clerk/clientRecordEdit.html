@@ -40,6 +40,9 @@
 	<div align="center" th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert"  th:utext="${successMessage}">
 		</div>
 
+		<div align="center" th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert"  th:utext="${errorMessage}">
+		</div>
+		
 		<form method="post" th:action="@{/clerk/clientRecord/update}"
 			class="form-signin">
 
@@ -71,11 +74,11 @@
 			  <input type="text" placeholder="Phone No" id="phonoNo" th:value="${record?.phoneNo}"
 				 name="phoneNo"  class="form-control"
 				required />
+				
+				<input type="hidden" name="version" th:value="${record?.version}" />
+				
 			 <br />
 
-
-	<div align="center" th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert"  th:utext="${errorMessage}">
-		</div>
 
 			<button class="btn btn-lg btn-primary btn-block" name="Submit"
 				value="Login" type="Submit" th:text="Update"></button>

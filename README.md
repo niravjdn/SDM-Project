@@ -2,7 +2,7 @@
 
 # Hi, TA
 
-You can use our demo link given in the website.  We know that it was not working in last iteration, but we have fixed it now onwards by purchasing paid server from digitalocean, so you can utilize that link.
+You can use our demo link given in the website.  We know that it was not working in last iteration, but we have fixed it now onwards by purchasing paid server from digitalocean, so you can utilize that link for iteration 3, iteration 4 is still going on.
 Sorry for the inconvience during the iteration 2.
 
 ## This repository contains code of SDM Project for Fall 2019.
@@ -36,6 +36,9 @@ Sorry for the inconvience during the iteration 2.
 
 - **Import** is a maven project in IDE
 - Run as spring application
+- Stop Application
+- Run trigger.sql or import it in database
+- If you want dummy data, run 'Only Data.sql' also.
 
  ## Credentials for login (Clerk and Admin)
 
@@ -53,25 +56,18 @@ Sorry for the inconvience during the iteration 2.
 
  ### How to set up DB 
 
-if you don't want to connect mysql db, create db with above configuration and When you run your application it will create table and row data automatically.
-
-if you want to use embeded db, then  comment this lines in application.properties
+Set up these properties with proper credentials in application.properties.
 
  ```
 spring.datasource.url = jdbc:mysql://127.0.0.1:3306/zadmin_sdm?useSSL=true&characterEncoding=utf8&sessionVariables=storage_engine=InnoDB
 spring.datasource.username = root
 ```
 
-and uncomment this string
-
-```
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect 
-```
-
 Also change in DBConfig Configuration class.
 
 **don't push change in application.properties to github unless it is really necessary.**
+
+### Optimistic Concurrency - Demo in Video
+
+
+[![Alt text](https://img.youtube.com/vi/pNt12cmOwUo/0.jpg)](https://www.youtube.com/watch?v=pNt12cmOwUo)

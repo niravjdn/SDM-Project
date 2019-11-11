@@ -2,6 +2,7 @@ package com.sdmproject.repository;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class VehicleRepository {
 		return DAO.queryForAll();
 	}
 
-	public Vehicle update(Vehicle record) {
+	public Vehicle update(Vehicle record) throws SQLException {
 		logger.trace("Updated rows for saving user -----");
 		DAO.update(record);
 		return record;

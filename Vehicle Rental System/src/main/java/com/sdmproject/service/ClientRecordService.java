@@ -39,7 +39,7 @@ public class ClientRecordService {
 		clientRecordRepository.save(clientRecord);
 	}
 
-	public ClientRecord update(ClientRecord clientRecord) throws DuplicateEntryException {
+	public ClientRecord update(ClientRecord clientRecord) throws DuplicateEntryException, SQLException {
 		return clientRecordRepository.update(clientRecord);
 	}
 
