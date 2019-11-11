@@ -67,7 +67,7 @@ Also change in DBConfig Configuration class.
 
 **don't push change in application.properties to github unless it is really necessary.**
 
-### Optimistic Concurrency - Demo in Video
+## Optimistic Concurrency - Demo in Video
 
 
 [![Alt text](https://img.youtube.com/vi/pNt12cmOwUo/0.jpg)](https://www.youtube.com/watch?v=pNt12cmOwUo)
