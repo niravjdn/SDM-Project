@@ -37,6 +37,9 @@ public class ClientRecord {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@DatabaseField(dateFormat = "yyyy-MM-dd")
 	private Date expiryDate;
+	
+	@DatabaseField
+	int version;	
 
 	@Override
     public boolean equals(Object obj) 
