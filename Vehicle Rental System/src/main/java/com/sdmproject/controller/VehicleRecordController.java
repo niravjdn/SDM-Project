@@ -1,5 +1,6 @@
 package com.sdmproject.controller;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -111,8 +112,14 @@ public class VehicleRecordController {
 	@RequestMapping(value = { "/admin/vehicleRecord/update" }, method = RequestMethod.POST)
 	public ModelAndView vehicleUpdate(Vehicle record) {
 		ModelMap map = new ModelMap();
-		vehicleRecordService.update(record);
-		map.addAttribute("successMessage", "Vehicle Record has been updated successfully.");
+		try {
+			vehicleRecordService.update(record);
+			map.addAttribute("successMessage", "Vehicle Record has been updated successfully.");
+		} catch (SQLException e) {
+			map.addAttribute("errorMessage", e.getMessage());
+			map.addAttribute("record", record);
+			return new ModelAndView("redirect:/admin/vehicleRecord/update/" + record.getId(), map);
+		}
 		return new ModelAndView("redirect:/admin/vehicleRecord/update/" + record.getId(), map);
 	}
 

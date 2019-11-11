@@ -1,5 +1,6 @@
 package com.sdmproject.controller;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -115,6 +116,10 @@ public class ClientRecordController {
 			map.addAttribute("successMessage", "Client Record has been updated successfully.");
 			return new ModelAndView("redirect:/clerk/clientRecord/update/" + record.getId(), map);
 		} catch (DuplicateEntryException e) {
+			map.addAttribute("errorMessage", e.getMessage());
+			map.addAttribute("record", record);
+			return new ModelAndView("redirect:/clerk/clientRecord/update/" + record.getId(), map);
+		} catch (SQLException e) {
 			map.addAttribute("errorMessage", e.getMessage());
 			map.addAttribute("record", record);
 			return new ModelAndView("redirect:/clerk/clientRecord/update/" + record.getId(), map);

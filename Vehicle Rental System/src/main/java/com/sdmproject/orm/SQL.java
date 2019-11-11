@@ -10,7 +10,7 @@ public interface SQL {
 
 	ConnectionPool getPool();
     ResultSet read(String queryString,Connection connection, Object... parameters);
-    void write(String queryString,Object... parameters);
+    void write(String queryString,Object... parameters) throws SQLException;
     void close(ResultSet resultSet);
 	void close(ConnectionPool connectionPool, Connection connection);
 

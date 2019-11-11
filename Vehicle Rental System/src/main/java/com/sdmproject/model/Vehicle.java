@@ -36,6 +36,9 @@ public class Vehicle {
 	@DatabaseField
 	String plateNo;	
 	
+	@DatabaseField
+	int version;	
+	
 	@Override
     public boolean equals(Object obj) 
     {

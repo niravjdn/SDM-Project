@@ -202,7 +202,7 @@ public class Table<ObjectType, KeyType> {
 		builder().where().eq(getColName(keyField), id).delete();
 	}
 
-	public void update(ObjectType object) {
+	public void update(ObjectType object) throws SQLException {
 		builder().where().eq(getColName(keyField), getKeyValue(object)).update(object);
 	}
 
@@ -452,7 +452,12 @@ public class Table<ObjectType, KeyType> {
 		}
 
 		public void delete() {
-			sql.write("DELETE FROM `" + getTableName() + "`" + querySelector.toString() + ";", parameters.toArray());
+			try {
+				sql.write("DELETE FROM `" + getTableName() + "`" + querySelector.toString() + ";", parameters.toArray());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		public QueryResult query() {
@@ -572,7 +577,7 @@ public class Table<ObjectType, KeyType> {
 			return -1;
 		}
 
-		public void update(ObjectType object) {
+		public void update(ObjectType object) throws SQLException {
 			Map<String, String> data = parseObject(object);
 			String idColName = getColName(keyField);
 			String updateData = "";
@@ -608,7 +613,12 @@ public class Table<ObjectType, KeyType> {
 			if (insertKeys.length() > 0)
 				insertKeys = insertKeys.substring(1);
 			String q = "INSERT INTO `" + getTableName() + "` (" + insertKeys + ") VALUES (" + insertData + ");";
-			sql.write(q, parameters.toArray());
+			try {
+				sql.write(q, parameters.toArray());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		private Map<String, String> parseObject(ObjectType object) {
