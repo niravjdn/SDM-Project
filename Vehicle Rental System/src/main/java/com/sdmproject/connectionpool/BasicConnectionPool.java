@@ -24,7 +24,7 @@ public class BasicConnectionPool implements ConnectionPool {
     private final String password;
     private final List<Connection> connectionPool;
     private final List<Connection> usedConnections = new ArrayList<>();
-    private static final int INITIAL_POOL_SIZE = 2;
+    private static final int INITIAL_POOL_SIZE = 5;
     private final int MAX_POOL_SIZE = 5;
     private static List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
     private static BasicConnectionPool instance;
