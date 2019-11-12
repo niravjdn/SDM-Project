@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.exceptions.ValidationException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.orm.Table;
@@ -47,9 +48,12 @@ public class VehicleRepository {
 		return result.get(0);
 	}
 
-	public void save(Vehicle vehicle) throws DuplicateEntryException {
+	public void save(Vehicle vehicle) throws DuplicateEntryException, ValidationException {
 		if (isVehicleExist(vehicle.getPlateNo())) {
 			throw new DuplicateEntryException("The Vehicle with same licience number already exist.", null);
+		}
+		if(validate(vehicle.getPlateNo())) {
+			throw new ValidationException("Please enter alphanumeric values for license plate number field",null);
 		}
 		DAO.create(vehicle);
 	}
@@ -97,6 +101,14 @@ public class VehicleRepository {
 	public List<Integer> queryIDParamsForDifferentOperationsWithSort(String[] param, String[] operator, Object[] values,
 			String sortProperty, boolean isDesc) {
 		return DAO.queryIDParamsForDifferentOperationsWithSort(param, operator, values, sortProperty, isDesc);
+	}
+	
+	public boolean validate(String licenseNo) {
+		String pattern = "^[a-zA-Z0-9]+$";
+		if(licenseNo.matches(pattern))
+			return false;
+		else 
+			return true;
 	}
 
 }

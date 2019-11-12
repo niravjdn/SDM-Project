@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.exceptions.ValidationException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.repository.VehicleRepository;
@@ -48,7 +49,7 @@ public class VehicleService {
 		return vehicleRepository.findAll();
 	}
 
-	public void save(Vehicle vehicle) throws DuplicateEntryException {
+	public void save(Vehicle vehicle) throws DuplicateEntryException, ValidationException {
 		vehicleRepository.save(vehicle);
 	}
 
