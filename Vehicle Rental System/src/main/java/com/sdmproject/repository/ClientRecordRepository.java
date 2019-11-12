@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.exceptions.ValidationException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.orm.Table;
 
@@ -34,9 +35,12 @@ public class ClientRecordRepository {
 		return result.get(0);
 	}
 
-	public void save(ClientRecord record) throws DuplicateEntryException {
+	public void save(ClientRecord record) throws DuplicateEntryException, ValidationException {
 		if (isClientExist(record.getDriverLicienceNo())) {
 			throw new DuplicateEntryException("The Client with same licience number already exist.", null);
+		}
+		if(validate(record.getDriverLicienceNo())) {
+			throw new ValidationException("Please enter alphanumeric values for license number field",null);
 		}
 		System.out.println(record.getExpiryDate());
 		DAO.create(record);
@@ -76,6 +80,14 @@ public class ClientRecordRepository {
 		List<Integer> result = DAO.queryForIdWithSort(sortProperty, sortOrder);
 		System.out.println(result);
 		return result;
+	}
+	
+	public boolean validate(String licenseNo) {
+		String pattern = "^[a-zA-Z0-9]+$";
+		if(licenseNo.matches(pattern))
+			return false;
+		else 
+			return true;
 	}
 
 }

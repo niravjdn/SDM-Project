@@ -1,6 +1,7 @@
 package com.sdmproject.service;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
+import com.sdmproject.exceptions.ValidationException;
 import com.sdmproject.helper.QueryBuilder;
 import com.sdmproject.model.Vehicle;
 import com.sdmproject.model.ClientRecord;
@@ -35,7 +36,7 @@ public class ClientRecordService {
 		return clientRecordRepository.isClientExist(licience_no);
 	}
 
-	public void save(ClientRecord clientRecord) throws DuplicateEntryException {
+	public void save(ClientRecord clientRecord) throws DuplicateEntryException, ValidationException {
 		clientRecordRepository.save(clientRecord);
 	}
 
