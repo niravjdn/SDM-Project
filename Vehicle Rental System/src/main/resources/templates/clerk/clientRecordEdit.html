@@ -49,17 +49,17 @@
 			<br />
 			<input type="hidden" name="id" th:value="${record?.id}" />
 			<label class="control-label" for="firstName">First Name</label>
-			 <input type="text"  name="firstName" id="firstName"
+			 <input type="text"  name="firstName" id="firstName" pattern="[A-Za-z]{1,32}"
 				placeholder="First Name" class="form-control" th:value="${record?.firstName}" required /> <br />
 
 			<label class="control-label" for="lastName">Last Name</label>
-			<input type="text" placeholder="Last Name" id="lastName"
+			<input type="text" placeholder="Last Name" id="lastName" pattern="[A-Za-z]{1,32}"
 				 name="lastName" class="form-control" th:value="${record?.lastName}"
 				required />
 			 <br />
 			 
 			 <label class="control-label" for="licienceno">Licience No</label>
-			 <input type="text" placeholder="Licience No" id="licienceno"
+			 <input type="text" placeholder="Licience No" id="licienceno" pattern="[A-Za-z0-9]{1,32}"
 				 name="driverLicienceNo" readonly class="form-control" th:value="${record?.driverLicienceNo}"
 				required />
 			 <br />
@@ -72,7 +72,7 @@
 			 
 			 <label class="control-label" for="phonoNo">Phone No</label>
 			  <input type="text" placeholder="Phone No" id="phonoNo" th:value="${record?.phoneNo}"
-				 name="phoneNo"  class="form-control"
+				 name="phoneNo"  class="form-control" pattern="[0-9]{10}"
 				required />
 				
 				<input type="hidden" name="version" th:value="${record?.version}" />

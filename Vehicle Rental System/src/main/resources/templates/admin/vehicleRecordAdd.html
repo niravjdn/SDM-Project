@@ -58,29 +58,29 @@
 						</select></br>
 						
 			<label for="make" > Make</label>
-			 <input type="text" id="make"  name="make"
+			 <input type="text" id="make"  name="make" pattern="[A-Za-z]{1,32}"
 				placeholder="Maker" autocomplete="off" class="form-control" th:value="${record?.make}" required /> <br />
 
 			<label for="model" > Model</label>
-			<input type="text" placeholder="Model" id="model"
+			<input type="text" placeholder="Model" id="model" pattern="[A-Za-z]{1,32}"
 				 name="model" class="form-control" autocomplete="off" th:value="${record?.model}"
 				required />
 			 <br />
 			 
  			<label for="color" > Color</label>
-			 <input type="text" placeholder="Color" id="color"
+			 <input type="text" placeholder="Color" id="color" pattern="[A-Za-z]{3,32}"
 				 name="color" autocomplete="off" class="form-control" th:value="${record?.color}"
 				required />
 			 <br />
 			 
 			<label for="plateNo" > Plate No</label>
 			 <input type="text" placeholder="Plate No" autocomplete="off" id="plateNo" th:value="${record?.plateNo}"
-				 name="plateNo"  class="form-control"
+				 name="plateNo"  class="form-control" pattern="[A-Za-z0-9]{6,32}"
 				required /><br />
 				
 			<label for="year" > Year (e.g. 1996)</label>
 			<input type="text" placeholder="Year" autocomplete="off" id="year" th:value="${record?.year}"
-				 name="year" pattern="\d{4}" maxlength="4" class="form-control"
+				 name="year" pattern="\d{4}" maxlength="4" class="form-control" 
 				required />
 			 <br />
 
