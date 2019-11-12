@@ -28,7 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.exceptions.DuplicateEntryException;
-import com.sdmproject.exceptions.ValidationException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.service.ClientRecordService;
 import com.sdmproject.service.UserService;
@@ -87,11 +86,7 @@ public class ClientRecordController {
 		} catch (DuplicateEntryException e) {
 			modelAndView.addObject("errorMessage", e.getMessage());
 			modelAndView.addObject("record", record);
-		} catch (ValidationException e) {
-			modelAndView.addObject("errorMessage", e.getMessage());
-			modelAndView.addObject("record", record);
 		}
-		
 		return modelAndView;
 	}
 

@@ -34,7 +34,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.beans.FilterBean;
 import com.sdmproject.exceptions.DuplicateEntryException;
-import com.sdmproject.exceptions.ValidationException;
 import com.sdmproject.helper.AddToListForFilter;
 import com.sdmproject.model.Reservation;
 import com.sdmproject.model.Vehicle;
@@ -86,9 +85,6 @@ public class VehicleRecordController {
 			vehicleRecordService.save(record);
 			modelAndView.addObject("successMessage", "Vehicle Record has been added successfully.");
 		} catch (DuplicateEntryException e) {
-			modelAndView.addObject("errorMessage", e.getMessage());
-			modelAndView.addObject("record", record);
-		} catch (ValidationException e) {
 			modelAndView.addObject("errorMessage", e.getMessage());
 			modelAndView.addObject("record", record);
 		}
