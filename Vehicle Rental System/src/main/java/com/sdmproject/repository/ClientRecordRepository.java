@@ -11,18 +11,15 @@ import org.springframework.stereotype.Repository;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.orm.Table;
-import com.sdmproject.mapper.IdentityMap;
 
 @Repository
 public class ClientRecordRepository {
 	Logger logger = LoggerFactory.getLogger(ClientRecordRepository.class);
 
 	public Table<ClientRecord, Integer> DAO;
-	public IdentityMap iMap;
 
 	public ClientRecordRepository() {
 		this.DAO = new Table<ClientRecord, Integer>(ClientRecord.class);
-		this.iMap = new IdentityMap();
 	}
 
 	public int getCountOfVehicles() {
@@ -58,7 +55,7 @@ public class ClientRecordRepository {
 	}
 
 	public ClientRecord findById(int id) {
-		return iMap.findById(id);
+		return DAO.queryById(id);
 	}
 
 	public List<ClientRecord> findAll() {
@@ -81,5 +78,4 @@ public class ClientRecordRepository {
 		System.out.println(result);
 		return result;
 	}
-
 }
