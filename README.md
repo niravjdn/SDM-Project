@@ -1,10 +1,5 @@
 # SDM-Project
 
-# Hi, TA
-
-You can use our demo link given in the website.  We know that it was not working in last iteration, but we have fixed it now onwards, so you can utilize that link for iteration 3 (if it is still not working, try to run it locally), iteration 4 is still going on.
-Sorry for the inconvience during the iteration 2.
-
 ## This repository contains code of SDM Project for Fall 2019.
 
 
