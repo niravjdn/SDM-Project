@@ -11,26 +11,31 @@ import org.springframework.stereotype.Repository;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.orm.Table;
+import com.sdmproject.mapper.IdentityMap;
 
 @Repository
 public class ClientRecordRepository {
 	Logger logger = LoggerFactory.getLogger(ClientRecordRepository.class);
 
 	public Table<ClientRecord, Integer> DAO;
-	  public ClientRecordRepository(){
-	    this.DAO = new Table<ClientRecord,Integer>(ClientRecord.class);
-	  }
-	
+	public IdentityMap iMap;
+
+	public ClientRecordRepository() {
+		this.DAO = new Table<ClientRecord, Integer>(ClientRecord.class);
+		this.iMap = new IdentityMap();
+	}
+
 	public int getCountOfVehicles() {
 		return DAO.queryForTotalCount();
 	}
 
 	public boolean isClientExist(String driverLicienceNo) {
-		return DAO.countForParam(new String[] {"driverLicienceNo"}, new Object[] {driverLicienceNo}) > 0;
+		return DAO.countForParam(new String[] { "driverLicienceNo" }, new Object[] { driverLicienceNo }) > 0;
 	}
 
 	public ClientRecord findByLicienceNo(String driverLicienceNo) {
-		List<ClientRecord> result = DAO.queryForParamsEquality(new String[] {"driverLicienceNo"}, new Object[] {driverLicienceNo});
+		List<ClientRecord> result = DAO.queryForParamsEquality(new String[] { "driverLicienceNo" },
+				new Object[] { driverLicienceNo });
 		return result.get(0);
 	}
 
@@ -53,19 +58,18 @@ public class ClientRecordRepository {
 	}
 
 	public ClientRecord findById(int id) {
-		return DAO.queryById(id);
+		return iMap.findById(id);
 	}
 
 	public List<ClientRecord> findAll() {
 		return DAO.queryForAll();
 	}
 
-
 	public List<ClientRecord> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
 		List<ClientRecord> result;
 		if (sortProperty.isPresent()) {
 			result = DAO.queryForAllWithSort(sortProperty.get(), sortOrder.get());
-		}else {
+		} else {
 			result = DAO.queryForAll();
 		}
 		System.out.println(result);
