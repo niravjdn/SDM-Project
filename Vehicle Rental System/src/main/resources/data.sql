@@ -43,7 +43,7 @@ CONSTRAINT driverLicienceNo UNIQUE(driverLicienceNo)) ;
 
 /* Reservation */
 create table IF NOT EXISTS reservation (id integer not null auto_increment, typeOfReservation varchar(15) not null, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME not null, toDateTime DATETIME not null, primary key(id), 
-	createdOn DATETIME not null,
+	createdOn DATETIME not null, version integer default 0,
                                         foreign key (vehicleID) references vehicle(id) on DELETE CASCADE,
                                         foreign key (clientID) references client_record(id) on DELETE CASCADE
 

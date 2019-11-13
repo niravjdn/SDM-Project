@@ -41,7 +41,7 @@ INSERT INTO `client_record` ( `firstName`, `lastName`, `driverLicienceNo`, `expi
 /* Reservation */
 
 create table IF NOT EXISTS reservation (id integer not null auto_increment, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME not null, toDateTime DATETIME not null, primary key(id), 
-	createdBy varchar(255),
+	createdBy varchar(255), version integer default 0,
                                         foreign key (vehicleID) references vehicle(id) on DELETE CASCADE,
                                         foreign key (clientID) references client_record(id) on DELETE CASCADE
 
