@@ -131,7 +131,7 @@ public class ReservationController {
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/cancel/{id}" }, method = RequestMethod.GET)
-	public ModelAndView cancleReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
+	public ModelAndView cancelReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		// add to reservation history
 		Reservation r = reservationService.findByID(id);
 		ReservationHistory rh = new ReservationHistory(r.getId(), Status.CANCLE, r.getClient().getFirstName(),
