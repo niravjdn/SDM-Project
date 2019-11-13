@@ -191,7 +191,7 @@ public class VehicleRecordController {
 	public ModelAndView vehicleRecordView(@PathVariable(value = "id") final int id, String sort, String order) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/common/vehicleRecordDetailView");
-		Vehicle record = vehicleRecordService.findByID(id);
+		Vehicle vehicle = vehicleRecordService.findByID(id);
 
 		// get all ids of vehicles - find position of current
 		ArrayList<String> param = new ArrayList<String>();
@@ -212,8 +212,8 @@ public class VehicleRecordController {
 		modelAndView.addObject("sortProperty", sort);
 		modelAndView.addObject("order", order);
 
-		List<Reservation> reservations = reservationService.findAllOutReservationSort(Optional.empty(),
-				Optional.empty());
+		List<Reservation> reservations = reservationService.findAllRentalsWithVehicle(Optional.empty(), Optional.empty(), vehicle);
+				
 		boolean isAvailable = reservations.stream().filter(reservation -> (reservation.getVehicle().getId() == id))
 				.findAny().isPresent();
 		modelAndView.addObject("vehicleAvailability", !isAvailable);
@@ -222,7 +222,7 @@ public class VehicleRecordController {
 
 		modelAndView.addObject("nextItem", indexofNext);
 
-		modelAndView.addObject("record", record);
+		modelAndView.addObject("record", vehicle);
 
 		return modelAndView;
 	}

@@ -93,7 +93,6 @@ public class ReservationRepository {
 	}
 
 	public List<Reservation> findAllRental(String sortProperty, String sortOrder) {
-		System.out.println(TypeOfReservation.RENTAL);
 		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "typeOfReservation" },
 				new String[] { "="}, new String[] { "RENTAL"}, sortProperty, sortOrder.equals("desc"));
 	}
@@ -114,5 +113,10 @@ public class ReservationRepository {
 		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)", "typeOfReservation" },
 				new String[] { "=", "=" },
 				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate), "RESERVATION" });
+	}
+
+	public List<Reservation> findAllRental(String sortProperty, String sortOrder, int id) {
+		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "typeOfReservation", "vehicleID" },
+				new String[] { "=", "="}, new Object[] { "RENTAL", id}, sortProperty, sortOrder.equals("desc"));
 	}
 }
