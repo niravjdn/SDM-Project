@@ -59,8 +59,9 @@ public class MySQL extends BaseSQL {
 
 	@Override
 	public void close(ConnectionPool connectionPool, Connection connection) {
-		connectionPool.releaseConnection(connection);
-		System.out.println("Closing");
+		if(connection != null)
+			connectionPool.releaseConnection(connection);
+		System.out.println("Closing in mysql");
 	}
 }
 

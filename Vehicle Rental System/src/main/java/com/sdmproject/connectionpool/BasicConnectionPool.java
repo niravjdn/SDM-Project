@@ -24,7 +24,8 @@ public class BasicConnectionPool implements ConnectionPool {
     private final String password;
     private final List<Connection> connectionPool;
     private final List<Connection> usedConnections = new ArrayList<>();
-    private static final int INITIAL_POOL_SIZE = 5;
+    private static final int INITIAL_POOL_SIZE = 2;
+    
     private final int MAX_POOL_SIZE = 5;
     private static List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
     private static BasicConnectionPool instance;
@@ -56,7 +57,7 @@ public class BasicConnectionPool implements ConnectionPool {
 
     @Override
     public Connection getConnection() throws SQLException {
-    	System.err.println("Asking for new Connection");
+//    	System.err.println("Asking for new Connection");
         if (connectionPool.isEmpty()) {
             if (usedConnections.size() < MAX_POOL_SIZE) {
                 connectionPool.add(createConnection(url, user, password));
@@ -75,9 +76,9 @@ public class BasicConnectionPool implements ConnectionPool {
     	logger.info("Releasing");
     	
         connectionPool.add(connection);
-        System.out.println("connectionPool " + connectionPool.size());
-    	System.out.println("usedConnections " + usedConnections.size() + usedConnections.contains(connection));
-        
+//        System.out.println("connectionPool " + connectionPool.size());
+//    	System.out.println("usedConnections " + usedConnections.size() + usedConnections.contains(connection));
+//        
         return usedConnections.remove(connection);
     }
     

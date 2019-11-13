@@ -330,13 +330,12 @@ public class Table<ObjectType, KeyType> {
 
 		public QueryBuilder eq(String columnName, Object value) {
 			if (columnName.contains(" DATE(") && value.toString().contains("CURDATE")) {
-				querySelector.append(" " +columnName + "= DATE(CURDATE())");
-			} else if(columnName.contains("DATE(")) {
+				querySelector.append(" " + columnName + "= DATE(CURDATE())");
+			} else if (columnName.contains("DATE(")) {
 				// date is there but parameter is useful
-				querySelector.append(" " +columnName + "= ?");
+				querySelector.append(" " + columnName + "= ?");
 				parameters.add(sqlSafe(value));
-			}
-			else {
+			} else {
 				querySelector.append(" `" + columnName + "`=?");
 				parameters.add(sqlSafe(value));
 			}
@@ -350,13 +349,12 @@ public class Table<ObjectType, KeyType> {
 
 		public QueryBuilder lessThan(String columnName, Object value) {
 			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
-				querySelector.append(" " +columnName + "< DATE(CURDATE())");
-			} else if(columnName.contains("DATE(")) {
+				querySelector.append(" " + columnName + "< DATE(CURDATE())");
+			} else if (columnName.contains("DATE(")) {
 				// date is there but parameter is useful
-				querySelector.append(" " +columnName + "< ?");
+				querySelector.append(" " + columnName + "< ?");
 				parameters.add(sqlSafe(value));
-			}
-			else {
+			} else {
 				querySelector.append(" `" + columnName + "`<?");
 				parameters.add(sqlSafe(value));
 			}
@@ -365,13 +363,12 @@ public class Table<ObjectType, KeyType> {
 
 		public QueryBuilder greaterThan(String columnName, Object value) {
 			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
-				querySelector.append(" " +columnName + "> DATE(CURDATE())");
-			} else if(columnName.contains("DATE(")) {
+				querySelector.append(" " + columnName + "> DATE(CURDATE())");
+			} else if (columnName.contains("DATE(")) {
 				// date is there but parameter is useful
-				querySelector.append(" " +columnName + "> ?");
+				querySelector.append(" " + columnName + "> ?");
 				parameters.add(sqlSafe(value));
-			}
-			else {
+			} else {
 				querySelector.append(" `" + columnName + "`>?");
 				parameters.add(sqlSafe(value));
 			}
@@ -380,13 +377,12 @@ public class Table<ObjectType, KeyType> {
 
 		public QueryBuilder greaterThanOrEqual(String columnName, Object value) {
 			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
-				querySelector.append(" " +columnName + ">= DATE(CURDATE())");
-			} else if(columnName.contains("DATE(")) {
+				querySelector.append(" " + columnName + ">= DATE(CURDATE())");
+			} else if (columnName.contains("DATE(")) {
 				// date is there but parameter is useful
-				querySelector.append(" " +columnName + ">= ?");
+				querySelector.append(" " + columnName + ">= ?");
 				parameters.add(sqlSafe(value));
-			}
-			else {
+			} else {
 				querySelector.append(" `" + columnName + "`>=?");
 				parameters.add(sqlSafe(value));
 			}
@@ -395,13 +391,12 @@ public class Table<ObjectType, KeyType> {
 
 		public QueryBuilder lessThanOrEqual(String columnName, Object value) {
 			if (columnName.contains("DATE(") && value.toString().contains("CURDATE")) {
-				querySelector.append(" " +columnName + "<= DATE(CURDATE())");
-			} else if(columnName.contains("DATE(")) {
+				querySelector.append(" " + columnName + "<= DATE(CURDATE())");
+			} else if (columnName.contains("DATE(")) {
 				// date is there but parameter is useful
-				querySelector.append(" " +columnName + "<= ? ");
+				querySelector.append(" " + columnName + "<= ? ");
 				parameters.add(sqlSafe(value));
-			}
-			else {
+			} else {
 				querySelector.append(" `" + columnName + "`<= ?");
 				parameters.add(sqlSafe(value));
 			}
@@ -453,7 +448,8 @@ public class Table<ObjectType, KeyType> {
 
 		public void delete() {
 			try {
-				sql.write("DELETE FROM `" + getTableName() + "`" + querySelector.toString() + ";", parameters.toArray());
+				sql.write("DELETE FROM `" + getTableName() + "`" + querySelector.toString() + ";",
+						parameters.toArray());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -558,22 +554,21 @@ public class Table<ObjectType, KeyType> {
 
 		public int count() {
 			Connection connection = null;
+			ResultSet rs = null;
 			try {
 				connection = sql.getPool().getConnection();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			ResultSet rs = sql.read("SELECT COUNT(*) FROM `" + getTableName() + "`" + querySelector.toString() + ";",
-					connection, parameters.toArray());
-			try {
+				rs = sql.read("SELECT COUNT(*) FROM `" + getTableName() + "`" + querySelector.toString() + ";",
+						connection, parameters.toArray());
 				if (rs.next())
 					return rs.getInt(1);
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				sql.close(rs);
+				System.err.println("Closing in reading");
+				sql.close(sql.getPool(), connection);
 			}
-			sql.close(rs);
-			sql.close(sql.getPool(), connection);
+
 			return -1;
 		}
 
@@ -628,7 +623,7 @@ public class Table<ObjectType, KeyType> {
 
 				try {
 					String dateFormat = fieldDescriptors.get(field).dateFormat();
-					System.out.println("01021020102" + dateFormat);
+					System.out.println("dateformat " + dateFormat);
 					String value = convert(field.getType(), field.get(object), dateFormat);
 					String colName = getColName(fieldName);
 					data.put(colName, value);

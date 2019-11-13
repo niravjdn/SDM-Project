@@ -31,6 +31,7 @@ public abstract class BaseSQL implements SQL {
 		} catch (SQLException e) {
 			throw new SQLException(e.getMessage());
 		} finally {
+			System.err.println("Closing in write");
 			getPool().releaseConnection(conn);
 		}
 	}
@@ -79,6 +80,10 @@ public abstract class BaseSQL implements SQL {
 	}
 
 	public void close(ResultSet rs) {
+		if(rs == null) {
+			return;
+		}
+		
 		if (statementMap.containsKey(rs)) {
 			try {
 				statementMap.get(rs).close();
