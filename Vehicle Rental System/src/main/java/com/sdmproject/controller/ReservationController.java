@@ -103,13 +103,17 @@ public class ReservationController {
 				reservation.setClient(c);
 				reservation.setVehicle(v);
 				reservation.setTypeOfReservation(TypeOfReservation.valueOf(isRental ? 0 : 1).get());
-
+				if(isRental) {
+					atts.addFlashAttribute("successMessage", "Car has been rented successfully.");
+				}else {
+					atts.addFlashAttribute("successMessage", "Car has been reserved successfully.");
+				}
 				System.out.println(fromDate);
 				System.out.println(toDate);
 				reservation.setCreatedOn(new Date());
 				reservation.setFromDateTime(fromDate);
 				reservation.setToDateTime(toDate);
-				atts.addFlashAttribute("successMessage", "Car has been reserved successfully.");
+				
 				reservationService.save(reservation);
 			}
 		} else {

@@ -16,9 +16,10 @@ public class AddToListForFilter {
 	
 	public static void fillListUsingMap(ArrayList<String> param, ArrayList<String> operator, ArrayList<Object> values,
 			Map.Entry<String, String> entry) {
+		System.err.println(entry.getKey() + " - "+ entry.getValue());
 		if(entry.getKey().equals("year")) {
 			param.add(entry.getKey());
-			operator.add("=");
+			operator.add(">");
 			Calendar prevYear = Calendar.getInstance();
 			prevYear.add(Calendar.YEAR, - Integer.parseInt(entry.getValue()));
 			int lessThanYear = prevYear.get(Calendar.YEAR);
