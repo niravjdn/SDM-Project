@@ -138,7 +138,7 @@ public class ReservationController {
 	public ModelAndView cancelReservation(@PathVariable(value = "id") final int id, RedirectAttributes atts) {
 		// add to reservation history
 		Reservation r = reservationService.findByID(id);
-		ReservationHistory rh = new ReservationHistory(r.getId(), Status.CANCLE, r.getClient().getFirstName(),
+		ReservationHistory rh = new ReservationHistory(r.getId(), Status.CANCEL, r.getClient().getFirstName(),
 				r.getClient().getLastName(), r.getClient().getDriverLicienceNo(), r.getClient().getExpiryDate(),
 				r.getClient().getPhoneNo(), r.getVehicle().getColor(), r.getVehicle().getPlateNo(),
 				r.getVehicle().getMake(), r.getVehicle().getModel(), r.getVehicle().getYear(), r.getFromDateTime(),
