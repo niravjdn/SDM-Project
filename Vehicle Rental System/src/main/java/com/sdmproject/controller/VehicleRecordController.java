@@ -110,7 +110,7 @@ public class VehicleRecordController {
 	}
 
 	@RequestMapping(value = { "/admin/vehicleRecord/update" }, method = RequestMethod.POST)
-	public ModelAndView vehicleUpdate(Vehicle record) {
+	public ModelAndView vehicleRecordUpdatePost(Vehicle record) {
 		ModelMap map = new ModelMap();
 		try {
 			vehicleRecordService.update(record);
@@ -188,7 +188,7 @@ public class VehicleRecordController {
 	}
 
 	@RequestMapping(value = { "/common/vehicleRecord/view/{id}" }, method = RequestMethod.GET)
-	public ModelAndView vehicleRecordView(@PathVariable(value = "id") final int id, String sort, String order) {
+	public ModelAndView vehicleRecordDetailView(@PathVariable(value = "id") final int id, String sort, String order) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/common/vehicleRecordDetailView");
 		Vehicle vehicle = vehicleRecordService.findByID(id);

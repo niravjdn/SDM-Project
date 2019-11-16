@@ -125,7 +125,7 @@ public class ReservationController {
 	}
 
 	@RequestMapping(value = { "/clerk/reservation/cancel" }, method = RequestMethod.GET)
-	public ModelAndView viewReservationRecord(Optional<String> sort, Optional<String> order) {
+	public ModelAndView getReservationRecords(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", reservationService.findAllReservations(sort, order));
 		modelAndView.setViewName("clerk/reservationRecord");
@@ -187,7 +187,7 @@ public class ReservationController {
 	}
 
 	@RequestMapping(value = { "/admin/rentals" }, method = RequestMethod.GET)
-	public ModelAndView rentalsTransactions(Optional<String> sort, Optional<String> order) {
+	public ModelAndView getCurrentRentals(Optional<String> sort, Optional<String> order) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("records", reservationService.findAllRentals(sort, order));
 		modelAndView.setViewName("admin/rentals");
