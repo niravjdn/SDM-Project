@@ -59,11 +59,11 @@
 						</select></br>
 						
 			<label for="make" > Make</label>
-			 <input type="text" id="make"  name="make" pattern="[A-Za-z]{1,32}"
+			 <input type="text" id="make"  name="make" pattern="[A-Za-z0-9]{1,32}"
 				placeholder="Maker" autocomplete="off" class="form-control" th:value="${record?.make}" required /> <br />
 
 			<label for="model" > Model</label>
-			<input type="text" placeholder="Model" id="model" pattern="[A-Za-z]{1,32}"
+			<input type="text" placeholder="Model" id="model" pattern="[A-Za-z0-9]{1,32}"
 				 name="model" class="form-control" autocomplete="off" th:value="${record?.model}"
 				required />
 			 <br />
