@@ -33,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sdmproject.beans.FilterBean;
+import com.sdmproject.configuration.LastModifiedVehicle;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.helper.AddToListForFilter;
 import com.sdmproject.model.Reservation;
@@ -115,6 +116,7 @@ public class VehicleRecordController {
 		try {
 			vehicleRecordService.update(record);
 			map.addAttribute("successMessage", "Vehicle Record has been updated successfully.");
+			LastModifiedVehicle.lastModifiedVehicle = record;
 		} catch (SQLException e) {
 			map.addAttribute("errorMessage", e.getMessage());
 			map.addAttribute("record", record);

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sdmproject.configuration.LastModifiedVehicle;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.service.ClientRecordService;
@@ -114,6 +115,7 @@ public class ClientRecordController {
 		try {
 			clientRecordService.update(record);
 			map.addAttribute("successMessage", "Client Record has been updated successfully.");
+			LastModifiedVehicle.lastModifiedClient = record;
 			return new ModelAndView("redirect:/clerk/clientRecord/update/" + record.getId(), map);
 		} catch (DuplicateEntryException e) {
 			map.addAttribute("errorMessage", e.getMessage());

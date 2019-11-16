@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.LastModified;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sdmproject.configuration.LastModifiedVehicle;
 import com.sdmproject.exceptions.DuplicateEntryException;
 import com.sdmproject.model.ClientRecord;
 import com.sdmproject.model.Reservation;
@@ -62,6 +64,8 @@ public class ReservationController {
 
 	@Autowired
 	private UserService userService;
+	
+	
 
 	@ModelAttribute("username")
 	public String getCurrentUser() {
@@ -79,7 +83,10 @@ public class ReservationController {
 		modelAndView.setViewName("clerk/addReservation");
 		List<Vehicle> vehicles = vehicleRecordService.findAll();
 		modelAndView.addObject("vehicles", vehicles);
-
+		
+		LastModifiedVehicle.lastModifiedVehicle = null;
+		LastModifiedVehicle.lastModifiedClient = null;
+		
 		List<ClientRecord> clients = clientRecordService.findAll();
 		modelAndView.addObject("clients", clients);
 
@@ -93,7 +100,19 @@ public class ReservationController {
 			throws ParseException, DuplicateEntryException {
 		Vehicle v = vehicleRecordService.findByID(vehicle);
 		ClientRecord c = clientRecordService.findByID(client);
-
+		
+		if(LastModifiedVehicle.lastModifiedVehicle!= null && LastModifiedVehicle.lastModifiedVehicle.getId() == v.getId()) {
+			atts.addFlashAttribute("errorMessage", "Reservation has been unsuccessful.");
+			logger.debug("Reservation has been unsuccessful.");
+			return new ModelAndView("redirect:/clerk/reservation/add");
+		}
+		
+		if(LastModifiedVehicle.lastModifiedClient!= null && LastModifiedVehicle.lastModifiedClient.getId() == c.getId()) {
+			atts.addFlashAttribute("errorMessage", "Reservation has been unsuccessful.");
+			logger.debug("Reservation has been unsuccessful.");
+			return new ModelAndView("redirect:/clerk/reservation/add");
+		}
+		
 		List<Reservation> reservations = reservationService.findReservationWithDateRange(v.getId(), fromDate, toDate);
 		if (reservations.isEmpty()) {
 			if (fromDate.compareTo(toDate) == 1)
