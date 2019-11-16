@@ -35,10 +35,6 @@ public class VehicleRepository {
 
 	Logger logger = LoggerFactory.getLogger(VehicleRepository.class);
 
-	public int getCountOfVehicles() {
-		return DAO.queryForTotalCount();
-	}
-
 	public boolean isVehicleExist(String plateNo) {
 		return DAO.countForParam(new String[] {"plateNo"}, new Object[] {plateNo}) > 0;	}
 
