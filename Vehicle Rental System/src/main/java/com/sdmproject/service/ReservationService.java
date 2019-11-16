@@ -42,32 +42,12 @@ public class ReservationService {
 		reservationRepository.returnReservationByID(id);
 	}
 
-	public List<Reservation> findAllWithSort(Optional<String> sort, Optional<String> order) {
-		return reservationRepository.findAllWithSort(sort, order);
-	}
-
-	public List<Reservation> findAllFutureWithSort(Optional<String> sort, Optional<String> order) {
-		return reservationRepository.findAllFutureWithSort(sort.orElse(""), order.orElse("asc"));
-	}
-
-	public List<Reservation> findAllOutReservationSort(Optional<String> sort, Optional<String> order) {
-		return reservationRepository.findAllOutReservationSort(sort.orElse(""), order.orElse("asc"));
-	}
-
 	public List<Reservation> findReservationWithDateRange(int vehicleId, Date fromDate, Date toDate) {
 		return reservationRepository.findReservationWithDateRange(vehicleId, fromDate, toDate);
 	}
 
-	public List<Reservation> findAll() {
-		return reservationRepository.findAll();
-	}
-
 	public Reservation findByID(int id) {
 		return reservationRepository.findByID(id);
-	}
-
-	public List<Reservation> findAllOutReservationOnDueDate(Date dueDate) {
-		return reservationRepository.findAllOutReservationOnDueDate(dueDate);
 	}
 
 	public List<Reservation> findAllRentals(Optional<String> sort, Optional<String> order) {

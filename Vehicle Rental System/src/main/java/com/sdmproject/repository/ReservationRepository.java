@@ -44,33 +44,8 @@ public class ReservationRepository {
 		DAO.create(record);
 	}
 
-	public List<Reservation> findAllWithSort(Optional<String> sortProperty, Optional<String> sortOrder) {
-		List<Reservation> result;
-		if (sortProperty.isPresent()) {
-			result = DAO.queryForAllWithSort(sortProperty.get(), sortOrder.get());
-		} else {
-			result = DAO.queryForAll();
-		}
-		System.out.println(result);
-		return result;
-	}
-
-	public List<Reservation> findAllOutReservationSort(String sortProperty, String sortOrder) {
-		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "DATE(fromDateTime)" },
-				new String[] { "<=" }, new String[] { "DATE(CURDATE())" }, sortProperty, sortOrder.equals("desc"));
-	}
-
-	public List<Reservation> findAllFutureWithSort(String sortProperty, String sortOrder) {
-		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "DATE(fromDateTime)" },
-				new String[] { ">" }, new String[] { "DATE(CURDATE())" }, sortProperty, sortOrder.equals("desc"));
-	}
-
 	public void deleteReservationByID(int id) {
 		DAO.deleteById(id);
-	}
-
-	public List<Reservation> findAll() {
-		return DAO.queryForAll();
 	}
 
 	public void returnReservationByID(int id) {
@@ -85,11 +60,6 @@ public class ReservationRepository {
 		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(fromDateTime)", "DATE(toDateTime)", "vehicleId" },
 				new String[] { "<=", ">=" , "="}, new Object[] { new SimpleDateFormat("yyyy-MM-dd hh:mm").format(toDate),
 						new SimpleDateFormat("yyyy-MM-dd hh:mm").format(fromDate), vehicleId });
-	}
-
-	public List<Reservation> findAllOutReservationOnDueDate(Date dueDate) {
-		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)" }, new String[] { "=" },
-				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate) });
 	}
 
 	public List<Reservation> findAllRental(String sortProperty, String sortOrder) {
