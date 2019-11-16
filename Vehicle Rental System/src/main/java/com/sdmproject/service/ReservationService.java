@@ -55,11 +55,11 @@ public class ReservationService {
 	}
 
 	public List<Reservation> findAllRentalsWithVehicle(Optional<String> sort, Optional<String> order, Vehicle vehicle) {
-		return reservationRepository.findAllRental(sort.orElse(""), order.orElse("asc"), vehicle.getId());
+		return reservationRepository.findAllRentalWithVehicle(sort.orElse(""), order.orElse("asc"), vehicle.getId());
 	}
 	
 	public List<Reservation> findAllRentalsOnDueDate(Date dueDate) {
-		return reservationRepository.findAllRentalsDueDate(dueDate);
+		return reservationRepository.findAllRentalsOnDueDate(dueDate);
 	}
 
 	public List<Reservation> findAllReservations(Optional<String> sort, Optional<String> order) {
@@ -67,6 +67,6 @@ public class ReservationService {
 	}
 
 	public List<Reservation> findAllResvationOnDueDate(Date dueDate) {
-		return reservationRepository.findAllResvationOnDueDate(dueDate);
+		return reservationRepository.findAllReservationOnDueDate(dueDate);
 	}
 }

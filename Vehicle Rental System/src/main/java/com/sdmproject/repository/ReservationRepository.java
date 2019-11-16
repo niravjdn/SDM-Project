@@ -67,25 +67,25 @@ public class ReservationRepository {
 				new String[] { "="}, new String[] { "RENTAL"}, sortProperty, sortOrder.equals("desc"));
 	}
 
-	public List<Reservation> findAllRentalsDueDate(Date dueDate) {
+	public List<Reservation> findAllRentalsOnDueDate(Date dueDate) {
 		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)", "typeOfReservation" },
 				new String[] { "=", "=" },
 				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate), "RENTAL" });
 	}
 
-	public List<Reservation> findAllReservations(String orElse, String orElse2) {
+	public List<Reservation> findAllReservations(String sortProp, String order) {
 		return DAO.queryForParamsForDifferentOperations(new String[] { "typeOfReservation" },
 				new String[] { "="},
 				new String[] { "RESERVATION" });
 	}
 
-	public List<Reservation> findAllResvationOnDueDate(Date dueDate) {
+	public List<Reservation> findAllReservationOnDueDate(Date dueDate) {
 		return DAO.queryForParamsForDifferentOperations(new String[] { "DATE(toDateTime)", "typeOfReservation" },
 				new String[] { "=", "=" },
 				new String[] { new SimpleDateFormat("yyyy-MM-dd").format(dueDate), "RESERVATION" });
 	}
 
-	public List<Reservation> findAllRental(String sortProperty, String sortOrder, int id) {
+	public List<Reservation> findAllRentalWithVehicle(String sortProperty, String sortOrder, int id) {
 		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "typeOfReservation", "vehicleID" },
 				new String[] { "=", "="}, new Object[] { "RENTAL", id}, sortProperty, sortOrder.equals("desc"));
 	}
