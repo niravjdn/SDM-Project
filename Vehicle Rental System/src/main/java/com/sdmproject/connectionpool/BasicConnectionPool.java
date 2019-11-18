@@ -46,6 +46,9 @@ public class BasicConnectionPool implements ConnectionPool {
         return instance;
     }
 
+    public static BasicConnectionPool  getInstance() {
+    	return instance;
+    }
     
     // to make it singleton
     private BasicConnectionPool(String url, String user, String password, List<Connection> connectionPool) {
@@ -125,7 +128,7 @@ public class BasicConnectionPool implements ConnectionPool {
     @PreDestroy
     public void cleanUp() {
     	
-    	System.err.println("Cleaning --------");
+    	System.err.println("--------- Cleaning up Connections --------");
     	
     	connectionPool.forEach(connection -> {
 			try {
@@ -144,4 +147,9 @@ public class BasicConnectionPool implements ConnectionPool {
 			}
 		});
     }
+
+
+	public static void closeAll() {
+		getInstance().cleanUp();
+	}
 }

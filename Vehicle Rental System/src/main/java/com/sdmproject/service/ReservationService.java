@@ -69,4 +69,8 @@ public class ReservationService {
 	public List<Reservation> findAllResvationOnDueDate(Date dueDate) {
 		return reservationRepository.findAllReservationOnDueDate(dueDate);
 	}
+
+	public List<Reservation> findAllWithVehiclID(int vehicleId) {
+		return reservationRepository.findAllWithVehiclID(vehicleId);
+	}
 }

@@ -89,4 +89,9 @@ public class ReservationRepository {
 		return DAO.queryForParamsForDifferentOperationsWithSort(new String[] { "typeOfReservation", "vehicleID" },
 				new String[] { "=", "="}, new Object[] { "RENTAL", id}, sortProperty, sortOrder.equals("desc"));
 	}
+
+	public List<Reservation> findAllWithVehiclID(int vehicleId) {
+		return DAO.queryForParamsForDifferentOperations(new String[] { "vehicleId" },
+				new String[] { "="}, new Object[] {vehicleId });
+	}
 }

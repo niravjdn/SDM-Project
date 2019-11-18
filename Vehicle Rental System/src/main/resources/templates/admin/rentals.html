@@ -81,11 +81,12 @@ table th { user-select: none; background: #eee;}
 				<th data-sort-prop="firstName">FirstName</th>
 				<th data-sort-prop="lastName">LastName</th>
 				<th data-sort-prop="driverLicienceNo">Driver Licence No</th>
-				<th data-sort-prop="expiryDate">Expiry Date</th>
+				
 				<th data-sort-prop="phoneNo">Phone No</th>
 				<th data-sort-prop="color">Color</th>
 				<th data-sort-prop="plateNo">Plate No</th>
 				<th data-sort-prop="make">Make</th>
+				<th data-sort-prop="expiryDate">Model</th>
 				<th data-sort-prop="year">Year</th>
 				<th data-sort-prop="fromDateTime">Booking From</th>
 				<th data-sort-prop="toDateTime">Booking Due</th>
@@ -98,11 +99,12 @@ table th { user-select: none; background: #eee;}
 				<td th:text="${record.client.firstName}"></td>
 				<td th:text="${record.client.lastName}"></td>
 				<td th:text="${record.client.driverLicienceNo}"></td>
-				<td th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td>
+				<!-- <td th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td> -->
 				<td th:text="${record.client.phoneNo}"></td>
 				<td th:text="${record.vehicle.color}"></td>
 				<td th:text="${record.vehicle.plateNo}"></td>
 				<td th:text="${record.vehicle.make}"></td>
+				<td th:text="${record.vehicle.model}"></td>
 				<td th:text="${record.vehicle.year}"></td>
 				<td th:text="${record.fromDateTime}"></td>
 				<td th:text="${record.toDateTime}"></td>

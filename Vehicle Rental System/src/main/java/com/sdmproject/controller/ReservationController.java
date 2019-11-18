@@ -269,5 +269,38 @@ public class ReservationController {
 
 		return modelAndView;
 	}
+	
 
+	@RequestMapping(value = { "/admin/checkVehicleDueDate" }, method = RequestMethod.GET)
+	public ModelAndView checkVehicleDueDate() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/checkVehicleDueDate");
+
+		// edit here
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles", vehicles);
+
+		return modelAndView;
+	}
+
+	
+	@RequestMapping(value = { "/admin/checkVehicleDueDate" }, method = RequestMethod.POST)
+	public ModelAndView checkVehicleDueDatePOST(@RequestParam("vehicleId") int vehicleId) {
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("admin/checkVehicleDueDate");
+		List<Vehicle> vehicles = vehicleRecordService.findAll();
+		modelAndView.addObject("vehicles", vehicles);
+
+		List<Reservation> reservations = reservationService.findAllWithVehiclID(vehicleId);
+
+		modelAndView.addObject("vehicleId", vehicleId);
+		modelAndView.addObject("records", reservations);
+
+		return modelAndView;
+	}
+	
+	
+	
 }

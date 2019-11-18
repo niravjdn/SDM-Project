@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Rentals</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/filter.css}" />
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet">
+
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}"
+	type="image/png">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css" />
+</head>
+<style>
+table th {
+	user-select: none;
+	background: #eee;
+}
+
+.content {
+	margin-right: 20px;
+	margin-left: 20px;
+	width: 100px;
+}
+</style>
+
+
+<body>
+
+	<div th:replace="admin/header :: navbar"></div>
+	<span class="glyphicon glyphicon-envelope"></span>
+	<nav class="bodyMargin" aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Find Due Date of Vehicle</li>
+		</ol>
+	</nav>
+
+	<main role="main" class="container-fluid">
+
+	<h2>
+		Find Due Date of Vehicle
+		</h3>
+
+
+		<div class="jumbotron">
+			<form id="filterForm" th:action="@{/admin/checkVehicleDueDate}"
+				method="post">
+				<div class="form-group">
+					<label class="control-label" for="vehicle">Select Vehicle</label> <select
+						class="form-control" name="vehicleId" id="vehicle">
+						<option th:each="t : ${vehicles}"
+							th:text="${t.id + ' - ' + t.plateNo +  ' - ' + t.make + ' - ' + t.model + ' - ' + t.color + ' - ' + t.year }"
+							th:value="${t.id}" th:selected="${vehicleId} == ${t.id}">
+						</option>
+					</select>
+					<br/><br/>
+					<button type="submit" class="btn btn-primary" value="Go">
+						<i class="fa fa-search" aria-hidden="true"></i> Search
+					</button>
+
+					<button id="resetButton" type="button" class="btn btn-primary"
+						onclick="customReset()">
+						<i class="fa fa-refresh" aria-hidden="true"></i> Reset
+					</button>
+					</div>
+			</form>
+		</div>
+		
+		<table class="table table-bordered" id="filterableTable">
+		<thead>
+			<tr>
+				<th data-sort-prop="id">Id</th>
+				<th data-sort-prop="firstName">FirstName</th>
+				<th data-sort-prop="lastName">LastName</th>
+				<th data-sort-prop="driverLicienceNo">Driver Licence No</th>
+				
+				<th data-sort-prop="phoneNo">Phone No</th>
+				<th data-sort-prop="color">Color</th>
+				<th data-sort-prop="plateNo">Plate No</th>
+				<th data-sort-prop="make">Make</th>
+				<th data-sort-prop="expiryDate">Model</th>
+				<th data-sort-prop="year">Year</th>
+				<th data-sort-prop="fromDateTime">Booking From</th>
+				<th data-sort-prop="toDateTime">Booking Due</th>
+				<th data-sort-prop="createdOn">Reservation Created</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="record : ${records}">
+				<td th:text="${record.id}"></td>
+				<td th:text="${record.client.firstName}"></td>
+				<td th:text="${record.client.lastName}"></td>
+				<td th:text="${record.client.driverLicienceNo}"></td>
+				<!-- <td th:text="${#dates.format(record.client.expiryDate, 'MM/dd/yyyy')}"></td> -->
+				<td th:text="${record.client.phoneNo}"></td>
+				<td th:text="${record.vehicle.color}"></td>
+				<td th:text="${record.vehicle.plateNo}"></td>
+				<td th:text="${record.vehicle.make}"></td>
+				<td th:text="${record.vehicle.model}"></td>
+				<td th:text="${record.vehicle.year}"></td>
+				<td th:text="${record.fromDateTime}"></td>
+				<td th:text="${record.toDateTime}"></td>
+				<td th:text="${record.createdOn}"></td>
+				
+				
+						
+			</tr>
+		</tbody>
+	</table>
+
+
+		
+	</main>
+	<!-- /.container -->
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		crossorigin="anonymous"></script>
+
+	<script th:src="@{/js/filter.js}">
+		
+	</script>
+	<script th:src="@{/js/main.js}">
+		
+	</script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+	<script>
+		function customReset() {
+			document.getElementById("vehicle").reset();
+		}
+	</script>
+</body>
+</html>
