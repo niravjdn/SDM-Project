@@ -53,7 +53,7 @@ table th { user-select: none; background: #eee;}
 	</div>	
 	
 	<div class="jumbotron">
-		<form id="filterForm" th:action="@{/admin/reservations}"  method="post">
+		<form id="filterForm" th:action="@{/admin/rentals}"  method="post">
 		 <div class="form-group">
 			<label for="dueDate" >Filter by due date</label>
 			 <input type="text" placeholder="Due Date" autocomplete="off" id="dueDate" th:value="${#dates.format(dueDate, 'dd-MM-yyyy')}"
