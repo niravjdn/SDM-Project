@@ -37,22 +37,8 @@ INSERT INTO `client_record` ( `firstName`, `lastName`, `driverLicienceNo`, `expi
 
 
 
-
-/* Reservation */
-
-create table IF NOT EXISTS reservation (id integer not null auto_increment, clientID integer not null, vehicleID integer not null, fromDateTIme DATETIME not null, toDateTime DATETIME not null, primary key(id), 
-	createdBy varchar(255), version integer default 0,
-                                        foreign key (vehicleID) references vehicle(id) on DELETE CASCADE,
-                                        foreign key (clientID) references client_record(id) on DELETE CASCADE
-
- );
-
-
 /* Mock Data for Reservation */
 
-
-INSERT INTO `reservation` (`id`, `typeOfReservation`, `clientID`, `vehicleID`, `fromDateTIme`, `toDateTime`, `createdOn`) VALUES
-(1, 'RESERVATION', 1, 4, '2019-12-15 08:00:00', '2019-11-30 15:00:00', '2019-11-05 17:00:00');
 
 
 
