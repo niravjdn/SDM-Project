@@ -1,6 +1,6 @@
 node {
   stage("Clone the project") {
-    git branch: 'master', url: 'https://github.com/niravjdn/SDM-Project.git'
+    git branch: 'H2-DB', url: 'https://github.com/niravjdn/SDM-Project.git'
   }
 
   stage("Compilation") {
