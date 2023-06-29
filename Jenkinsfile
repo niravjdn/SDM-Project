@@ -22,7 +22,7 @@ node {
     }
     stage("Deployment") {
       dir('Vehicle Rental System') {
-        sh 'nohup ./mvnw spring-boot:run &'
+        sh 'nohup ./mvnw spring-boot:run > /dev/null 2>&1 &'
       }
     }
   }
