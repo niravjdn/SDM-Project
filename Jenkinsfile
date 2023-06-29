@@ -1,4 +1,9 @@
 node {
+
+  environment {
+        MAVEN_OPTS = '-Xmx2g'
+  }
+  
   stage("Clone the project") {
     git branch: 'H2-DB', url: 'https://github.com/niravjdn/SDM-Project.git'
   }
