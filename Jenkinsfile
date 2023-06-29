@@ -22,7 +22,7 @@ node {
     }
     stage("Deployment") {
       dir('Vehicle Rental System') {
-        sh 'nohup ./mvnw spring-boot:run -Dserver.port=8001 &'
+        sh 'nohup ./mvnw spring-boot:run &'
       }
     }
   }
